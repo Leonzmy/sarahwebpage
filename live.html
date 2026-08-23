@@ -27,39 +27,30 @@
   }
   a{color:inherit;text-decoration:none;}
 
-  /* ---------- Site header ---------- */
-  .site-header{
-    position:sticky;
-    top:0;
-    z-index:50;
+  /* ---------- Transparent header (matches home) ---------- */
+  header{
+    position:absolute;
+    top:0;left:0;right:0;
+    z-index:20;
     display:flex;
-    align-items:center;
-    justify-content:space-between;
-    background:var(--ink);
-    color:#fff;
-    padding:1.1rem clamp(1.2rem,4vw,3.2rem);
+    justify-content:flex-end;
+    padding:1.6rem clamp(1.2rem,4vw,3.2rem) 0;
   }
-  .wordmark{
-    font-family:'Bricolage Grotesque',sans-serif;
-    font-weight:600;
-    font-size:1.05rem;
-    letter-spacing:-0.01em;
-  }
-  .site-header nav ul{
+  nav ul{
     display:flex;
     gap:clamp(1rem,2.2vw,2.2rem);
     list-style:none;
     margin:0;padding:0;
   }
-  .site-header nav a{
-    color:rgba(255,255,255,0.8);
+  nav a{
+    color:rgba(255,255,255,0.85);
     font-size:0.86rem;
     letter-spacing:0.03em;
     position:relative;
     padding-bottom:3px;
     transition:color .3s ease, text-shadow .3s ease;
   }
-  .site-header nav a::after{
+  nav a::after{
     content:"";
     position:absolute;
     left:0;bottom:0;
@@ -67,214 +58,251 @@
     background:var(--teal);
     transition:width .35s ease;
   }
-  .site-header nav a:hover{
-    color:#fff;
-    text-shadow:0 0 10px rgba(95,200,184,0.85), 0 0 22px rgba(95,200,184,0.5);
-  }
-  .site-header nav a:hover::after{width:100%;}
-  .site-header nav a.active{color:var(--teal);}
-  .site-header nav a.active::after{width:100%;background:var(--teal);}
+  nav a:hover{color:#fff;text-shadow:0 0 10px rgba(95,200,184,0.85), 0 0 22px rgba(95,200,184,0.5);}
+  nav a:hover::after{width:100%;}
+  nav a.active{color:var(--teal);}
+  nav a.active::after{width:100%;background:var(--teal);}
 
-  /* ---------- Layout ---------- */
-  .live-layout{
-    display:flex;
-    align-items:flex-start;
-  }
-  .live-image{
-    flex:0 0 40%;
-    position:sticky;
-    top:64px;
-    height:calc(100vh - 64px);
+  /* ---------- Hero ---------- */
+  .live-hero{
+    position:relative;
+    height:68vh;
+    min-height:420px;
     overflow:hidden;
   }
-  .live-image img{
+  .live-hero img{
+    position:absolute;
+    inset:0;
     width:100%;height:100%;
     object-fit:cover;
-    object-position:50% 22%;
-    display:block;
+    object-position:50% 20%;
   }
-  .live-content{
-    flex:1;
-    min-width:0;
-    padding:clamp(2.4rem,5vw,4rem) clamp(1.4rem,4vw,3.6rem) 5rem;
+  .live-hero::after{
+    content:"";
+    position:absolute;
+    left:0;right:0;bottom:0;
+    height:55%;
+    background:linear-gradient(180deg, rgba(15,14,11,0) 0%, rgba(15,14,11,0.62) 100%);
+  }
+  .hero-caption{
+    position:absolute;
+    z-index:5;
+    left:clamp(1.2rem,4vw,3.2rem);
+    bottom:clamp(4.5rem,9vh,6.5rem);
+    color:#fff;
   }
   .eyebrow{
     font-family:'Inter',sans-serif;
     font-weight:600;
-    font-size:0.9rem;
+    font-size:0.85rem;
     letter-spacing:0.12em;
     text-transform:uppercase;
-    color:var(--indigo);
+    color:var(--teal);
     display:block;
-    margin-bottom:0.7rem;
+    margin-bottom:0.6rem;
   }
-  .live-content h1{
+  .hero-caption h1{
     font-family:'Bricolage Grotesque',sans-serif;
     font-weight:600;
-    font-size:clamp(2.2rem,4.6vw,3.2rem);
+    font-size:clamp(2.4rem,6vw,4rem);
     letter-spacing:-0.015em;
-    margin:0 0 2.4rem;
+    margin:0;
   }
 
-  /* ---------- Table ---------- */
-  .table-wrap{overflow-x:auto;}
-  table{
-    width:100%;
-    border-collapse:collapse;
-    min-width:520px;
+  /* ---------- Overlapping panel (interlocks with the photo) ---------- */
+  .dates-panel{
+    position:relative;
+    z-index:6;
+    margin-top:-56px;
+    background:var(--cream);
+    border-radius:28px 28px 0 0;
+    box-shadow:0 -20px 40px rgba(23,21,18,0.14);
+    padding:2.6rem clamp(1.4rem,4vw,3.6rem) 5rem;
   }
-  thead th{
-    text-align:left;
+  .panel-label{
     font-family:'IBM Plex Mono',monospace;
     font-size:0.72rem;
     letter-spacing:0.1em;
     text-transform:uppercase;
     color:var(--indigo);
-    font-weight:500;
-    padding:0 0.8rem 0.9rem 0;
-    border-bottom:1px solid var(--ink);
+    margin:0 0 1.8rem;
   }
-  tbody td{
-    padding:1.2rem 0.8rem 1.2rem 0;
+
+  /* ---------- Date list ---------- */
+  .dates-list{
+    display:flex;
+    flex-direction:column;
+    max-width:840px;
+  }
+  .date-row{
+    display:flex;
+    align-items:flex-start;
+    gap:1.8rem;
+    padding:1.8rem 0;
     border-bottom:1px solid var(--line);
-    vertical-align:top;
-    font-size:0.95rem;
   }
-  tbody tr:hover{background:rgba(95,200,184,0.06);}
-  .col-date{white-space:nowrap;width:1%;}
-  .col-date .date{
-    display:block;
-    font-family:'IBM Plex Mono',monospace;
-    font-size:0.88rem;
-    color:var(--ink);
+  .date-row:last-child{border-bottom:none;}
+
+  .date-tile{
+    flex:0 0 auto;
+    width:68px;
+    text-align:center;
+    padding-top:0.1rem;
   }
-  .col-date .time{
-    display:block;
-    font-family:'IBM Plex Mono',monospace;
-    font-size:0.78rem;
-    color:rgba(23,21,18,0.55);
-    margin-top:0.2rem;
-  }
-  .col-program .titel{
+  .date-tile .day{
     display:block;
     font-family:'Bricolage Grotesque',sans-serif;
-    font-weight:600;
-    font-size:1.05rem;
-    margin-bottom:0.25rem;
+    font-weight:700;
+    font-size:2rem;
+    line-height:1;
+    color:var(--ink);
   }
-  .col-program .untertitel{
+  .date-tile .month{
     display:block;
-    color:rgba(23,21,18,0.68);
-    font-size:0.88rem;
-    line-height:1.45;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.72rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--indigo);
+    margin-top:0.3rem;
   }
-  .col-ort{color:rgba(23,21,18,0.85);}
-  .ticket-link{
+  .date-tile .raw{
+    display:block;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.76rem;
+    line-height:1.5;
+    color:var(--indigo);
+  }
+
+  .row-main{flex:1;min-width:0;}
+  .row-main .titel{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:600;
+    font-size:1.18rem;
+    margin:0 0 0.35rem;
+  }
+  .row-main .untertitel{
+    margin:0 0 0.5rem;
+    font-size:0.9rem;
+    line-height:1.55;
+    color:rgba(23,21,18,0.68);
+  }
+  .row-main .meta{
+    margin:0;
+    font-size:0.85rem;
+    color:rgba(23,21,18,0.55);
+  }
+  .row-main .meta .dot{margin:0 0.5rem;opacity:0.6;}
+
+  .row-action{
+    flex:0 0 auto;
+    padding-top:0.2rem;
+  }
+  .ticket-pill{
     display:inline-block;
-    margin-top:0.5rem;
+    padding:0.6rem 1.2rem;
+    border:1px solid var(--coral-dark);
+    border-radius:999px;
+    color:var(--coral-dark);
     font-size:0.82rem;
     font-weight:500;
-    color:var(--coral-dark);
-    border-bottom:1px solid var(--coral-dark);
+    white-space:nowrap;
+    transition:background .3s ease, color .3s ease;
   }
-  .ticket-link:hover{color:var(--indigo);border-color:var(--indigo);}
-  .veranstalter-link{
-    display:inline-block;
-    margin-top:0.3rem;
-    font-size:0.78rem;
-    color:rgba(23,21,18,0.55);
-    border-bottom:1px solid rgba(23,21,18,0.3);
-  }
-  .veranstalter-link:hover{color:var(--ink);border-color:var(--ink);}
+  .ticket-pill:hover{background:var(--coral-dark);color:#fff;}
+
   .load-note{
     font-family:'IBM Plex Mono',monospace;
     font-size:0.72rem;
     color:rgba(23,21,18,0.45);
-    margin-top:1.6rem;
+    margin-top:2rem;
   }
 
   /* ---------- Responsive ---------- */
-  @media(max-width:900px){
-    .live-layout{flex-direction:column;}
-    .live-image{
-      position:static;
-      flex:none;
-      width:100%;
-      height:52vh;
-    }
-    .live-content{padding-top:2rem;}
+  @media(max-width:640px){
+    .live-hero{height:56vh;}
+    .dates-panel{margin-top:-36px;padding-top:2.2rem;}
+    .date-row{gap:1.1rem;flex-wrap:wrap;}
+    .date-tile{width:52px;}
+    .date-tile .day{font-size:1.5rem;}
+    .row-action{flex-basis:100%;padding-left:calc(52px + 1.1rem);margin-top:0.4rem;padding-top:0;}
   }
 </style>
 </head>
 <body>
 
-<header class="site-header">
-  <a class="wordmark" href="index.html">Sarah Luisa Wurmer</a>
-  <nav>
-    <ul>
-      <li><a class="active" href="live.html">Live</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="projekte.html">Projekte</a></li>
-      <li><a href="medien.html">Medien</a></li>
-      <li><a href="kontakt.html">Kontakt</a></li>
-    </ul>
-  </nav>
-</header>
+<div class="live-hero">
+  <img
+    src="live-hero-2200.jpg"
+    srcset="live-hero-1100.jpg 1100w, live-hero-2200.jpg 2200w"
+    sizes="100vw"
+    alt="Sarah Luisa Wurmer an der Zither">
 
-<div class="live-layout">
-  <div class="live-image">
-    <img
-      src="live-hero-2200.jpg"
-      srcset="live-hero-1100.jpg 1100w, live-hero-2200.jpg 2200w"
-      sizes="40vw"
-      alt="Sarah Luisa Wurmer an der Zither">
-  </div>
+  <header>
+    <nav>
+      <ul>
+        <li><a class="active" href="live.html">Live</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="projekte.html">Projekte</a></li>
+        <li><a href="medien.html">Medien</a></li>
+        <li><a href="kontakt.html">Kontakt</a></li>
+      </ul>
+    </nav>
+  </header>
 
-  <div class="live-content">
+  <div class="hero-caption">
     <span class="eyebrow">Termine</span>
     <h1>Live</h1>
-
-    <div class="table-wrap">
-      <table id="termine-table">
-        <thead>
-          <tr>
-            <th>Datum</th>
-            <th>Programm</th>
-            <th>Ort</th>
-          </tr>
-        </thead>
-        <tbody id="termine-body">
-          <!-- Fallback-Inhalt: wird durch Live-Daten aus dem Google Sheet ersetzt -->
-          <tr>
-            <td class="col-date"><span class="date">10.9.26</span><span class="time">19:00 Uhr</span></td>
-            <td class="col-program"><span class="titel">Domplatz Open-Air: Nordlichter & Friends</span><span class="untertitel">Solistin mit dem Tonkünstlerorchester Niederösterreich (Dirigent Ross Jamie Collins)</span></td>
-            <td class="col-ort">Domplatz | St. Pölten</td>
-          </tr>
-          <tr>
-            <td class="col-date"><span class="date">7.9.–12.9.26</span></td>
-            <td class="col-program"><span class="titel">Meisterkurs</span><span class="untertitel">Ensemble-Akademie Freiburg mit dem Freiburger Barockorchester und ensemble recherche</span></td>
-            <td class="col-ort">Freiburg</td>
-          </tr>
-          <tr>
-            <td class="col-date"><span class="date">18.9.–20.9.26</span></td>
-            <td class="col-program"><span class="titel">John Cage Award 26</span></td>
-            <td class="col-ort">Halberstadt</td>
-          </tr>
-          <tr>
-            <td class="col-date"><span class="date">15.10.26</span><span class="time">19:00 Uhr</span></td>
-            <td class="col-program"><span class="titel">Fanny Mendelssohn Artists</span><span class="untertitel">mit Jelizaveta Vasiljeva (Klavier) & Matthias Well (Geige)</span></td>
-            <td class="col-ort">St. Matthäus-Kirche | Berlin</td>
-          </tr>
-          <tr>
-            <td class="col-date"><span class="date">16.10.26</span><span class="time">19:00 Uhr</span></td>
-            <td class="col-program"><span class="titel">Fanny Mendelssohn Artists</span><span class="untertitel">mit Jelizaveta Vasiljeva (Klavier) & Matthias Well (Geige)</span></td>
-            <td class="col-ort">Palais Lichtenau | Potsdam</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="load-note" id="load-note">Termine werden direkt aus dem Kalender geladen …</p>
   </div>
+</div>
+
+<div class="dates-panel">
+  <p class="panel-label">Alle Termine</p>
+
+  <div class="dates-list" id="termine-list">
+    <!-- Fallback-Inhalt: wird durch Live-Daten aus dem Google Sheet ersetzt -->
+    <article class="date-row">
+      <div class="date-tile"><span class="day">10</span><span class="month">Sep</span></div>
+      <div class="row-main">
+        <h3 class="titel">Domplatz Open-Air: Nordlichter & Friends</h3>
+        <p class="untertitel">Solistin mit dem Tonkünstlerorchester Niederösterreich (Dirigent Ross Jamie Collins)</p>
+        <p class="meta">Domplatz | St. Pölten<span class="dot">·</span>19:00 Uhr</p>
+      </div>
+    </article>
+    <article class="date-row">
+      <div class="date-tile"><span class="raw">7.9.<br>–<br>12.9.26</span></div>
+      <div class="row-main">
+        <h3 class="titel">Meisterkurs</h3>
+        <p class="untertitel">Ensemble-Akademie Freiburg mit dem Freiburger Barockorchester und ensemble recherche</p>
+        <p class="meta">Freiburg</p>
+      </div>
+    </article>
+    <article class="date-row">
+      <div class="date-tile"><span class="raw">18.9.<br>–<br>20.9.26</span></div>
+      <div class="row-main">
+        <h3 class="titel">John Cage Award 26</h3>
+        <p class="meta">Halberstadt</p>
+      </div>
+    </article>
+    <article class="date-row">
+      <div class="date-tile"><span class="day">15</span><span class="month">Okt</span></div>
+      <div class="row-main">
+        <h3 class="titel">Fanny Mendelssohn Artists</h3>
+        <p class="untertitel">mit Jelizaveta Vasiljeva (Klavier) & Matthias Well (Geige)</p>
+        <p class="meta">St. Matthäus-Kirche | Berlin<span class="dot">·</span>19:00 Uhr</p>
+      </div>
+    </article>
+    <article class="date-row">
+      <div class="date-tile"><span class="day">16</span><span class="month">Okt</span></div>
+      <div class="row-main">
+        <h3 class="titel">Fanny Mendelssohn Artists</h3>
+        <p class="untertitel">mit Jelizaveta Vasiljeva (Klavier) & Matthias Well (Geige)</p>
+        <p class="meta">Palais Lichtenau | Potsdam<span class="dot">·</span>19:00 Uhr</p>
+      </div>
+    </article>
+  </div>
+
+  <p class="load-note" id="load-note">Termine werden direkt aus dem Kalender geladen …</p>
 </div>
 
 <script>
@@ -283,6 +311,7 @@
   var SHEET_NAME = "Tabellenblatt1";
   var CALLBACK_NAME = "slwTermineHandler";
   var TIMEOUT_MS = 6000;
+  var MONTHS = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
 
   function escapeHtml(str){
     if(str === null || str === undefined) return "";
@@ -300,8 +329,24 @@
     return "";
   }
 
+  function dateTileHtml(raw){
+    var trimmed = String(raw || "").trim();
+    var m = /^(\d{1,2})\.(\d{1,2})\.(\d{2,4})$/.exec(trimmed);
+    if(m){
+      var day = parseInt(m[1],10);
+      var month = parseInt(m[2],10);
+      var label = MONTHS[month-1] || "";
+      return '<span class="day">' + day + '</span><span class="month">' + label + '</span>';
+    }
+    var parts = trimmed.split(/[-–]/).map(function(s){return s.trim();}).filter(Boolean);
+    if(parts.length === 2){
+      return '<span class="raw">' + escapeHtml(parts[0]) + '<br>–<br>' + escapeHtml(parts[1]) + '</span>';
+    }
+    return '<span class="raw">' + escapeHtml(trimmed) + '</span>';
+  }
+
   function buildRowHtml(c){
-    var datum = escapeHtml(cellValue(c[0]));
+    var datumRaw = cellValue(c[0]);
     var uhrzeit = escapeHtml(cellValue(c[1]));
     var titel = escapeHtml(cellValue(c[2]));
     var untertitel = escapeHtml(cellValue(c[3]));
@@ -309,22 +354,25 @@
     var ticketlink = cellValue(c[5]);
     var veranstalterlink = cellValue(c[6]);
 
-    if(!datum && !titel) return "";
+    if(!datumRaw && !titel) return "";
 
-    var html = "<tr>";
-    html += '<td class="col-date"><span class="date">' + datum + '</span>';
-    if(uhrzeit) html += '<span class="time">' + uhrzeit + ' Uhr</span>';
-    html += '</td>';
+    var metaParts = [];
+    if(ort) metaParts.push(ort);
+    if(uhrzeit) metaParts.push(uhrzeit + ' Uhr');
 
-    html += '<td class="col-program"><span class="titel">' + titel + '</span>';
-    if(untertitel) html += '<span class="untertitel">' + untertitel + '</span>';
-    html += '</td>';
-
-    html += '<td class="col-ort">' + ort;
-    if(ticketlink) html += ' <a class="ticket-link" href="' + escapeHtml(ticketlink) + '" target="_blank" rel="noopener">Tickets</a>';
-    if(veranstalterlink) html += '<br><a class="veranstalter-link" href="' + escapeHtml(veranstalterlink) + '" target="_blank" rel="noopener">Veranstalter</a>';
-    html += '</td></tr>';
-
+    var html = '<article class="date-row">';
+    html += '<div class="date-tile">' + dateTileHtml(datumRaw) + '</div>';
+    html += '<div class="row-main">';
+    html += '<h3 class="titel">' + titel + '</h3>';
+    if(untertitel) html += '<p class="untertitel">' + untertitel + '</p>';
+    if(metaParts.length) html += '<p class="meta">' + metaParts.join('<span class="dot">·</span>') + '</p>';
+    html += '</div>';
+    if(ticketlink || veranstalterlink){
+      html += '<div class="row-action">';
+      html += '<a class="ticket-pill" href="' + escapeHtml(ticketlink || veranstalterlink) + '" target="_blank" rel="noopener">' + (ticketlink ? 'Tickets' : 'Info') + '</a>';
+      html += '</div>';
+    }
+    html += '</article>';
     return html;
   }
 
@@ -332,11 +380,11 @@
     try{
       var rows = (response && response.table && response.table.rows) || [];
       var html = "";
-      for(var i=0; i<rows.length; i++){
+      for(var i=0;i<rows.length;i++){
         html += buildRowHtml(rows[i].c || []);
       }
       if(html){
-        document.getElementById("termine-body").innerHTML = html;
+        document.getElementById("termine-list").innerHTML = html;
       }
       var note = document.getElementById("load-note");
       if(note) note.remove();
@@ -350,13 +398,6 @@
     "/gviz/tq?tqx=out:json;responseHandler:" + CALLBACK_NAME +
     "&sheet=" + encodeURIComponent(SHEET_NAME);
 
-  var script = document.createElement("script");
-  script.src = url;
-  script.onerror = function(){
-    var note = document.getElementById("load-note");
-    if(note) note.textContent = "Aktuelle Termine siehe direkt im Kalender.";
-  };
-
   var fallbackTimer = setTimeout(function(){
     var note = document.getElementById("load-note");
     if(note) note.textContent = "Aktuelle Termine siehe direkt im Kalender.";
@@ -368,6 +409,12 @@
     originalHandler(response);
   };
 
+  var script = document.createElement("script");
+  script.src = url;
+  script.onerror = function(){
+    var note = document.getElementById("load-note");
+    if(note) note.textContent = "Aktuelle Termine siehe direkt im Kalender.";
+  };
   document.head.appendChild(script);
 })();
 </script>
