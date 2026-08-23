@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Sarah Luisa Wurmer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#EDE7DD;
+    --ink:#171512;
+    --indigo:#2A3560;
+    --teal:#5FC8B8;
+    --coral:#E29580;
+    --coral-dark:#B85A3E;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    min-height:100vh;
+    background:url("about-bg.jpg") center/cover fixed no-repeat;
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none;}
+
+  /* ---------- Fixed transparent header (same pattern as Live) ---------- */
+  header{
+    position:fixed;
+    top:0;left:0;right:0;
+    z-index:100;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:1.6rem clamp(1.2rem,4vw,3.2rem) 0;
+  }
+  .wordmark{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:600;
+    font-size:1.3rem;
+    letter-spacing:-0.01em;
+    color:#fff;
+    text-shadow:0 1px 8px rgba(0,0,0,0.4);
+    transition:color .3s ease, text-shadow .3s ease;
+  }
+  .wordmark:hover{
+    color:var(--teal);
+    text-shadow:0 0 10px rgba(95,200,184,0.85), 0 0 22px rgba(95,200,184,0.5);
+  }
+  nav ul{
+    display:flex;
+    gap:clamp(1rem,2.2vw,2.2rem);
+    list-style:none;
+    margin:0;padding:0;
+  }
+  nav a{
+    color:rgba(255,255,255,0.85);
+    font-size:0.86rem;
+    letter-spacing:0.03em;
+    position:relative;
+    padding-bottom:3px;
+    transition:color .3s ease, text-shadow .3s ease;
+  }
+  nav a::after{
+    content:"";
+    position:absolute;
+    left:0;bottom:0;
+    width:0;height:1px;
+    background:var(--teal);
+    transition:width .35s ease;
+  }
+  nav a:hover{color:#fff;text-shadow:0 0 10px rgba(95,200,184,0.85), 0 0 22px rgba(95,200,184,0.5);}
+  nav a:hover::after{width:100%;}
+  nav a.active{color:var(--teal);}
+  nav a.active::after{width:100%;background:var(--teal);}
+
+  /* ---------- Portrait, pinned to the left edge ---------- */
+  .portrait{
+    position:fixed;
+    top:0;left:0;
+    width:38vw;
+    height:100vh;
+    overflow:hidden;
+    z-index:1;
+    -webkit-mask-image:linear-gradient(to right, #000 0%, #000 78%, transparent 100%);
+    mask-image:linear-gradient(to right, #000 0%, #000 78%, transparent 100%);
+  }
+  .portrait img{
+    width:100%;height:100%;
+    object-fit:cover;
+    object-position:50% 12%;
+    display:block;
+  }
+
+  /* ---------- Text column ---------- */
+  .about-content{
+    position:relative;
+    z-index:5;
+    margin-left:38vw;
+    min-height:100vh;
+    padding:clamp(6rem,14vh,8rem) clamp(1.6rem,5vw,4rem) 6rem;
+  }
+  .eyebrow{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:600;
+    font-size:clamp(1.8rem,3.6vw,2.6rem);
+    letter-spacing:-0.01em;
+    text-transform:none;
+    color:var(--coral-dark);
+    display:block;
+    margin:0 0 1.8rem;
+  }
+
+  .bio-panel{
+    max-width:640px;
+    background:transparent;
+    backdrop-filter:blur(8px) saturate(140%);
+    -webkit-backdrop-filter:blur(8px) saturate(140%);
+    border-radius:20px;
+    padding:clamp(1.6rem,3vw,2.4rem);
+  }
+  .bio-panel p{
+    margin:0 0 1.1rem;
+    font-size:1.02rem;
+    line-height:1.7;
+    color:var(--ink);
+  }
+  .bio-panel p:last-child{margin-bottom:0;}
+
+  /* ---------- Responsive ---------- */
+  @media(max-width:860px){
+    body{background-attachment:scroll;}
+    .portrait{
+      position:relative;
+      width:100%;
+      height:60vh;
+    }
+    .about-content{
+      margin-left:0;
+      padding-top:clamp(2rem,6vh,3rem);
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="wordmark" href="index.html">Sarah Luisa Wurmer</a>
+  <nav>
+    <ul>
+      <li><a href="live.html">Live</a></li>
+      <li><a class="active" href="about.html">About</a></li>
+      <li><a href="projekte.html">Projekte</a></li>
+      <li><a href="medien.html">Medien</a></li>
+      <li><a href="kontakt.html">Kontakt</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="portrait">
+  <img
+    src="about-portrait-1300.jpg"
+    srcset="about-portrait-800.jpg 800w, about-portrait-1300.jpg 1300w"
+    sizes="38vw"
+    alt="Sarah Luisa Wurmer an der Zither">
+</div>
+
+<div class="about-content">
+  <span class="eyebrow">About</span>
+
+  <div class="bio-panel" id="bio-panel">
+    <p>Sarah Luisa Wurmer steht für eine zeitgemäße, klanglich offene Zitherkunst. Sie verbindet virtuos Alte Musik mit Neugier auf zeitgenössische Klänge, erkundet interdisziplinäre Formate und internationale Einflüsse. Als erste Zitheristin in den großen Konzertsälen der Welt, darunter die Wigmore Hall, beschreitet sie einzigartige Wege in der klassischen Musikszene und macht die Zither einem internationalen Publikum zugänglich. Ihre Mission geht über das Musizieren hinaus: Sie möchte Menschen dazu inspirieren, neue und ungewöhnliche Wege zu gehen und Vielfalt zu feiern.</p>
+    <p>Als Solistin auf der Diskant-, Alt- und Basszither nutzt sie ihr vielfältiges Instrumentarium, um für jedes Programm die ideale Klangfarbe zu finden. Ihr künstlerisches Schaffen ist geprägt von der engen Zusammenarbeit mit Komponierenden, sowie eigenen Arrangements, wodurch sie maßgeblich zur Erweiterung eines neuen Zitherrepertoires beiträgt.</p>
+    <p>Sarah Luisa Wurmer konzertierte bereits beim Mozartfest Würzburg, den Thüringer Bachwochen, den Festspielen Mecklenburg-Vorpommern und dem Detect Classic Festival. Seit Herbst 2024 ist sie regelmäßig zu Gast beim transkulturellen Bridges Kammerorchester. Die Saison 25/26 führte sie u.a. in die Elbphilharmonie, an die Alte Oper Frankfurt und zum Heidelberger Frühling. Sie gab ihr Debüt als Solistin mit dem Konzerthausorchester Berlin unter der Leitung von Steven Sloane.</p>
+    <p>Aktuell studiert die 2002 geborene Musikerin an der Hochschule für Musik und Theater München (HMTM) in der Klasse von Prof. Georg Glasl und Tajda Krajnc, ergänzt durch Aufenthalte am Mongolian State Conservatory in Ulaanbaatar und an der mdw – Universität für Musik und darstellende Kunst Wien (Master „Contemporary Arts Practice / Improviser*Composer Performance"). Zu ihren Mentorinnen zählen Hanni Liang (Konzertdesign) und Angela Metzger (Orgel).</p>
+    <p>Sie wird durch Stipendien des Max-Weber-Programms des Bayerischen Staatsministeriums für Wissenschaft und Kunst sowie des Vereins YEHUDI MENUHIN Live Music Now e.V. gefördert. Für ihr künstlerisches Schaffen wurde sie mehrfach ausgezeichnet, u.a. mit dem „Ernst-Volkmann-Preis" 2024 des 10. Internationalen Zitherwettbewerbs und dem Musikstipendium der Landeshauptstadt München 2024, außerdem als Fanny Mendelssohn Förderpreisträgerin 2025. Im selben Jahr erschien ihr Debütalbum intimacy beim Label ES-DUR, das ihre Suche nach neuen Klangräumen der Zither eindrucksvoll dokumentiert.</p>
+  </div>
+</div>
+
+<script>
+(function(){
+  var SHEET_ID = "12Vl-TAkbfgPzQ29qVuNM7B-oFJAC5YxRJA9bnyozB2U";
+  var SHEET_NAME = "Tabellenblatt1";
+  var CALLBACK_NAME = "slwBioHandler";
+
+  function escapeHtml(str){
+    if(str === null || str === undefined) return "";
+    return String(str)
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;");
+  }
+
+  function cellValue(cell){
+    if(!cell) return "";
+    if(cell.f !== undefined && cell.f !== null && cell.f !== "") return cell.f;
+    if(cell.v !== undefined && cell.v !== null) return cell.v;
+    return "";
+  }
+
+  window[CALLBACK_NAME] = function(response){
+    try{
+      var rows = (response && response.table && response.table.rows) || [];
+      var html = "";
+      for(var i=0;i<rows.length;i++){
+        var text = cellValue((rows[i].c || [])[0]);
+        if(text) html += "<p>" + escapeHtml(text) + "</p>";
+      }
+      if(html){
+        document.getElementById("bio-panel").innerHTML = html;
+      }
+    }catch(e){
+      /* Fallback-Text im HTML bleibt stehen */
+    }
+  };
+
+  var url = "https://docs.google.com/spreadsheets/d/" + SHEET_ID +
+    "/gviz/tq?tqx=out:json;responseHandler:" + CALLBACK_NAME +
+    "&sheet=" + encodeURIComponent(SHEET_NAME);
+
+  var script = document.createElement("script");
+  script.src = url;
+  document.head.appendChild(script);
+})();
+</script>
+
+</body>
+</html>
