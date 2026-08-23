@@ -64,11 +64,8 @@
     display:flex;
     justify-content:flex-end;
     align-items:center;
-    padding:0.9rem clamp(1.2rem,4vw,3.2rem);
+    padding:1.6rem clamp(1.2rem,4vw,3.2rem) 0;
     flex-shrink:0;
-    background:rgba(38,40,43,0.82);
-    backdrop-filter:blur(8px);
-    box-shadow:0 1px 0 rgba(255,255,255,0.06);
   }
   nav ul{
     display:flex;
@@ -111,8 +108,8 @@
   }
 
   .name-block{
-    align-self:flex-end;
-    padding-bottom:clamp(1.6rem,4vh,2.6rem);
+    align-self:flex-start;
+    padding-top:clamp(1.6rem,4vh,2.6rem);
     color:#fff;
   }
   .eyebrow{
@@ -157,16 +154,17 @@
 
   .aktuell-block{
     align-self:flex-start;
-    margin-top:clamp(1.6rem,7vh,4rem);
+    margin-top:clamp(1.6rem,4vh,2.6rem);
     max-width:360px;
     margin-left:auto;
-    background:rgba(237,231,221,0.5);
-    backdrop-filter:blur(4px);
+    background:rgba(226,149,128,0.16);
+    border:1px solid rgba(226,149,128,0.35);
+    backdrop-filter:blur(3px);
     border-radius:6px;
     padding:1.4rem 1.5rem;
   }
   .aktuell-block .eyebrow{
-    color:var(--indigo);
+    color:var(--coral);
     margin-bottom:0.6rem;
   }
   .aktuell-block p{
@@ -176,11 +174,11 @@
     color:var(--ink);
   }
   .aktuell-block a{
-    border-bottom:1px solid var(--indigo);
-    color:var(--indigo);
+    border-bottom:1px solid var(--coral);
+    color:var(--ink);
     font-weight:500;
   }
-  .aktuell-block a:hover{color:var(--coral);border-color:var(--coral);}
+  .aktuell-block a:hover{color:var(--coral);}
 
   /* ---------- Bottom bar ---------- */
   footer{
