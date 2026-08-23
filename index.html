@@ -6,7 +6,7 @@
 <title>Sarah Luisa Wurmer — Zither</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
     --cream:#EDE7DD;
@@ -14,6 +14,7 @@
     --indigo:#2A3560;
     --teal:#5FC8B8;
     --coral:#E29580;
+    --coral-dark:#B85A3E;
   }
   *{box-sizing:border-box;}
   html,body{height:100%;}
@@ -123,11 +124,11 @@
     margin:0 0 1.3rem;
   }
   .name-block h1{
-    font-family:'Inter',sans-serif;
-    font-weight:500;
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:600;
     font-size:clamp(2.1rem,5.4vw,3.6rem);
     line-height:1.05;
-    letter-spacing:-0.01em;
+    letter-spacing:-0.015em;
     margin:0 0 1.1rem;
   }
   .name-block .string{
@@ -152,32 +153,31 @@
     margin-top:clamp(1.6rem,4vh,2.6rem);
     max-width:360px;
     margin-left:auto;
-    background:rgba(255,255,255,0.06);
+    background:transparent;
     border:1px solid rgba(226,149,128,0.65);
     backdrop-filter:blur(14px) saturate(140%);
     -webkit-backdrop-filter:blur(14px) saturate(140%);
     border-radius:16px;
     padding:1.4rem 1.5rem;
-    box-shadow:0 10px 34px rgba(15,14,11,0.22);
   }
   .aktuell-block .eyebrow{
-    color:#fff;
-    text-shadow:0 1px 4px rgba(0,0,0,0.55), 0 0 14px rgba(0,0,0,0.35);
+    color:var(--coral-dark);
+    text-shadow:0 1px 3px rgba(255,255,255,0.5);
     margin-bottom:0.6rem;
   }
   .aktuell-block p{
     margin:0;
     font-size:0.92rem;
     line-height:1.55;
-    color:#fff;
-    text-shadow:0 1px 4px rgba(0,0,0,0.45);
+    color:var(--ink);
+    text-shadow:0 1px 3px rgba(255,255,255,0.4);
   }
   .aktuell-block a{
-    border-bottom:1px solid var(--coral);
-    color:#fff;
+    border-bottom:1px solid var(--coral-dark);
+    color:var(--ink);
     font-weight:500;
   }
-  .aktuell-block a:hover{color:var(--coral);}
+  .aktuell-block a:hover{color:var(--coral-dark);}
 
   /* ---------- Bottom bar ---------- */
   footer{
