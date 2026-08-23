@@ -63,28 +63,33 @@
   nav a.active{color:var(--teal);}
   nav a.active::after{width:100%;background:var(--teal);}
 
-  /* ---------- Stage: image + dates overlap in the same grid cell ----------
-     The row height is auto, so it becomes as tall as whichever is taller —
-     the full (uncropped) photo, or the list of dates. The dates column
-     scrolls together with the photo (sticky) until the photo's own bottom
-     edge is reached; after that only the list keeps moving. */
-  .live-stage{
+  /* ---------- Stage: the photo scrolls normally until its own
+     bottom edge reaches the viewport bottom — at that exact point it
+     pins in place (position:sticky with a bottom-aligned offset) and
+     stays as a static backdrop while the list keeps scrolling over it.
+     The photo is an exact 2:3 portrait, so its rendered height at
+     100% viewport width is always 150vw — that lets the pin offset
+     be expressed in pure CSS without JS. */
+  .stage{
     position:relative;
-    display:grid;
-    grid-template-columns:1fr;
-    grid-template-rows:auto;
   }
-  .live-stage > *{grid-column:1;grid-row:1;}
-
-  .stage-visual{
-    position:relative;
-    align-self:start;
-    width:100%;
+  .image-sticky{
+    position:sticky;
+    top:calc(100vh - 150vw);
+    z-index:0;
   }
-  .stage-visual img{
+  .image-sticky img{
     display:block;
     width:100%;
     height:auto;
+  }
+  .image-sticky::after{
+    content:"";
+    position:absolute;
+    left:0;right:0;bottom:0;
+    height:32%;
+    background:linear-gradient(180deg, rgba(15,14,11,0) 0%, rgba(15,14,11,0.55) 100%);
+    pointer-events:none;
   }
   .hero-caption{
     position:absolute;
@@ -112,22 +117,23 @@
     margin:0;
   }
 
-  .dates-overlay{
+  /* ---------- List, scrolling normally on top of the now-pinned photo ---------- */
+  .list-overlay{
+    position:relative;
+    z-index:5;
     display:flex;
-    z-index:6;
+    margin-top:-25vh;
   }
-  .dates-overlay .spacer{
+  .list-overlay .spacer{
     flex:0 0 33.333%;
   }
   .dates-col{
     flex:1;
     min-width:0;
-    padding:0 clamp(1rem,3vw,2rem) 2rem 0;
+    padding:2rem clamp(1rem,3vw,2rem) 4rem 0;
   }
 
   .glass-bubble{
-    position:sticky;
-    top:6.5rem;
     background:rgba(23,21,18,0.32);
     backdrop-filter:blur(18px) saturate(140%);
     -webkit-backdrop-filter:blur(18px) saturate(140%);
@@ -238,10 +244,9 @@
 
   /* ---------- Responsive ---------- */
   @media(max-width:820px){
-    .dates-overlay{display:block;}
-    .dates-overlay .spacer{display:none;}
-    .dates-col{padding:0 clamp(1rem,4vw,1.6rem) 2rem;}
-    .glass-bubble{position:relative;top:auto;margin-top:-40px;}
+    .list-overlay{display:block;}
+    .list-overlay .spacer{display:none;}
+    .dates-col{padding:1.6rem clamp(1rem,4vw,1.6rem) 3rem;}
     .hero-caption{bottom:1.6rem;}
   }
   @media(max-width:480px){
@@ -252,8 +257,8 @@
 </head>
 <body>
 
-<div class="live-stage">
-  <div class="stage-visual">
+<div class="stage">
+  <div class="image-sticky">
     <img
       src="live-hero-2200.jpg"
       srcset="live-hero-1100.jpg 1100w, live-hero-2200.jpg 2200w"
@@ -278,7 +283,7 @@
     </div>
   </div>
 
-  <div class="dates-overlay">
+  <div class="list-overlay">
     <div class="spacer"></div>
     <div class="dates-col">
       <div class="glass-bubble">
