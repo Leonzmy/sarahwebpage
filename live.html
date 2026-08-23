@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live — Sarah Luisa Wurmer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#EDE7DD;
+    --ink:#171512;
+    --indigo:#2A3560;
+    --teal:#5FC8B8;
+    --coral:#E29580;
+    --coral-dark:#B85A3E;
+    --line: rgba(23,21,18,0.14);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none;}
+
+  /* ---------- Site header ---------- */
+  .site-header{
+    position:sticky;
+    top:0;
+    z-index:50;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:var(--ink);
+    color:#fff;
+    padding:1.1rem clamp(1.2rem,4vw,3.2rem);
+  }
+  .wordmark{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:600;
+    font-size:1.05rem;
+    letter-spacing:-0.01em;
+  }
+  .site-header nav ul{
+    display:flex;
+    gap:clamp(1rem,2.2vw,2.2rem);
+    list-style:none;
+    margin:0;padding:0;
+  }
+  .site-header nav a{
+    color:rgba(255,255,255,0.8);
+    font-size:0.86rem;
+    letter-spacing:0.03em;
+    position:relative;
+    padding-bottom:3px;
+    transition:color .3s ease, text-shadow .3s ease;
+  }
+  .site-header nav a::after{
+    content:"";
+    position:absolute;
+    left:0;bottom:0;
+    width:0;height:1px;
+    background:var(--teal);
+    transition:width .35s ease;
+  }
+  .site-header nav a:hover{
+    color:#fff;
+    text-shadow:0 0 10px rgba(95,200,184,0.85), 0 0 22px rgba(95,200,184,0.5);
+  }
+  .site-header nav a:hover::after{width:100%;}
+  .site-header nav a.active{color:var(--teal);}
+  .site-header nav a.active::after{width:100%;background:var(--teal);}
+
+  /* ---------- Layout ---------- */
+  .live-layout{
+    display:flex;
+    align-items:flex-start;
+  }
+  .live-image{
+    flex:0 0 40%;
+    position:sticky;
+    top:64px;
+    height:calc(100vh - 64px);
+    overflow:hidden;
+  }
+  .live-image img{
+    width:100%;height:100%;
+    object-fit:cover;
+    object-position:50% 22%;
+    display:block;
+  }
+  .live-content{
+    flex:1;
+    min-width:0;
+    padding:clamp(2.4rem,5vw,4rem) clamp(1.4rem,4vw,3.6rem) 5rem;
+  }
+  .eyebrow{
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:0.9rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--indigo);
+    display:block;
+    margin-bottom:0.7rem;
+  }
+  .live-content h1{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:600;
+    font-size:clamp(2.2rem,4.6vw,3.2rem);
+    letter-spacing:-0.015em;
+    margin:0 0 2.4rem;
+  }
+
+  /* ---------- Table ---------- */
+  .table-wrap{overflow-x:auto;}
+  table{
+    width:100%;
+    border-collapse:collapse;
+    min-width:520px;
+  }
+  thead th{
+    text-align:left;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.72rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--indigo);
+    font-weight:500;
+    padding:0 0.8rem 0.9rem 0;
+    border-bottom:1px solid var(--ink);
+  }
+  tbody td{
+    padding:1.2rem 0.8rem 1.2rem 0;
+    border-bottom:1px solid var(--line);
+    vertical-align:top;
+    font-size:0.95rem;
+  }
+  tbody tr:hover{background:rgba(95,200,184,0.06);}
+  .col-date{white-space:nowrap;width:1%;}
+  .col-date .date{
+    display:block;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.88rem;
+    color:var(--ink);
+  }
+  .col-date .time{
+    display:block;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.78rem;
+    color:rgba(23,21,18,0.55);
+    margin-top:0.2rem;
+  }
+  .col-program .titel{
+    display:block;
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:600;
+    font-size:1.05rem;
+    margin-bottom:0.25rem;
+  }
+  .col-program .untertitel{
+    display:block;
+    color:rgba(23,21,18,0.68);
+    font-size:0.88rem;
+    line-height:1.45;
+  }
+  .col-ort{color:rgba(23,21,18,0.85);}
+  .ticket-link{
+    display:inline-block;
+    margin-top:0.5rem;
+    font-size:0.82rem;
+    font-weight:500;
+    color:var(--coral-dark);
+    border-bottom:1px solid var(--coral-dark);
+  }
+  .ticket-link:hover{color:var(--indigo);border-color:var(--indigo);}
+  .veranstalter-link{
+    display:inline-block;
+    margin-top:0.3rem;
+    font-size:0.78rem;
+    color:rgba(23,21,18,0.55);
+    border-bottom:1px solid rgba(23,21,18,0.3);
+  }
+  .veranstalter-link:hover{color:var(--ink);border-color:var(--ink);}
+  .load-note{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.72rem;
+    color:rgba(23,21,18,0.45);
+    margin-top:1.6rem;
+  }
+
+  /* ---------- Responsive ---------- */
+  @media(max-width:900px){
+    .live-layout{flex-direction:column;}
+    .live-image{
+      position:static;
+      flex:none;
+      width:100%;
+      height:52vh;
+    }
+    .live-content{padding-top:2rem;}
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a class="wordmark" href="index.html">Sarah Luisa Wurmer</a>
+  <nav>
+    <ul>
+      <li><a class="active" href="live.html">Live</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="projekte.html">Projekte</a></li>
+      <li><a href="medien.html">Medien</a></li>
+      <li><a href="kontakt.html">Kontakt</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="live-layout">
+  <div class="live-image">
+    <img
+      src="live-hero-2200.jpg"
+      srcset="live-hero-1100.jpg 1100w, live-hero-2200.jpg 2200w"
+      sizes="40vw"
+      alt="Sarah Luisa Wurmer an der Zither">
+  </div>
+
+  <div class="live-content">
+    <span class="eyebrow">Termine</span>
+    <h1>Live</h1>
+
+    <div class="table-wrap">
+      <table id="termine-table">
+        <thead>
+          <tr>
+            <th>Datum</th>
+            <th>Programm</th>
+            <th>Ort</th>
+          </tr>
+        </thead>
+        <tbody id="termine-body">
+          <!-- Fallback-Inhalt: wird durch Live-Daten aus dem Google Sheet ersetzt -->
+          <tr>
+            <td class="col-date"><span class="date">10.9.26</span><span class="time">19:00 Uhr</span></td>
+            <td class="col-program"><span class="titel">Domplatz Open-Air: Nordlichter & Friends</span><span class="untertitel">Solistin mit dem Tonkünstlerorchester Niederösterreich (Dirigent Ross Jamie Collins)</span></td>
+            <td class="col-ort">Domplatz | St. Pölten</td>
+          </tr>
+          <tr>
+            <td class="col-date"><span class="date">7.9.–12.9.26</span></td>
+            <td class="col-program"><span class="titel">Meisterkurs</span><span class="untertitel">Ensemble-Akademie Freiburg mit dem Freiburger Barockorchester und ensemble recherche</span></td>
+            <td class="col-ort">Freiburg</td>
+          </tr>
+          <tr>
+            <td class="col-date"><span class="date">18.9.–20.9.26</span></td>
+            <td class="col-program"><span class="titel">John Cage Award 26</span></td>
+            <td class="col-ort">Halberstadt</td>
+          </tr>
+          <tr>
+            <td class="col-date"><span class="date">15.10.26</span><span class="time">19:00 Uhr</span></td>
+            <td class="col-program"><span class="titel">Fanny Mendelssohn Artists</span><span class="untertitel">mit Jelizaveta Vasiljeva (Klavier) & Matthias Well (Geige)</span></td>
+            <td class="col-ort">St. Matthäus-Kirche | Berlin</td>
+          </tr>
+          <tr>
+            <td class="col-date"><span class="date">16.10.26</span><span class="time">19:00 Uhr</span></td>
+            <td class="col-program"><span class="titel">Fanny Mendelssohn Artists</span><span class="untertitel">mit Jelizaveta Vasiljeva (Klavier) & Matthias Well (Geige)</span></td>
+            <td class="col-ort">Palais Lichtenau | Potsdam</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="load-note" id="load-note">Termine werden direkt aus dem Kalender geladen …</p>
+  </div>
+</div>
+
+<script>
+(function(){
+  var SHEET_ID = "1fKlSevXrU3xcedsUj2UGBNeDw2BEh7OnCQ7lGGTVBcA";
+  var SHEET_NAME = "Tabellenblatt1";
+  var CALLBACK_NAME = "slwTermineHandler";
+  var TIMEOUT_MS = 6000;
+
+  function escapeHtml(str){
+    if(str === null || str === undefined) return "";
+    return String(str)
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;");
+  }
+
+  function cellValue(cell){
+    if(!cell) return "";
+    if(cell.f !== undefined && cell.f !== null && cell.f !== "") return cell.f;
+    if(cell.v !== undefined && cell.v !== null) return cell.v;
+    return "";
+  }
+
+  function buildRowHtml(c){
+    var datum = escapeHtml(cellValue(c[0]));
+    var uhrzeit = escapeHtml(cellValue(c[1]));
+    var titel = escapeHtml(cellValue(c[2]));
+    var untertitel = escapeHtml(cellValue(c[3]));
+    var ort = escapeHtml(cellValue(c[4]));
+    var ticketlink = cellValue(c[5]);
+    var veranstalterlink = cellValue(c[6]);
+
+    if(!datum && !titel) return "";
+
+    var html = "<tr>";
+    html += '<td class="col-date"><span class="date">' + datum + '</span>';
+    if(uhrzeit) html += '<span class="time">' + uhrzeit + ' Uhr</span>';
+    html += '</td>';
+
+    html += '<td class="col-program"><span class="titel">' + titel + '</span>';
+    if(untertitel) html += '<span class="untertitel">' + untertitel + '</span>';
+    html += '</td>';
+
+    html += '<td class="col-ort">' + ort;
+    if(ticketlink) html += ' <a class="ticket-link" href="' + escapeHtml(ticketlink) + '" target="_blank" rel="noopener">Tickets</a>';
+    if(veranstalterlink) html += '<br><a class="veranstalter-link" href="' + escapeHtml(veranstalterlink) + '" target="_blank" rel="noopener">Veranstalter</a>';
+    html += '</td></tr>';
+
+    return html;
+  }
+
+  window[CALLBACK_NAME] = function(response){
+    try{
+      var rows = (response && response.table && response.table.rows) || [];
+      var html = "";
+      for(var i=0; i<rows.length; i++){
+        html += buildRowHtml(rows[i].c || []);
+      }
+      if(html){
+        document.getElementById("termine-body").innerHTML = html;
+      }
+      var note = document.getElementById("load-note");
+      if(note) note.remove();
+    }catch(e){
+      var note2 = document.getElementById("load-note");
+      if(note2) note2.textContent = "Aktuelle Termine siehe direkt im Kalender.";
+    }
+  };
+
+  var url = "https://docs.google.com/spreadsheets/d/" + SHEET_ID +
+    "/gviz/tq?tqx=out:json;responseHandler:" + CALLBACK_NAME +
+    "&sheet=" + encodeURIComponent(SHEET_NAME);
+
+  var script = document.createElement("script");
+  script.src = url;
+  script.onerror = function(){
+    var note = document.getElementById("load-note");
+    if(note) note.textContent = "Aktuelle Termine siehe direkt im Kalender.";
+  };
+
+  var fallbackTimer = setTimeout(function(){
+    var note = document.getElementById("load-note");
+    if(note) note.textContent = "Aktuelle Termine siehe direkt im Kalender.";
+  }, TIMEOUT_MS);
+
+  var originalHandler = window[CALLBACK_NAME];
+  window[CALLBACK_NAME] = function(response){
+    clearTimeout(fallbackTimer);
+    originalHandler(response);
+  };
+
+  document.head.appendChild(script);
+})();
+</script>
+
+</body>
+</html>
