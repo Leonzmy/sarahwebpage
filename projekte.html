@@ -100,7 +100,7 @@
     flex-direction:column;
     gap:1.2rem;
     align-items:stretch;
-    width:230px;
+    width:clamp(210px, 19vw, 250px);
     flex:0 0 auto;
   }
   .center-photo{
@@ -117,7 +117,6 @@
 
   /* ---------- Project tiles ---------- */
   .proj-tile{
-    all:unset;
     cursor:pointer;
     display:block;
     box-sizing:border-box;
@@ -128,7 +127,7 @@
     backdrop-filter:blur(10px) saturate(140%);
     -webkit-backdrop-filter:blur(10px) saturate(140%);
     border:1px solid rgba(255,255,255,0.55);
-    transition:background .45s ease, border-color .45s ease, transform .45s ease, box-shadow .45s ease;
+    transition:background .45s ease, border-color .45s ease, padding .45s ease, box-shadow .45s ease;
   }
   .proj-tile:hover{background:rgba(255,255,255,0.55);}
   .proj-name{
@@ -144,24 +143,53 @@
     grid-template-rows:0fr;
     transition:grid-template-rows .5s ease;
   }
-  .proj-desc-wrap > p{
-    overflow:hidden;
+  .proj-desc-wrap > .proj-desc-inner{overflow:hidden;}
+  .proj-desc-wrap p{
     margin:0;
     font-size:0.85rem;
     line-height:1.55;
-    color:rgba(23,21,18,0.72);
+    color:rgba(23,21,18,0.75);
   }
-  .proj-desc-wrap > p::before{content:"";display:block;height:0.6rem;}
+  .proj-desc-wrap p + p{margin-top:0.7rem;}
+  .proj-desc-wrap p::before{content:"";display:block;height:0.6rem;}
+  .proj-desc-wrap a{
+    color:var(--coral-dark);
+    border-bottom:1px solid var(--coral-dark);
+  }
+  .proj-desc-wrap a:hover{color:var(--indigo);border-color:var(--indigo);}
+
+  .proj-media{
+    margin-top:0.7rem;
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .proj-media img{width:100%;display:block;}
+  .proj-media .video-embed{position:relative;width:100%;padding-top:66.6%;background:rgba(23,21,18,0.08);}
+  .proj-media .video-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+
+  .proj-links{
+    margin-top:0.8rem;
+    display:flex;
+    flex-wrap:wrap;
+    gap:0.5rem 0.9rem;
+  }
+  .proj-links a{
+    font-size:0.78rem;
+    font-weight:500;
+    color:var(--coral-dark);
+    border-bottom:1px solid var(--coral-dark);
+  }
+  .proj-links a:hover{color:var(--indigo);border-color:var(--indigo);}
 
   .proj-tile.active{
-    background:rgba(255,255,255,0.75);
+    background:rgba(255,255,255,0.8);
     border-color:var(--coral-dark);
-    transform:scale(1.06);
-    box-shadow:0 16px 34px rgba(23,21,18,0.14);
+    padding:1.2rem 1.3rem 1.35rem;
+    box-shadow:0 16px 34px rgba(23,21,18,0.16);
   }
   .proj-tile.active .proj-name{
     color:var(--coral-dark);
-    font-size:1.12rem;
+    font-size:1.15rem;
   }
   .proj-tile.active .proj-desc-wrap{
     grid-template-rows:1fr;
@@ -201,18 +229,41 @@
 
 <div class="projekte-stage" id="projekte-stage">
   <div class="ring-col">
-    <button class="proj-tile" type="button">
-      <span class="proj-name">Projekt 1</span>
-      <div class="proj-desc-wrap"><p>Platzhalter-Beschreibung für Projekt 1 — kurzer Text zu Besetzung, Programm oder Zusammenarbeit.</p></div>
-    </button>
-    <button class="proj-tile" type="button">
-      <span class="proj-name">Projekt 2</span>
-      <div class="proj-desc-wrap"><p>Platzhalter-Beschreibung für Projekt 2.</p></div>
-    </button>
-    <button class="proj-tile" type="button">
-      <span class="proj-name">Projekt 3</span>
-      <div class="proj-desc-wrap"><p>Platzhalter-Beschreibung für Projekt 3.</p></div>
-    </button>
+
+    <div class="proj-tile" tabindex="0" data-youtube="IxJw4bGPlrw">
+      <span class="proj-name">Fanny Mendelssohn Artists</span>
+      <div class="proj-desc-wrap">
+        <div class="proj-desc-inner">
+          <p>Der Fanny Mendelssohn Förderpreis fördert von Anbeginn die gemeinsamen Auftrittsmöglichkeiten der Preisträger:innen, bei denen sie auch ihren solistischen Ambitionen nachkommen können — etwa beim jährlichen „Festival der Preisträger" in der Elbphilharmonie. Gemeinsam bilden sie ein neues Ensemble hochkarätiger Klassik-Solisten, das mit kreativen Programmen und flexiblen Besetzungen auf Festivals und Konzerten im In- wie im Ausland das Publikum begeistert.</p>
+          <div class="proj-media">
+            <div class="video-embed" data-video-slot></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-tile" tabindex="0">
+      <span class="proj-name">Sopran X Zither</span>
+      <div class="proj-desc-wrap">
+        <div class="proj-desc-inner">
+          <p>Camilla Saba Davies und Sarah Luisa Wurmer interpretieren das Format des klassischen Liedduos neu. Die Finalistinnen des 58th International Vocal Competition 's-Hertogenbosch suchen nach Balance zwischen Alter Musik, traditionellem Lied-Repertoire und zeitgenössischen Werken, zwischen Arrangements und Originalkompositionen. Der Klang von Stimme und Zither erinnert an alte Lautenlieder — ein subtiles Wechselspiel zwischen Wort und Saite.</p>
+          <div class="proj-links">
+            <a href="https://www.youtube.com/watch?v=8a7ZbY_9IyM" target="_blank" rel="noopener">Video ansehen</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-tile" tabindex="0">
+      <span class="proj-name">Bridges Kammerorchester</span>
+      <div class="proj-desc-wrap">
+        <div class="proj-desc-inner">
+          <p>Seit der Saison 24/25 ist Sarah Luisa Wurmer regelmäßig zu Gast beim transkulturellen <a href="https://bridges-kammerorchester.de/" target="_blank" rel="noopener">Bridges Kammerorchester</a>. Musiker:innen mit ihren Instrumenten aus verschiedenen Regionen der Welt kommen hier zusammen — Expert:innen für arabische, persische und europäische Klassik, Jazz, zeitgenössische Musik, osteuropäische Folklore sowie diverse Formen zentralasiatischer und lateinamerikanischer Musik.</p>
+          <div class="proj-media"><img src="proj-bridges.jpg" alt="Bridges Kammerorchester auf der Bühne" loading="lazy"></div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <div class="center-photo">
@@ -224,18 +275,42 @@
   </div>
 
   <div class="ring-col">
-    <button class="proj-tile" type="button">
-      <span class="proj-name">Projekt 4</span>
-      <div class="proj-desc-wrap"><p>Platzhalter-Beschreibung für Projekt 4.</p></div>
-    </button>
-    <button class="proj-tile" type="button">
-      <span class="proj-name">Projekt 5</span>
-      <div class="proj-desc-wrap"><p>Platzhalter-Beschreibung für Projekt 5.</p></div>
-    </button>
-    <button class="proj-tile" type="button">
-      <span class="proj-name">Projekt 6</span>
-      <div class="proj-desc-wrap"><p>Platzhalter-Beschreibung für Projekt 6.</p></div>
-    </button>
+
+    <div class="proj-tile" tabindex="0">
+      <span class="proj-name">Antara</span>
+      <div class="proj-desc-wrap">
+        <div class="proj-desc-inner">
+          <p>Zwischen Atem und Saite, zwischen Tradition und Experiment — Antara (Sanskrit: dazwischen), ein Ensemble des <a href="https://bridges-kammerorchester.de/kammerorchester#mitglieder" target="_blank" rel="noopener">Bridges Kammerorchester</a>, bewegt sich im Zwischenraum. Europäische Barockmusik, Tänze aus den Alpen und Südamerika sowie traditionelle persische Musik bilden die Basis für vielfältige Klanglandschaften.</p>
+          <p>Mit Johanna-Leonore Dahlhoff (Flöte), Alireza Meghrazi (Kamanche), Maria Carolina Pardo Reyes (Violoncello), Sarah Luisa Wurmer (Zither).</p>
+          <div class="proj-media"><img src="proj-antara.jpg" alt="Ensemble Antara" loading="lazy"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-tile" tabindex="0">
+      <span class="proj-name">Duo Hadassa</span>
+      <div class="proj-desc-wrap">
+        <div class="proj-desc-inner">
+          <p><a href="https://lisa-schoettl.de/" target="_blank" rel="noopener">Lisa Schöttl</a> und Sarah Luisa Wurmer — zwei klassisch ausgebildete junge Musikerinnen, mit nicht-klassischen traditionellen „Volksinstrumenten" Hackbrett & Zither, modernem Repertoire und viel Neugier, neue szenisch-experimentelle Konzerterlebnisse zu schaffen. Für ihr Projekt „<a href="https://lisa-schoettl.de/zeitgeloest/" target="_blank" rel="noopener">zeitgelöst</a>" mit Eva Kuhn erhielten sie 2024 das Musikstipendium der Landeshauptstadt München sowie eine Förderung des Kultursommers Rheinland-Pfalz 2025.</p>
+          <div class="proj-media"><img src="proj-hadassa.jpg" alt="Duo Hadassa" loading="lazy"></div>
+          <div class="proj-links">
+            <a href="https://youtu.be/1TNGhifP4rU" target="_blank" rel="noopener">Trailer</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="proj-tile" tabindex="0">
+      <span class="proj-name">ECetra</span>
+      <div class="proj-desc-wrap">
+        <div class="proj-desc-inner">
+          <p>Eva Kuhn (Gesang, Komposition), Valentin Penninger (Elektronik) und Sarah Luisa Wurmer (Zither) verweben Alte Musik und Neukompositionen zu einer besonderen Performance, bei der sie mit ihrem individuellen Klang aktuelle Thematiken gemeinsam erlebbar machen.</p>
+          <p>„reality in lachrimae" — Kann die Dunkelheit hoffnungsvoll sein? In einem surrealen Klangraum werden die konstruierte Melancholie aus Dowlands Lautenliedern und mystische Prophezeiungen des 18. Jh. in Beziehung zur krisenhaften Gegenwart gebracht.</p>
+          <div class="proj-media"><img src="proj-ecetra.jpg" alt="Ensemble ECetra" loading="lazy"></div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -244,13 +319,29 @@
   var stage = document.getElementById('projekte-stage');
   var tiles = Array.prototype.slice.call(stage.querySelectorAll('.proj-tile'));
   var idx = 0;
-  var ROTATE_MS = 5000;
+  var ROTATE_MS = 6000;
   var timer = null;
+
+  function loadVideoIfNeeded(tile){
+    var videoId = tile.getAttribute('data-youtube');
+    if(!videoId) return;
+    var slot = tile.querySelector('[data-video-slot]');
+    if(!slot || slot.dataset.loaded) return;
+    var iframe = document.createElement('iframe');
+    iframe.src = 'https://www.youtube-nocookie.com/embed/' + videoId;
+    iframe.title = tile.querySelector('.proj-name').textContent;
+    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+    iframe.allowFullscreen = true;
+    slot.appendChild(iframe);
+    slot.dataset.loaded = 'true';
+  }
 
   function setActive(i){
     idx = i;
     tiles.forEach(function(t, ti){
-      t.classList.toggle('active', ti === i);
+      var isActive = ti === i;
+      t.classList.toggle('active', isActive);
+      if(isActive) loadVideoIfNeeded(t);
     });
   }
 
@@ -271,6 +362,14 @@
       stop();
       setActive(ti);
       start();
+    });
+    tile.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        stop();
+        setActive(ti);
+        start();
+      }
     });
   });
 
