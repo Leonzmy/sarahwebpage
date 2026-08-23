@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projekte — Sarah Luisa Wurmer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#EDE7DD;
+    --ink:#171512;
+    --indigo:#2A3560;
+    --teal:#5FC8B8;
+    --coral:#E29580;
+    --coral-dark:#B85A3E;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    min-height:100vh;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none;}
+
+  /* ---------- Fixed transparent header (same pattern as Live/About) ---------- */
+  header{
+    position:fixed;
+    top:0;left:0;right:0;
+    z-index:100;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:1.6rem clamp(1.2rem,4vw,3.2rem) 0;
+  }
+  .wordmark{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:600;
+    font-size:1.3rem;
+    letter-spacing:-0.01em;
+    color:var(--ink);
+    transition:color .3s ease;
+  }
+  .wordmark:hover{color:var(--coral-dark);}
+  nav ul{
+    display:flex;
+    gap:clamp(1rem,2.2vw,2.2rem);
+    list-style:none;
+    margin:0;padding:0;
+  }
+  nav a{
+    color:rgba(23,21,18,0.7);
+    font-size:0.86rem;
+    letter-spacing:0.03em;
+    position:relative;
+    padding-bottom:3px;
+    transition:color .3s ease;
+  }
+  nav a::after{
+    content:"";
+    position:absolute;
+    left:0;bottom:0;
+    width:0;height:1px;
+    background:var(--coral-dark);
+    transition:width .35s ease;
+  }
+  nav a:hover{color:var(--ink);}
+  nav a:hover::after{width:100%;}
+  nav a.active{color:var(--coral-dark);}
+  nav a.active::after{width:100%;background:var(--coral-dark);}
+
+  /* ---------- Eyebrow / heading ---------- */
+  .page-eyebrow{
+    position:relative;
+    z-index:2;
+    text-align:center;
+    padding:clamp(6rem,13vh,7.5rem) 1.5rem 0;
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:600;
+    font-size:clamp(1.8rem,3.6vw,2.6rem);
+    letter-spacing:-0.01em;
+    color:var(--coral-dark);
+  }
+
+  /* ---------- Stage: center photo + two rings of tiles ---------- */
+  .projekte-stage{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:clamp(1.4rem,4vw,3.6rem);
+    flex-wrap:wrap;
+    padding:2.4rem clamp(1rem,4vw,2rem) 5rem;
+  }
+  .ring-col{
+    display:flex;
+    flex-direction:column;
+    gap:1.2rem;
+    align-items:stretch;
+    width:230px;
+    flex:0 0 auto;
+  }
+  .center-photo{
+    flex:0 0 auto;
+    width:min(340px, 34vw);
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 30px 60px rgba(23,21,18,0.22);
+  }
+  .center-photo img{
+    width:100%;
+    display:block;
+  }
+
+  /* ---------- Project tiles ---------- */
+  .proj-tile{
+    all:unset;
+    cursor:pointer;
+    display:block;
+    box-sizing:border-box;
+    width:100%;
+    padding:0.95rem 1.15rem;
+    border-radius:14px;
+    background:rgba(255,255,255,0.4);
+    backdrop-filter:blur(10px) saturate(140%);
+    -webkit-backdrop-filter:blur(10px) saturate(140%);
+    border:1px solid rgba(255,255,255,0.55);
+    transition:background .45s ease, border-color .45s ease, transform .45s ease, box-shadow .45s ease;
+  }
+  .proj-tile:hover{background:rgba(255,255,255,0.55);}
+  .proj-name{
+    display:block;
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:600;
+    font-size:1rem;
+    color:var(--ink);
+    transition:color .4s ease, font-size .4s ease;
+  }
+  .proj-desc-wrap{
+    display:grid;
+    grid-template-rows:0fr;
+    transition:grid-template-rows .5s ease;
+  }
+  .proj-desc-wrap > p{
+    overflow:hidden;
+    margin:0;
+    font-size:0.85rem;
+    line-height:1.55;
+    color:rgba(23,21,18,0.72);
+  }
+  .proj-desc-wrap > p::before{content:"";display:block;height:0.6rem;}
+
+  .proj-tile.active{
+    background:rgba(255,255,255,0.75);
+    border-color:var(--coral-dark);
+    transform:scale(1.06);
+    box-shadow:0 16px 34px rgba(23,21,18,0.14);
+  }
+  .proj-tile.active .proj-name{
+    color:var(--coral-dark);
+    font-size:1.12rem;
+  }
+  .proj-tile.active .proj-desc-wrap{
+    grid-template-rows:1fr;
+  }
+
+  /* ---------- Responsive ---------- */
+  @media(max-width:900px){
+    .projekte-stage{flex-direction:column;}
+    .ring-col{
+      flex-direction:row;
+      flex-wrap:wrap;
+      width:100%;
+      max-width:520px;
+      justify-content:center;
+    }
+    .ring-col .proj-tile{width:calc(50% - 0.6rem);}
+    .center-photo{order:-1;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="wordmark" href="index.html">Sarah Luisa Wurmer</a>
+  <nav>
+    <ul>
+      <li><a href="live.html">Live</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a class="active" href="projekte.html">Projekte</a></li>
+      <li><a href="medien.html">Medien</a></li>
+      <li><a href="kontakt.html">Kontakt</a></li>
+    </ul>
+  </nav>
+</header>
+
+<h1 class="page-eyebrow">Projekte</h1>
+
+<div class="projekte-stage" id="projekte-stage">
+  <div class="ring-col">
+    <button class="proj-tile" type="button">
+      <span class="proj-name">Projekt 1</span>
+      <div class="proj-desc-wrap"><p>Platzhalter-Beschreibung für Projekt 1 — kurzer Text zu Besetzung, Programm oder Zusammenarbeit.</p></div>
+    </button>
+    <button class="proj-tile" type="button">
+      <span class="proj-name">Projekt 2</span>
+      <div class="proj-desc-wrap"><p>Platzhalter-Beschreibung für Projekt 2.</p></div>
+    </button>
+    <button class="proj-tile" type="button">
+      <span class="proj-name">Projekt 3</span>
+      <div class="proj-desc-wrap"><p>Platzhalter-Beschreibung für Projekt 3.</p></div>
+    </button>
+  </div>
+
+  <div class="center-photo">
+    <img
+      src="projekte-hero-1400.jpg"
+      srcset="projekte-hero-900.jpg 900w, projekte-hero-1400.jpg 1400w"
+      sizes="(max-width:900px) 60vw, 34vw"
+      alt="Sarah Luisa Wurmer an der Zither">
+  </div>
+
+  <div class="ring-col">
+    <button class="proj-tile" type="button">
+      <span class="proj-name">Projekt 4</span>
+      <div class="proj-desc-wrap"><p>Platzhalter-Beschreibung für Projekt 4.</p></div>
+    </button>
+    <button class="proj-tile" type="button">
+      <span class="proj-name">Projekt 5</span>
+      <div class="proj-desc-wrap"><p>Platzhalter-Beschreibung für Projekt 5.</p></div>
+    </button>
+    <button class="proj-tile" type="button">
+      <span class="proj-name">Projekt 6</span>
+      <div class="proj-desc-wrap"><p>Platzhalter-Beschreibung für Projekt 6.</p></div>
+    </button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var stage = document.getElementById('projekte-stage');
+  var tiles = Array.prototype.slice.call(stage.querySelectorAll('.proj-tile'));
+  var idx = 0;
+  var ROTATE_MS = 5000;
+  var timer = null;
+
+  function setActive(i){
+    idx = i;
+    tiles.forEach(function(t, ti){
+      t.classList.toggle('active', ti === i);
+    });
+  }
+
+  function start(){
+    timer = setInterval(function(){
+      setActive((idx + 1) % tiles.length);
+    }, ROTATE_MS);
+  }
+  function stop(){
+    if(timer) clearInterval(timer);
+  }
+
+  setActive(0);
+  start();
+
+  tiles.forEach(function(tile, ti){
+    tile.addEventListener('click', function(){
+      stop();
+      setActive(ti);
+      start();
+    });
+  });
+
+  stage.addEventListener('mouseenter', stop);
+  stage.addEventListener('mouseleave', start);
+})();
+</script>
+
+</body>
+</html>
