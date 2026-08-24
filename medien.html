@@ -18,8 +18,11 @@
     --gold:#B8873E;
   }
   *{box-sizing:border-box;}
+  html,body{height:100%;}
   body{
     margin:0;
+    height:100vh;
+    overflow:hidden;
     background:var(--cream);
     color:var(--ink);
     font-family:'Inter',sans-serif;
@@ -62,31 +65,38 @@
   nav a.active{color:var(--teal);}
   nav a.active::after{width:100%;background:var(--teal);}
 
-  /* ---------- Hero image, full and uncropped, scrolls normally ---------- */
-  .hero-portrait{
-    width:100%;
+  /* ---------- Full-screen fixed background image ---------- */
+  .bg-image{
+    position:fixed;
+    inset:0;
+    z-index:0;
   }
-  .hero-portrait img{
-    width:100%;
-    height:auto;
+  .bg-image img{
+    width:100%;height:100%;
+    object-fit:cover;
+    object-position:50% 25%;
     display:block;
   }
 
-  /* ---------- Content sheet: overlaps the bottom of the hero image
-     so sections scroll up and appear over the photo, not only after it ---------- */
+  /* ---------- Content sheet: a fixed, mostly transparent glass pane
+     starting right under the header. Its OWN content scrolls; the
+     photo behind it stays put. ---------- */
   .content-sheet{
-    position:relative;
-    z-index:2;
-    background:var(--cream);
-    margin-top:clamp(-160px, -18vh, -260px);
-    border-radius:28px 28px 0 0;
-    box-shadow:0 -24px 50px rgba(0,0,0,0.18);
-    padding-top:clamp(1.6rem,4vh,2.4rem);
+    position:fixed;
+    top:clamp(4.6rem,10vh,5.6rem);
+    left:0;right:0;bottom:0;
+    z-index:5;
+    background:rgba(237,231,221,0.22);
+    backdrop-filter:blur(14px) saturate(140%);
+    -webkit-backdrop-filter:blur(14px) saturate(140%);
+    border-radius:24px 24px 0 0;
+    overflow-y:auto;
+    box-shadow:0 -10px 40px rgba(0,0,0,0.12);
   }
   .medien-section{
     max-width:1200px;
     margin:0 auto;
-    padding:clamp(1.2rem,3vw,2rem) clamp(1.2rem,4vw,2.4rem) clamp(3rem,6vw,4.5rem);
+    padding:clamp(1.6rem,3.4vw,2.2rem) clamp(1.2rem,4vw,2.4rem) clamp(3rem,6vw,4.5rem);
   }
   .section-label{
     font-family:'IBM Plex Mono',monospace;
@@ -95,6 +105,7 @@
     text-transform:uppercase;
     color:var(--indigo);
     margin:0 0 0.6rem;
+    text-shadow:0 1px 3px rgba(255,255,255,0.5);
   }
   .section-title{
     font-family:'Bricolage Grotesque',sans-serif;
@@ -102,6 +113,7 @@
     font-size:clamp(1.5rem,3vw,2rem);
     margin:0 0 1.8rem;
     color:var(--ink);
+    text-shadow:0 1px 3px rgba(255,255,255,0.5);
   }
 
   /* ---------- Video grid (reused pattern) ---------- */
@@ -156,14 +168,14 @@
   .press-item{
     padding:1.3rem 1.5rem;
     border-left:2px solid var(--gold);
-    background:rgba(23,21,18,0.04);
+    background:rgba(237,231,221,0.35);
     border-radius:0 12px 12px 0;
   }
   .press-item p{
     margin:0 0 0.6rem;
     font-size:1rem;
     line-height:1.6;
-    color:rgba(23,21,18,0.85);
+    color:rgba(23,21,18,0.9);
   }
   .press-item a{
     font-size:0.82rem;
@@ -329,7 +341,7 @@
   </nav>
 </header>
 
-<div class="hero-portrait">
+<div class="bg-image">
   <img src="medien-hero.jpg" alt="Sarah Luisa Wurmer an der Zither">
 </div>
 
