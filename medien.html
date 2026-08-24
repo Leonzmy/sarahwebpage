@@ -18,11 +18,9 @@
     --gold:#B8873E;
   }
   *{box-sizing:border-box;}
-  html,body{height:100%;}
   body{
     margin:0;
-    height:100vh;
-    overflow:hidden;
+    min-height:100vh;
     background:var(--cream);
     color:var(--ink);
     font-family:'Inter',sans-serif;
@@ -65,33 +63,32 @@
   nav a.active{color:var(--teal);}
   nav a.active::after{width:100%;background:var(--teal);}
 
-  /* ---------- Full-screen fixed background image ---------- */
+  /* ---------- Full-screen fixed, softly blurred background image ---------- */
   .bg-image{
     position:fixed;
     inset:0;
     z-index:0;
+    overflow:hidden;
   }
   .bg-image img{
     width:100%;height:100%;
     object-fit:cover;
     object-position:50% 25%;
     display:block;
+    filter:blur(9px);
+    transform:scale(1.06);
+  }
+  .bg-image::after{
+    content:"";
+    position:absolute;inset:0;
+    background:rgba(237,231,221,0.32);
   }
 
-  /* ---------- Content sheet: a fixed, mostly transparent glass pane
-     starting right under the header. Its OWN content scrolls; the
-     photo behind it stays put. ---------- */
-  .content-sheet{
-    position:fixed;
-    top:clamp(4.6rem,10vh,5.6rem);
-    left:0;right:0;bottom:0;
+  /* ---------- Content: flows normally over the fixed, blurred backdrop ---------- */
+  .content-wrap{
+    position:relative;
     z-index:5;
-    background:rgba(237,231,221,0.22);
-    backdrop-filter:blur(14px) saturate(140%);
-    -webkit-backdrop-filter:blur(14px) saturate(140%);
-    border-radius:24px 24px 0 0;
-    overflow-y:auto;
-    box-shadow:0 -10px 40px rgba(0,0,0,0.12);
+    padding-top:clamp(6rem,13vh,7.5rem);
   }
   .medien-section{
     max-width:1200px;
@@ -105,7 +102,7 @@
     text-transform:uppercase;
     color:var(--indigo);
     margin:0 0 0.6rem;
-    text-shadow:0 1px 3px rgba(255,255,255,0.5);
+    text-shadow:0 1px 3px rgba(255,255,255,0.6);
   }
   .section-title{
     font-family:'Bricolage Grotesque',sans-serif;
@@ -113,13 +110,13 @@
     font-size:clamp(1.5rem,3vw,2rem);
     margin:0 0 1.8rem;
     color:var(--ink);
-    text-shadow:0 1px 3px rgba(255,255,255,0.5);
+    text-shadow:0 1px 3px rgba(255,255,255,0.6);
   }
 
-  /* ---------- Video grid (reused pattern) ---------- */
-  .video-grid{
-    display:grid;
-    grid-template-columns:repeat(2, 1fr);
+  /* ---------- Large video tiles, stacked full-width ---------- */
+  .video-list{
+    display:flex;
+    flex-direction:column;
     gap:clamp(1.2rem,2.4vw,1.8rem);
   }
   .grid-tile{
@@ -127,10 +124,11 @@
     cursor:pointer;
     position:relative;
     display:block;
+    width:100%;
     aspect-ratio:16/9;
-    border-radius:14px;
+    border-radius:16px;
     overflow:hidden;
-    box-shadow:0 14px 30px rgba(0,0,0,0.35);
+    box-shadow:0 20px 45px rgba(0,0,0,0.3);
   }
   .grid-tile img{
     width:100%;height:100%;
@@ -142,18 +140,18 @@
   .grid-tile:focus-visible{outline:2px solid var(--teal);outline-offset:3px;}
   .tile-scrim{position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.05) 40%, rgba(0,0,0,0.72) 100%);}
   .tile-name{
-    position:absolute;left:1rem;right:1rem;bottom:0.85rem;
+    position:absolute;left:1.4rem;right:1.4rem;bottom:1.2rem;
     color:#fff;
     font-family:'Bricolage Grotesque',sans-serif;
     font-weight:600;
-    font-size:1rem;
-    text-shadow:0 1px 5px rgba(0,0,0,0.35);
+    font-size:1.35rem;
+    text-shadow:0 1px 6px rgba(0,0,0,0.4);
   }
   .play-icon{
     position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-    width:54px;height:54px;border-radius:50%;
+    width:72px;height:72px;border-radius:50%;
     background:rgba(255,255,255,0.88);color:var(--ink);
-    display:flex;align-items:center;justify-content:center;font-size:1.05rem;
+    display:flex;align-items:center;justify-content:center;font-size:1.4rem;
     transition:background .3s ease, transform .3s ease;
   }
   .grid-tile:hover .play-icon, .grid-tile:focus-visible .play-icon{background:#fff;transform:translate(-50%,-50%) scale(1.08);}
@@ -318,7 +316,6 @@
 
   /* ---------- Responsive ---------- */
   @media(max-width:820px){
-    .video-grid{grid-template-columns:1fr;}
     .photo-grid{grid-template-columns:repeat(3, 1fr);}
   }
   @media(max-width:520px){
@@ -345,13 +342,13 @@
   <img src="medien-hero.jpg" alt="Sarah Luisa Wurmer an der Zither">
 </div>
 
-<div class="content-sheet">
+<div class="content-wrap">
 
 <!-- Video -->
 <section class="medien-section">
   <p class="section-label">Video</p>
-  <h2 class="section-title">Ausschnitte</h2>
-  <div class="video-grid">
+  <h2 class="section-title">Video</h2>
+  <div class="video-list">
     <button class="grid-tile" data-youtube="IxJw4bGPlrw">
       <img src="https://img.youtube.com/vi/IxJw4bGPlrw/hqdefault.jpg" alt="Fanny Mendelssohn Artists" loading="lazy">
       <span class="tile-scrim"></span>
@@ -364,6 +361,24 @@
       <span class="play-icon" aria-hidden="true">▶</span>
       <span class="tile-name">Sopran X Zither</span>
     </button>
+  </div>
+</section>
+
+<!-- CD -->
+<section class="medien-section">
+  <p class="section-label">Album</p>
+  <h2 class="section-title">Intimacy</h2>
+  <div class="cd-block">
+    <div class="cd-cover"><span>Intimacy</span></div>
+    <div class="cd-info">
+      <h3>Intimacy</h3>
+      <p>Das Debütalbum von Sarah Luisa Wurmer, erschienen beim Label ES-DUR — eine Suche nach neuen Klangräumen der Zither.</p>
+      <div class="cd-links">
+        <a href="#" target="_blank" rel="noopener">Spotify</a>
+        <a href="#" target="_blank" rel="noopener">Bandcamp</a>
+      </div>
+      <p class="cd-note">Platzhalter — echtes Cover und Streaming-Links bitte ergänzen.</p>
+    </div>
   </div>
 </section>
 
@@ -418,24 +433,6 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><polyline points="7 10 12 15 17 10"/><path d="M5 21h14"/></svg>
       </span>
     </a>
-  </div>
-</section>
-
-<!-- CD -->
-<section class="medien-section">
-  <p class="section-label">Album</p>
-  <h2 class="section-title">Intimacy</h2>
-  <div class="cd-block">
-    <div class="cd-cover"><span>Intimacy</span></div>
-    <div class="cd-info">
-      <h3>Intimacy</h3>
-      <p>Das Debütalbum von Sarah Luisa Wurmer, erschienen beim Label ES-DUR — eine Suche nach neuen Klangräumen der Zither.</p>
-      <div class="cd-links">
-        <a href="#" target="_blank" rel="noopener">Spotify</a>
-        <a href="#" target="_blank" rel="noopener">Bandcamp</a>
-      </div>
-      <p class="cd-note">Platzhalter — echtes Cover und Streaming-Links bitte ergänzen.</p>
-    </div>
   </div>
 </section>
 
