@@ -12,17 +12,16 @@
     --cream:#EDE7DD;
     --ink:#171512;
     --indigo:#2A3560;
-    --deep:#1B2420;
     --teal:#5FC8B8;
     --coral:#E29580;
     --coral-dark:#B85A3E;
-    --gold:#D9A752;
+    --gold:#B8873E;
   }
   *{box-sizing:border-box;}
   body{
     margin:0;
-    background:var(--deep);
-    color:var(--cream);
+    background:var(--cream);
+    color:var(--ink);
     font-family:'Inter',sans-serif;
     -webkit-font-smoothing:antialiased;
   }
@@ -63,20 +62,13 @@
   nav a.active{color:var(--teal);}
   nav a.active::after{width:100%;background:var(--teal);}
 
-  /* ---------- Hero band, fading softly into the page ---------- */
-  .hero-band{
-    position:relative;
+  /* ---------- Hero image, full and uncropped, scrolls normally ---------- */
+  .hero-portrait{
     width:100%;
-    height:52vh;
-    min-height:400px;
-    overflow:hidden;
-    -webkit-mask-image:linear-gradient(to bottom, #000 0%, #000 calc(100% - min(650px, 60%)), transparent 100%);
-    mask-image:linear-gradient(to bottom, #000 0%, #000 calc(100% - min(650px, 60%)), transparent 100%);
   }
-  .hero-band img{
-    width:100%;height:100%;
-    object-fit:cover;
-    object-position:50% 30%;
+  .hero-portrait img{
+    width:100%;
+    height:auto;
     display:block;
   }
 
@@ -91,7 +83,7 @@
     font-size:0.74rem;
     letter-spacing:0.12em;
     text-transform:uppercase;
-    color:var(--teal);
+    color:var(--indigo);
     margin:0 0 0.6rem;
   }
   .section-title{
@@ -99,7 +91,7 @@
     font-weight:600;
     font-size:clamp(1.5rem,3vw,2rem);
     margin:0 0 1.8rem;
-    color:#fff;
+    color:var(--ink);
   }
 
   /* ---------- Video grid (reused pattern) ---------- */
@@ -154,14 +146,14 @@
   .press-item{
     padding:1.3rem 1.5rem;
     border-left:2px solid var(--gold);
-    background:rgba(255,255,255,0.04);
+    background:rgba(23,21,18,0.04);
     border-radius:0 12px 12px 0;
   }
   .press-item p{
     margin:0 0 0.6rem;
     font-size:1rem;
     line-height:1.6;
-    color:rgba(237,231,221,0.9);
+    color:rgba(23,21,18,0.85);
   }
   .press-item a{
     font-size:0.82rem;
@@ -169,7 +161,7 @@
     color:var(--gold);
     border-bottom:1px solid var(--gold);
   }
-  .press-item a:hover{color:var(--teal);border-color:var(--teal);}
+  .press-item a:hover{color:var(--coral-dark);border-color:var(--coral-dark);}
 
   /* ---------- Photo grid ---------- */
   .photo-grid{
@@ -243,30 +235,30 @@
     font-weight:600;
     font-size:1.3rem;
     margin:0 0 0.6rem;
-    color:#fff;
+    color:var(--ink);
   }
   .cd-info p{
     margin:0 0 1rem;
     font-size:0.96rem;
     line-height:1.6;
-    color:rgba(237,231,221,0.82);
+    color:rgba(23,21,18,0.75);
     max-width:52ch;
   }
   .cd-links{display:flex;flex-wrap:wrap;gap:0.7rem;}
   .cd-links a{
     padding:0.55rem 1.1rem;
-    border:1px solid rgba(255,255,255,0.35);
+    border:1px solid var(--coral-dark);
     border-radius:999px;
     font-size:0.82rem;
-    color:#fff;
-    transition:background .3s ease, border-color .3s ease;
+    color:var(--coral-dark);
+    transition:background .3s ease, color .3s ease;
   }
-  .cd-links a:hover{background:rgba(255,255,255,0.12);border-color:#fff;}
+  .cd-links a:hover{background:var(--coral-dark);color:#fff;}
   .cd-note{
     margin-top:1.4rem;
     font-family:'IBM Plex Mono',monospace;
     font-size:0.72rem;
-    color:rgba(237,231,221,0.4);
+    color:rgba(23,21,18,0.4);
   }
 
   /* ---------- Modal (video) ---------- */
@@ -282,7 +274,7 @@
   .modal-backdrop.open{opacity:1;pointer-events:auto;}
   .modal-card{
     position:relative;
-    background:var(--deep);
+    background:var(--cream);
     width:100%;max-width:820px;
     border-radius:16px;
     overflow:hidden;
@@ -308,7 +300,6 @@
     .photo-grid{grid-template-columns:repeat(3, 1fr);}
   }
   @media(max-width:520px){
-    .hero-band{height:40vh;}
     .photo-grid{grid-template-columns:repeat(2, 1fr);}
   }
 </style>
@@ -328,8 +319,8 @@
   </nav>
 </header>
 
-<div class="hero-band">
-  <img src="medien-hero-land.jpg" alt="Sarah Luisa Wurmer an der Zither">
+<div class="hero-portrait">
+  <img src="medien-hero.jpg" alt="Sarah Luisa Wurmer an der Zither">
 </div>
 
 <!-- Video -->
