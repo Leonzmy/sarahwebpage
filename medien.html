@@ -95,15 +95,6 @@
     margin:0 auto;
     padding:clamp(1.6rem,3.4vw,2.2rem) clamp(1.2rem,4vw,2.4rem) clamp(3rem,6vw,4.5rem);
   }
-  .section-label{
-    font-family:'IBM Plex Mono',monospace;
-    font-size:0.74rem;
-    letter-spacing:0.12em;
-    text-transform:uppercase;
-    color:var(--indigo);
-    margin:0 0 0.6rem;
-    text-shadow:0 1px 3px rgba(255,255,255,0.6);
-  }
   .section-title{
     font-family:'Bricolage Grotesque',sans-serif;
     font-weight:600;
@@ -114,47 +105,72 @@
   }
 
   /* ---------- Large video tiles, stacked full-width ---------- */
-  .video-list{
-    display:flex;
-    flex-direction:column;
-    gap:clamp(1.2rem,2.4vw,1.8rem);
+  /* ---------- Video slider: one reasonably sized frame that
+     automatically cycles between videos, not a wall of tiles ---------- */
+  .video-slider{
+    max-width:640px;
   }
-  .grid-tile{
-    all:unset;
-    cursor:pointer;
+  .slide-viewport{
     position:relative;
-    display:block;
     width:100%;
     aspect-ratio:16/9;
     border-radius:16px;
     overflow:hidden;
     box-shadow:0 20px 45px rgba(0,0,0,0.3);
   }
-  .grid-tile img{
+  .slide{
+    all:unset;
+    cursor:pointer;
+    position:absolute;
+    inset:0;
+    display:block;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .6s ease;
+  }
+  .slide.active{opacity:1;pointer-events:auto;}
+  .slide img{
     width:100%;height:100%;
     object-fit:cover;
     display:block;
-    transition:transform .5s ease;
   }
-  .grid-tile:hover img, .grid-tile:focus-visible img{transform:scale(1.06);}
-  .grid-tile:focus-visible{outline:2px solid var(--teal);outline-offset:3px;}
+  .slide:focus-visible{outline:2px solid var(--teal);outline-offset:3px;}
   .tile-scrim{position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.05) 40%, rgba(0,0,0,0.72) 100%);}
   .tile-name{
-    position:absolute;left:1.4rem;right:1.4rem;bottom:1.2rem;
+    position:absolute;left:1.1rem;right:1.1rem;bottom:0.95rem;
     color:#fff;
     font-family:'Bricolage Grotesque',sans-serif;
     font-weight:600;
-    font-size:1.35rem;
+    font-size:1.05rem;
     text-shadow:0 1px 6px rgba(0,0,0,0.4);
   }
   .play-icon{
     position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-    width:72px;height:72px;border-radius:50%;
+    width:58px;height:58px;border-radius:50%;
     background:rgba(255,255,255,0.88);color:var(--ink);
-    display:flex;align-items:center;justify-content:center;font-size:1.4rem;
+    display:flex;align-items:center;justify-content:center;font-size:1.15rem;
     transition:background .3s ease, transform .3s ease;
   }
-  .grid-tile:hover .play-icon, .grid-tile:focus-visible .play-icon{background:#fff;transform:translate(-50%,-50%) scale(1.08);}
+  .slide:hover .play-icon, .slide:focus-visible .play-icon{background:#fff;transform:translate(-50%,-50%) scale(1.08);}
+
+  .slide-dots{
+    display:flex;
+    gap:0.55rem;
+    margin-top:0.9rem;
+  }
+  .dot{
+    width:9px;height:9px;
+    border-radius:50%;
+    background:rgba(23,21,18,0.25);
+    border:none;
+    padding:0;
+    cursor:pointer;
+    transition:background .3s ease, transform .3s ease;
+  }
+  .dot.active{background:var(--coral-dark);transform:scale(1.25);}
+  .dot:hover{background:var(--coral-dark);}
+
+  /* legacy tile class kept for other pages' shared styles; unused here */
 
   /* ---------- Presse ---------- */
   .press-list{
@@ -346,28 +362,46 @@
 
 <!-- Video -->
 <section class="medien-section">
-  <p class="section-label">Video</p>
-  <h2 class="section-title">Video</h2>
-  <div class="video-list">
-    <button class="grid-tile" data-youtube="IxJw4bGPlrw">
-      <img src="https://img.youtube.com/vi/IxJw4bGPlrw/hqdefault.jpg" alt="Fanny Mendelssohn Artists" loading="lazy">
-      <span class="tile-scrim"></span>
-      <span class="play-icon" aria-hidden="true">▶</span>
-      <span class="tile-name">Fanny Mendelssohn Artists</span>
-    </button>
-    <button class="grid-tile" data-youtube="8a7ZbY_9IyM">
-      <img src="https://img.youtube.com/vi/8a7ZbY_9IyM/hqdefault.jpg" alt="Sopran X Zither" loading="lazy">
-      <span class="tile-scrim"></span>
-      <span class="play-icon" aria-hidden="true">▶</span>
-      <span class="tile-name">Sopran X Zither</span>
-    </button>
+  <h2 class="section-title">Videos</h2>
+  <div class="video-slider" id="video-slider">
+    <div class="slide-viewport">
+      <button class="slide active" data-youtube="iLUdutUV3ng">
+        <img src="https://img.youtube.com/vi/iLUdutUV3ng/hqdefault.jpg" alt="L. Hurt — Flashback X" loading="lazy">
+        <span class="tile-scrim"></span>
+        <span class="play-icon" aria-hidden="true">▶</span>
+        <span class="tile-name">L. Hurt — Flashback X</span>
+      </button>
+      <button class="slide" data-youtube="yf0WwDmc3A4">
+        <img src="https://img.youtube.com/vi/yf0WwDmc3A4/hqdefault.jpg" alt="H. von Bingen — O virtus sapientiae" loading="lazy">
+        <span class="tile-scrim"></span>
+        <span class="play-icon" aria-hidden="true">▶</span>
+        <span class="tile-name">H. von Bingen — O virtus sapientiae</span>
+      </button>
+      <button class="slide" data-youtube="79QAloNgbVE">
+        <img src="https://img.youtube.com/vi/79QAloNgbVE/hqdefault.jpg" alt="Trailer — Thüringer Bachwochen 2024" loading="lazy">
+        <span class="tile-scrim"></span>
+        <span class="play-icon" aria-hidden="true">▶</span>
+        <span class="tile-name">Trailer — Thüringer Bachwochen 2024</span>
+      </button>
+      <button class="slide" data-youtube="1TNGhifP4rU">
+        <img src="https://img.youtube.com/vi/1TNGhifP4rU/hqdefault.jpg" alt="Duo Hadassa — Trailer" loading="lazy">
+        <span class="tile-scrim"></span>
+        <span class="play-icon" aria-hidden="true">▶</span>
+        <span class="tile-name">Duo Hadassa — Trailer</span>
+      </button>
+    </div>
+    <div class="slide-dots">
+      <button class="dot active" data-index="0" aria-label="L. Hurt — Flashback X"></button>
+      <button class="dot" data-index="1" aria-label="H. von Bingen — O virtus sapientiae"></button>
+      <button class="dot" data-index="2" aria-label="Trailer — Thüringer Bachwochen 2024"></button>
+      <button class="dot" data-index="3" aria-label="Duo Hadassa — Trailer"></button>
+    </div>
   </div>
 </section>
 
 <!-- CD -->
 <section class="medien-section">
-  <p class="section-label">Album</p>
-  <h2 class="section-title">Intimacy</h2>
+  <h2 class="section-title">Album: Intimacy</h2>
   <div class="cd-block">
     <div class="cd-cover"><span>Intimacy</span></div>
     <div class="cd-info">
@@ -384,8 +418,7 @@
 
 <!-- Presse -->
 <section class="medien-section">
-  <p class="section-label">Presse</p>
-  <h2 class="section-title">Stimmen &amp; Berichte</h2>
+  <h2 class="section-title">Pressestimmen</h2>
   <div class="press-list">
     <div class="press-item">
       <p>„Intimacy mit der Zitheristin Sarah Luisa Wurmer" — Interview und Feature bei Deutschlandfunk Kultur.</p>
@@ -400,7 +433,6 @@
 
 <!-- Fotos -->
 <section class="medien-section">
-  <p class="section-label">Fotos</p>
   <h2 class="section-title">Pressefotos</h2>
   <div class="photo-grid">
     <a class="photo-tile" href="presse-01-download.jpg" download>
@@ -467,7 +499,7 @@
     if(lastFocused) lastFocused.focus();
   }
 
-  document.querySelectorAll('.grid-tile[data-youtube]').forEach(function(tile){
+  document.querySelectorAll('.slide[data-youtube]').forEach(function(tile){
     tile.addEventListener('click', function(){
       openModal(tile.getAttribute('data-youtube'));
     });
@@ -477,6 +509,35 @@
   document.addEventListener('keydown', function(e){
     if(e.key === 'Escape' && backdrop.classList.contains('open')) closeModal();
   });
+
+  // Video slider: auto-advance, dot navigation, pause on hover
+  var slider = document.getElementById('video-slider');
+  if(slider){
+    var slides = Array.prototype.slice.call(slider.querySelectorAll('.slide'));
+    var dots = Array.prototype.slice.call(slider.querySelectorAll('.dot'));
+    var idx = 0;
+    var ROTATE_MS = 5000;
+    var timer = null;
+
+    function setActive(i){
+      idx = i;
+      slides.forEach(function(s, si){ s.classList.toggle('active', si === i); });
+      dots.forEach(function(d, di){ d.classList.toggle('active', di === i); });
+    }
+    function start(){ timer = setInterval(function(){ setActive((idx + 1) % slides.length); }, ROTATE_MS); }
+    function stop(){ if(timer) clearInterval(timer); }
+
+    start();
+    dots.forEach(function(dot, di){
+      dot.addEventListener('click', function(){
+        stop();
+        setActive(di);
+        start();
+      });
+    });
+    slider.addEventListener('mouseenter', stop);
+    slider.addEventListener('mouseleave', start);
+  }
 })();
 </script>
 
