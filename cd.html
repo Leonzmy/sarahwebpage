@@ -93,6 +93,39 @@
   nav a.active{color:var(--teal);}
   nav a.active::after{width:100%;background:var(--teal);}
 
+  /* ---------- Submenu (e.g. Medien > CD Intimacy), shown on hover ---------- */
+  .has-submenu{position:relative;}
+  .submenu{
+    position:absolute;
+    top:100%;left:0;
+    margin-top:0.6rem;
+    padding:0.5rem 0;
+    min-width:150px;
+    list-style:none;
+    background:rgba(23,21,18,0.85);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border-radius:10px;
+    opacity:0;
+    transform:translateY(-6px);
+    pointer-events:none;
+    transition:opacity .25s ease, transform .25s ease;
+  }
+  .has-submenu:hover .submenu,
+  .has-submenu:focus-within .submenu{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+  }
+  .submenu a{
+    display:block;
+    padding:0.5rem 1.1rem;
+    font-size:0.82rem;
+    color:rgba(255,255,255,0.85);
+    white-space:nowrap;
+  }
+  .submenu a:hover{color:var(--teal);}
+
   /* ---------- Hero: cover + core info ---------- */
   .cd-hero{
     max-width:1100px;
@@ -168,7 +201,7 @@
     padding:clamp(1.6rem,3vw,2.3rem);
   }
   .cd-section-narrow{
-    max-width:760px;
+    max-width:840px;
   }
   .cd-section h2{
     font-family:'Bricolage Grotesque',sans-serif;
@@ -184,7 +217,6 @@
     max-width:70ch;
     margin:0 0 1.1rem;
     text-align:justify;
-    hyphens:auto;
   }
   .cd-section .body-text p:last-child{margin-bottom:0;}
 
@@ -207,14 +239,17 @@
     all:unset;
     cursor:pointer;
     display:inline-block;
-    margin-top:1.2rem;
-    font-family:'IBM Plex Mono',monospace;
-    font-size:0.76rem;
-    letter-spacing:0.04em;
+    margin-top:1.4rem;
+    padding:0.65rem 1.3rem;
+    border-radius:999px;
+    border:1px solid var(--gold);
+    font-family:'Inter',sans-serif;
+    font-weight:500;
+    font-size:0.85rem;
     color:var(--gold);
-    border-bottom:1px dashed var(--gold);
+    transition:background .3s ease, color .3s ease;
   }
-  .press-toggle:hover{color:var(--coral-dark);border-color:var(--coral-dark);}
+  .press-toggle:hover{background:var(--gold);color:#fff;}
 
   .radio-subhead{
     font-family:'IBM Plex Mono',monospace;
@@ -436,14 +471,19 @@
       <li><a href="live.html">Live</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="projekte.html">Projekte</a></li>
-      <li><a class="active" href="medien.html">Medien</a></li>
+      <li class="has-submenu">
+        <a class="active" href="medien.html">Medien</a>
+        <ul class="submenu">
+          <li><a class="active" href="cd.html">CD Intimacy</a></li>
+        </ul>
+      </li>
       <li><a href="kontakt.html">Kontakt</a></li>
     </ul>
   </nav>
 </header>
 
 <div class="bg-image">
-  <img src="cd-break.jpg" alt="Sarah Luisa Wurmer an der Zither">
+  <img src="medien-hero.jpg" alt="Sarah Luisa Wurmer an der Zither">
 </div>
 
 <div class="content-wrap">
@@ -457,7 +497,7 @@
     <h1>intimacy</h1>
     <p class="lede">Bachs Cellosuite Nr. 6 (BWV 1012) für Altzither, umrahmt von eigens komponierten Neuen Werken zu Körperlichkeit und Berührung — mit mongolischer Yatga, Live-Elektronik und zeitgenössischer Lyrik. Erschienen beim Label ES-DUR.</p>
     <div class="cd-primary-links">
-      <a class="solid" href="https://lnk.to/Sarah_Luisa_Wurmer-Intimacy" target="_blank" rel="noopener">Jetzt anhören (alle Plattformen)</a>
+      <a class="solid" href="https://lnk.to/Sarah_Luisa_Wurmer-Intimacy" target="_blank" rel="noopener">Jetzt anhören</a>
       <a class="outline" href="https://www.c2hamburg.de/shop/de/ALL/Intimacy.html" target="_blank" rel="noopener">Label ES-DUR</a>
     </div>
     <p class="cd-funding">Ermöglicht durch den <a href="https://www.fannyfoerderpreis.com/" target="_blank" rel="noopener">Fanny Mendelssohn Förderpreis</a> in Zusammenarbeit mit dem <a href="https://www.c2hamburg.de/shop/de/ES-DUR/Intimacy.html" target="_blank" rel="noopener">Label ES-DUR</a>.</p>
@@ -470,75 +510,6 @@
   <div class="body-text">
     <p>Die Fanny-Mendelssohn-Förderpreisträgerin 2025 lädt mit ihrem Debütalbum <em>intimacy</em> zu einer außergewöhnlichen Begegnung zwischen Alter und Neuer Musik ein — und zur Auseinandersetzung mit vielschichtigen Interpretationen von Intimität. Das Herzstück bildet Bachs Cellosuite Nr. 6 in D-Dur (BWV 1012), arrangiert für Altzither: Die polyphonen Linien und Harmonien der Suite entfalten sich darin auf völlig neue Weise. Ergänzt wird sie durch eigens für dieses Projekt entstandene Neukompositionen zu Körperlichkeit und Berührung, die in engem Dialog mit Bachs Musik stehen, aufbrechen, verdichten und sich mit den barocken Sätzen zu einem zusammenhängenden musikalischen Narrativ verweben — mit mongolischer Yatga, Nahmikrofonierung, Live-Elektronik und zeitgenössischer Lyrik.</p>
     <p>Während sich unsere Gesellschaft verändert, stellt sich die Frage, wie sensibles Zuhören und das Einlassen auf etwas Unbekanntes gelingen kann. In einer Zeit zunehmender Polarisierung kann Musik ein Ort der Begegnung und Berührbarkeit sein.</p>
-  </div>
-</section>
-
-<!-- Trackliste -->
-<section class="cd-section">
-  <h2>Trackliste</h2>
-  <div class="tracklist">
-    <div class="track-row">
-      <span class="track-num">1</span>
-      <span class="track-title">arco (Improvisation)</span>
-      <span class="track-time">1:39</span>
-    </div>
-
-    <p class="track-group-label">J. S. Bach — Suite für Violoncello solo Nr. 6 D-Dur, BWV 1012</p>
-    <div class="track-row sub">
-      <span class="track-num">2</span>
-      <span class="track-title">Prélude</span>
-      <span class="track-time">5:03</span>
-    </div>
-    <div class="track-row sub">
-      <span class="track-num">3</span>
-      <span class="track-title">Allemande</span>
-      <span class="track-time">7:10</span>
-    </div>
-    <div class="track-row">
-      <span class="track-num">4</span>
-      <span class="track-title"><span class="composer">Dorothea Hofmann:</span> … mit den Fingern zu singen</span>
-      <span class="track-time">6:58</span>
-    </div>
-    <div class="track-row sub">
-      <span class="track-num">5</span>
-      <span class="track-title">Courante</span>
-      <span class="track-time">4:30</span>
-    </div>
-    <div class="track-row">
-      <span class="track-num">6</span>
-      <span class="track-title"><span class="composer">Leon Zmelty:</span> topography of fragility</span>
-      <span class="track-time">7:10</span>
-    </div>
-    <div class="track-row sub">
-      <span class="track-num">7</span>
-      <span class="track-title">Sarabande</span>
-      <span class="track-time">4:15</span>
-    </div>
-    <div class="track-row sub">
-      <span class="track-num">8</span>
-      <span class="track-title">Gavotte 1–2</span>
-      <span class="track-time">3:34</span>
-    </div>
-    <div class="track-row">
-      <span class="track-num">9</span>
-      <span class="track-title"><span class="composer">Eva Kuhn:</span> wie du atmest für Yatga</span>
-      <span class="track-time">3:29</span>
-    </div>
-    <div class="track-row sub">
-      <span class="track-num">10</span>
-      <span class="track-title">Gigue</span>
-      <span class="track-time">4:24</span>
-    </div>
-    <div class="track-row">
-      <span class="track-num">11</span>
-      <span class="track-title"><span class="composer">Julius von Lorentz:</span> berührt – geschnitten</span>
-      <span class="track-time">9:40</span>
-    </div>
-    <div class="track-row">
-      <span class="track-num">12</span>
-      <span class="track-title"><span class="composer">Steve Reich:</span> Piano Phase</span>
-      <span class="track-time">12:01</span>
-    </div>
   </div>
 </section>
 
@@ -650,6 +621,75 @@
         <p>Telefoninterview, Moderation Eva Schramm.</p>
       </div>
       <a href="https://www.ndr.de/kultur/sarah-luisa-wurmer-spielt-bach-mit-der-zither,audio-287820.html" target="_blank" rel="noopener">Anhören</a>
+    </div>
+  </div>
+</section>
+
+<!-- Trackliste -->
+<section class="cd-section">
+  <h2>Trackliste</h2>
+  <div class="tracklist">
+    <div class="track-row">
+      <span class="track-num">1</span>
+      <span class="track-title">arco (Improvisation)</span>
+      <span class="track-time">1:39</span>
+    </div>
+
+    <p class="track-group-label">J. S. Bach — Suite für Violoncello solo Nr. 6 D-Dur, BWV 1012</p>
+    <div class="track-row sub">
+      <span class="track-num">2</span>
+      <span class="track-title">Prélude</span>
+      <span class="track-time">5:03</span>
+    </div>
+    <div class="track-row sub">
+      <span class="track-num">3</span>
+      <span class="track-title">Allemande</span>
+      <span class="track-time">7:10</span>
+    </div>
+    <div class="track-row">
+      <span class="track-num">4</span>
+      <span class="track-title"><span class="composer">Dorothea Hofmann:</span> … mit den Fingern zu singen</span>
+      <span class="track-time">6:58</span>
+    </div>
+    <div class="track-row sub">
+      <span class="track-num">5</span>
+      <span class="track-title">Courante</span>
+      <span class="track-time">4:30</span>
+    </div>
+    <div class="track-row">
+      <span class="track-num">6</span>
+      <span class="track-title"><span class="composer">Leon Zmelty:</span> topography of fragility</span>
+      <span class="track-time">7:10</span>
+    </div>
+    <div class="track-row sub">
+      <span class="track-num">7</span>
+      <span class="track-title">Sarabande</span>
+      <span class="track-time">4:15</span>
+    </div>
+    <div class="track-row sub">
+      <span class="track-num">8</span>
+      <span class="track-title">Gavotte 1–2</span>
+      <span class="track-time">3:34</span>
+    </div>
+    <div class="track-row">
+      <span class="track-num">9</span>
+      <span class="track-title"><span class="composer">Eva Kuhn:</span> wie du atmest für Yatga</span>
+      <span class="track-time">3:29</span>
+    </div>
+    <div class="track-row sub">
+      <span class="track-num">10</span>
+      <span class="track-title">Gigue</span>
+      <span class="track-time">4:24</span>
+    </div>
+    <div class="track-row">
+      <span class="track-num">11</span>
+      <span class="track-title"><span class="composer">Julius von Lorentz:</span> berührt – geschnitten</span>
+      <span class="track-time">9:40</span>
+    </div>
+    <div class="track-row">
+      <span class="track-num">12</span>
+      <span class="track-title"><span class="composer">Steve Reich:</span> Piano Phase</span>
+      <span class="track-time">12:01</span>
     </div>
   </div>
 </section>
