@@ -22,7 +22,7 @@
     margin:0;
     min-height:100vh;
     background:
-      linear-gradient(rgba(237,231,221,0.28), rgba(237,231,221,0.28)),
+      linear-gradient(rgba(237,231,221,0.12), rgba(237,231,221,0.12)),
       url("cd-break-bg.jpg") center/cover fixed no-repeat,
       var(--cream);
     color:var(--ink);
@@ -99,7 +99,7 @@
   .cd-hero-info{
     flex:1;
     min-width:260px;
-    background:rgba(255,255,255,0.4);
+    background:transparent;
     backdrop-filter:blur(14px) saturate(140%);
     -webkit-backdrop-filter:blur(14px) saturate(140%);
     border-radius:20px;
@@ -155,10 +155,13 @@
     max-width:1100px;
     margin:0 auto 1.6rem;
     padding:clamp(1.6rem,3vw,2.3rem);
-    background:rgba(255,255,255,0.4);
+    background:transparent;
     backdrop-filter:blur(14px) saturate(140%);
     -webkit-backdrop-filter:blur(14px) saturate(140%);
     border-radius:20px;
+  }
+  .cd-section-narrow{
+    max-width:760px;
   }
   .cd-section h2{
     font-family:'Bricolage Grotesque',sans-serif;
@@ -173,6 +176,8 @@
     color:rgba(23,21,18,0.82);
     max-width:70ch;
     margin:0 0 1.1rem;
+    text-align:justify;
+    hyphens:auto;
   }
   .cd-section .body-text p:last-child{margin-bottom:0;}
 
@@ -447,7 +452,7 @@
 </div>
 
 <!-- Beschreibung -->
-<section class="cd-section">
+<section class="cd-section cd-section-narrow">
   <h2>Über das Album</h2>
   <div class="body-text">
     <p>Die Fanny-Mendelssohn-Förderpreisträgerin 2025 lädt mit ihrem Debütalbum <em>intimacy</em> zu einer außergewöhnlichen Begegnung zwischen Alter und Neuer Musik ein — und zur Auseinandersetzung mit vielschichtigen Interpretationen von Intimität. Das Herzstück bildet Bachs Cellosuite Nr. 6 in D-Dur (BWV 1012), arrangiert für Altzither: Die polyphonen Linien und Harmonien der Suite entfalten sich darin auf völlig neue Weise. Ergänzt wird sie durch eigens für dieses Projekt entstandene Neukompositionen zu Körperlichkeit und Berührung, die in engem Dialog mit Bachs Musik stehen, aufbrechen, verdichten und sich mit den barocken Sätzen zu einem zusammenhängenden musikalischen Narrativ verweben — mit mongolischer Yatga, Nahmikrofonierung, Live-Elektronik und zeitgenössischer Lyrik.</p>
