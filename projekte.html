@@ -17,11 +17,9 @@
     --coral-dark:#B85A3E;
   }
   *{box-sizing:border-box;}
-  html,body{height:100%;}
   body{
     margin:0;
-    height:100vh;
-    overflow:hidden;
+    min-height:100vh;
     background:var(--cream);
     color:var(--ink);
     font-family:'Inter',sans-serif;
@@ -97,16 +95,14 @@
     background:rgba(10,12,10,0.14);
   }
 
-  /* ---------- Project grid: fixed panel that starts well below the
-     top (so the photo is clearly visible above it), with its own
-     scroll so tiles get natural, comfortable spacing ---------- */
+  /* ---------- Project grid: flows normally over the fixed background
+     image, starting well below the top so the photo is clearly
+     visible there. The page itself scrolls, so it can reach all the
+     way to the top — nothing caps it partway down anymore. ---------- */
   .projects-section{
-    position:fixed;
-    top:clamp(30vh, 34vh, 40vh);
-    left:0;right:0;bottom:0;
+    position:relative;
     z-index:5;
-    overflow-y:auto;
-    padding:clamp(1.6rem,3.6vh,2.4rem) clamp(1.2rem,4vw,2.4rem) 3rem;
+    padding:clamp(30vh, 34vh, 40vh) clamp(1.2rem,4vw,2.4rem) 4rem;
   }
   .projects-grid{
     display:grid;
@@ -257,11 +253,11 @@
   /* ---------- Responsive ---------- */
   @media(max-width:820px){
     .projects-grid{grid-template-columns:repeat(2, 1fr);}
-    .projects-section{top:26vh;}
+    .projects-section{padding-top:26vh;}
   }
   @media(max-width:520px){
     .projects-grid{grid-template-columns:1fr;gap:1rem;}
-    .projects-section{top:22vh;}
+    .projects-section{padding-top:22vh;}
     .tile-name{font-size:0.92rem;}
   }
 </style>
@@ -421,7 +417,7 @@
 
   function closeModal(){
     backdrop.classList.remove('open');
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = '';
     mediaSlot.innerHTML = '';
     if(lastFocused) lastFocused.focus();
   }
