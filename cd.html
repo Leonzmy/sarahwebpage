@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intimacy — Sarah Luisa Wurmer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#EDE7DD;
+    --ink:#171512;
+    --indigo:#2A3560;
+    --teal:#5FC8B8;
+    --coral:#E29580;
+    --coral-dark:#B85A3E;
+    --gold:#B8873E;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    min-height:100vh;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none;}
+
+  /* ---------- Fixed transparent header (same as other pages) ---------- */
+  header{
+    position:fixed;
+    top:0;left:0;right:0;
+    z-index:100;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:1.6rem clamp(1.2rem,4vw,3.2rem) 0;
+  }
+  .wordmark{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:600;
+    font-size:1.3rem;
+    letter-spacing:-0.01em;
+    color:var(--ink);
+    transition:color .3s ease;
+  }
+  .wordmark:hover{color:var(--coral-dark);}
+  nav ul{display:flex;gap:clamp(1rem,2.2vw,2.2rem);list-style:none;margin:0;padding:0;}
+  nav a{
+    color:rgba(23,21,18,0.7);
+    font-size:0.86rem;
+    letter-spacing:0.03em;
+    position:relative;
+    padding-bottom:3px;
+    transition:color .3s ease;
+  }
+  nav a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--coral-dark);transition:width .35s ease;}
+  nav a:hover{color:var(--ink);}
+  nav a:hover::after{width:100%;}
+  nav a.active{color:var(--coral-dark);}
+  nav a.active::after{width:100%;background:var(--coral-dark);}
+
+  /* ---------- Hero: cover + core info ---------- */
+  .cd-hero{
+    max-width:1100px;
+    margin:0 auto;
+    padding:clamp(6rem,13vh,7.5rem) clamp(1.2rem,4vw,2.4rem) 3rem;
+    display:flex;
+    gap:clamp(2rem,5vw,3.6rem);
+    flex-wrap:wrap;
+    align-items:flex-start;
+  }
+  .cd-cover-img{
+    width:min(360px, 42vw);
+    flex:0 0 auto;
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 30px 60px rgba(23,21,18,0.22);
+  }
+  .cd-cover-img img{width:100%;display:block;}
+  .cd-hero-info{flex:1;min-width:260px;padding-top:0.4rem;}
+  .eyebrow{
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:0.85rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--coral-dark);
+    display:block;
+    margin-bottom:0.8rem;
+  }
+  .cd-hero-info h1{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-style:italic;
+    font-weight:600;
+    font-size:clamp(2.6rem,6vw,4rem);
+    margin:0 0 1.4rem;
+    color:var(--ink);
+  }
+  .cd-hero-info .lede{
+    font-size:1.02rem;
+    line-height:1.65;
+    color:rgba(23,21,18,0.8);
+    max-width:56ch;
+    margin:0 0 1.6rem;
+  }
+  .cd-primary-links{display:flex;flex-wrap:wrap;gap:0.8rem;margin-bottom:1rem;}
+  .cd-primary-links a{
+    padding:0.75rem 1.5rem;
+    border-radius:999px;
+    font-size:0.9rem;
+    font-weight:500;
+  }
+  .cd-primary-links a.solid{background:var(--ink);color:#fff;}
+  .cd-primary-links a.solid:hover{background:var(--coral-dark);}
+  .cd-primary-links a.outline{border:1px solid var(--ink);color:var(--ink);}
+  .cd-primary-links a.outline:hover{background:var(--ink);color:#fff;}
+  .cd-funding{
+    font-size:0.82rem;
+    color:rgba(23,21,18,0.55);
+    max-width:56ch;
+    line-height:1.5;
+  }
+  .cd-funding a{border-bottom:1px solid rgba(23,21,18,0.4);}
+  .cd-funding a:hover{border-color:var(--coral-dark);color:var(--coral-dark);}
+
+  /* ---------- Sections ---------- */
+  .cd-section{
+    max-width:1100px;
+    margin:0 auto;
+    padding:2.4rem clamp(1.2rem,4vw,2.4rem);
+    border-top:1px solid rgba(23,21,18,0.1);
+  }
+  .cd-section h2{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:600;
+    font-size:1.4rem;
+    margin:0 0 1.6rem;
+    color:var(--ink);
+  }
+  .cd-section .body-text p{
+    font-size:0.98rem;
+    line-height:1.7;
+    color:rgba(23,21,18,0.82);
+    max-width:70ch;
+    margin:0 0 1.1rem;
+  }
+  .cd-section .body-text p:last-child{margin-bottom:0;}
+
+  /* ---------- Breathing-room photo between sections ---------- */
+  .cd-break-photo{
+    max-width:1100px;
+    margin:1rem auto 0;
+    padding:0 clamp(1.2rem,4vw,2.4rem);
+  }
+  .cd-break-photo img{
+    width:min(420px, 100%);
+    border-radius:10px;
+    display:block;
+    box-shadow:0 20px 45px rgba(23,21,18,0.2);
+  }
+
+  /* ---------- Press ---------- */
+  .press-grid{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:1.4rem;
+  }
+  .press-item{
+    padding:1.3rem 1.5rem;
+    border-left:2px solid var(--gold);
+    background:rgba(23,21,18,0.03);
+    border-radius:0 12px 12px 0;
+  }
+  .press-source{
+    display:block;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.7rem;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--indigo);
+    margin-bottom:0.5rem;
+  }
+  .press-item p{
+    margin:0 0 0.5rem;
+    font-size:0.94rem;
+    line-height:1.55;
+    color:rgba(23,21,18,0.85);
+    font-style:italic;
+  }
+  .press-item .press-author{
+    display:block;
+    font-size:0.82rem;
+    font-style:normal;
+    color:rgba(23,21,18,0.55);
+  }
+  .press-item a.press-link{
+    display:inline-block;
+    margin-top:0.4rem;
+    font-size:0.78rem;
+    font-weight:500;
+    font-style:normal;
+    color:var(--gold);
+    border-bottom:1px solid var(--gold);
+  }
+  .press-item a.press-link:hover{color:var(--coral-dark);border-color:var(--coral-dark);}
+
+  /* ---------- Videos ---------- */
+  .video-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:1.2rem;
+  }
+  .grid-tile{
+    all:unset;
+    cursor:pointer;
+    position:relative;
+    display:block;
+    aspect-ratio:16/9;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 12px 26px rgba(0,0,0,0.2);
+  }
+  .grid-tile img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease;}
+  .grid-tile:hover img{transform:scale(1.06);}
+  .tile-scrim{position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.05) 45%, rgba(0,0,0,0.68) 100%);}
+  .play-icon{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:46px;height:46px;border-radius:50%;
+    background:rgba(255,255,255,0.88);color:var(--ink);
+    display:flex;align-items:center;justify-content:center;font-size:0.95rem;
+    transition:background .3s ease, transform .3s ease;
+  }
+  .grid-tile:hover .play-icon{background:#fff;transform:translate(-50%,-50%) scale(1.08);}
+
+  /* ---------- Tracklist ---------- */
+  .tracklist{
+    display:flex;
+    flex-direction:column;
+    max-width:760px;
+  }
+  .track-row{
+    display:flex;
+    align-items:baseline;
+    gap:1rem;
+    padding:0.75rem 0;
+    border-bottom:1px solid rgba(23,21,18,0.1);
+  }
+  .track-row:last-child{border-bottom:none;}
+  .track-row.sub{padding-left:1.7rem;}
+  .track-num{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.82rem;
+    color:rgba(23,21,18,0.4);
+    width:1.6rem;
+    flex:0 0 auto;
+  }
+  .track-row.sub .track-num{color:rgba(23,21,18,0.28);}
+  .track-title{
+    flex:1;
+    font-size:0.96rem;
+    color:var(--ink);
+  }
+  .track-row.sub .track-title{color:rgba(23,21,18,0.78);}
+  .track-title .composer{
+    font-weight:600;
+    color:var(--ink);
+  }
+  .track-time{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.82rem;
+    color:rgba(23,21,18,0.5);
+    flex:0 0 auto;
+  }
+  .track-group-label{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:600;
+    font-style:italic;
+    font-size:0.92rem;
+    color:var(--coral-dark);
+    margin:1.6rem 0 0.3rem;
+    padding-top:0.6rem;
+    border-top:1px solid rgba(23,21,18,0.1);
+  }
+  .track-group-label:first-child{margin-top:0;padding-top:0;border-top:none;}
+
+  /* ---------- Modal ---------- */
+  .modal-backdrop{
+    position:fixed;inset:0;z-index:300;
+    background:rgba(10,12,10,0.7);
+    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+    display:flex;align-items:center;justify-content:center;
+    padding:clamp(1rem,4vw,2.4rem);
+    opacity:0;pointer-events:none;
+    transition:opacity .3s ease;
+  }
+  .modal-backdrop.open{opacity:1;pointer-events:auto;}
+  .modal-card{
+    position:relative;
+    background:var(--cream);
+    width:100%;max-width:820px;
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 30px 70px rgba(0,0,0,0.5);
+    transform:translateY(10px);
+    transition:transform .3s ease;
+  }
+  .modal-backdrop.open .modal-card{transform:translateY(0);}
+  .modal-close{
+    position:absolute;top:0.8rem;right:0.8rem;z-index:5;
+    width:36px;height:36px;border-radius:50%;border:none;
+    background:rgba(255,255,255,0.85);color:var(--ink);
+    cursor:pointer;font-size:1rem;line-height:1;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .modal-close:hover{background:#fff;}
+  .video-embed{position:relative;width:100%;padding-top:56.25%;background:#000;}
+  .video-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+
+  /* ---------- Responsive ---------- */
+  @media(max-width:820px){
+    .press-grid{grid-template-columns:1fr;}
+    .video-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="wordmark" href="index.html">Sarah Luisa Wurmer</a>
+  <nav>
+    <ul>
+      <li><a href="live.html">Live</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="projekte.html">Projekte</a></li>
+      <li><a class="active" href="medien.html">Medien</a></li>
+      <li><a href="kontakt.html">Kontakt</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="cd-hero">
+  <div class="cd-cover-img">
+    <img src="cd-cover.jpg" alt="Cover „intimacy" von Sarah Luisa Wurmer">
+  </div>
+  <div class="cd-hero-info">
+    <span class="eyebrow">Debütalbum</span>
+    <h1>intimacy</h1>
+    <p class="lede">Bachs Cellosuite Nr. 6 (BWV 1012) für Altzither, umrahmt von eigens komponierten Neuen Werken zu Körperlichkeit und Berührung — mit mongolischer Yatga, Live-Elektronik und zeitgenössischer Lyrik. Erschienen beim Label ES-DUR.</p>
+    <div class="cd-primary-links">
+      <a class="solid" href="https://lnk.to/Sarah_Luisa_Wurmer-Intimacy" target="_blank" rel="noopener">Jetzt anhören (alle Plattformen)</a>
+      <a class="outline" href="https://www.c2hamburg.de/shop/de/ALL/Intimacy.html" target="_blank" rel="noopener">Label ES-DUR</a>
+    </div>
+    <p class="cd-funding">Ermöglicht durch den <a href="https://www.fannyfoerderpreis.com/" target="_blank" rel="noopener">Fanny Mendelssohn Förderpreis</a> in Zusammenarbeit mit dem <a href="https://www.c2hamburg.de/shop/de/ES-DUR/Intimacy.html" target="_blank" rel="noopener">Label ES-DUR</a>.</p>
+  </div>
+</div>
+
+<!-- Beschreibung -->
+<section class="cd-section">
+  <h2>Über das Album</h2>
+  <div class="body-text">
+    <p>Die Fanny-Mendelssohn-Förderpreisträgerin 2025 lädt mit ihrem Debütalbum <em>intimacy</em> zu einer außergewöhnlichen Begegnung zwischen Alter und Neuer Musik ein — und zur Auseinandersetzung mit vielschichtigen Interpretationen von Intimität. Das Herzstück bildet Bachs Cellosuite Nr. 6 in D-Dur (BWV 1012), arrangiert für Altzither: Die polyphonen Linien und Harmonien der Suite entfalten sich darin auf völlig neue Weise. Ergänzt wird sie durch eigens für dieses Projekt entstandene Neukompositionen zu Körperlichkeit und Berührung, die in engem Dialog mit Bachs Musik stehen, aufbrechen, verdichten und sich mit den barocken Sätzen zu einem zusammenhängenden musikalischen Narrativ verweben — mit mongolischer Yatga, Nahmikrofonierung, Live-Elektronik und zeitgenössischer Lyrik.</p>
+    <p>Während sich unsere Gesellschaft verändert, stellt sich die Frage, wie sensibles Zuhören und das Einlassen auf etwas Unbekanntes gelingen kann. In einer Zeit zunehmender Polarisierung kann Musik ein Ort der Begegnung und Berührbarkeit sein.</p>
+  </div>
+</section>
+
+<div class="cd-break-photo">
+  <img src="cd-break-900.jpg" alt="Sarah Luisa Wurmer an der Zither">
+</div>
+
+<!-- Trackliste -->
+<section class="cd-section">
+  <h2>Trackliste</h2>
+  <div class="tracklist">
+    <div class="track-row">
+      <span class="track-num">1</span>
+      <span class="track-title">arco (Improvisation)</span>
+      <span class="track-time">1:39</span>
+    </div>
+
+    <p class="track-group-label">J. S. Bach — Suite für Violoncello solo Nr. 6 D-Dur, BWV 1012</p>
+    <div class="track-row sub">
+      <span class="track-num">2</span>
+      <span class="track-title">Prélude</span>
+      <span class="track-time">5:03</span>
+    </div>
+    <div class="track-row sub">
+      <span class="track-num">3</span>
+      <span class="track-title">Allemande</span>
+      <span class="track-time">7:10</span>
+    </div>
+    <div class="track-row">
+      <span class="track-num">4</span>
+      <span class="track-title"><span class="composer">Dorothea Hofmann:</span> … mit den Fingern zu singen</span>
+      <span class="track-time">6:58</span>
+    </div>
+    <div class="track-row sub">
+      <span class="track-num">5</span>
+      <span class="track-title">Courante</span>
+      <span class="track-time">4:30</span>
+    </div>
+    <div class="track-row">
+      <span class="track-num">6</span>
+      <span class="track-title"><span class="composer">Leon Zmelty:</span> topography of fragility</span>
+      <span class="track-time">7:10</span>
+    </div>
+    <div class="track-row sub">
+      <span class="track-num">7</span>
+      <span class="track-title">Sarabande</span>
+      <span class="track-time">4:15</span>
+    </div>
+    <div class="track-row sub">
+      <span class="track-num">8</span>
+      <span class="track-title">Gavotte 1–2</span>
+      <span class="track-time">3:34</span>
+    </div>
+    <div class="track-row">
+      <span class="track-num">9</span>
+      <span class="track-title"><span class="composer">Eva Kuhn:</span> wie du atmest für Yatga</span>
+      <span class="track-time">3:29</span>
+    </div>
+    <div class="track-row sub">
+      <span class="track-num">10</span>
+      <span class="track-title">Gigue</span>
+      <span class="track-time">4:24</span>
+    </div>
+    <div class="track-row">
+      <span class="track-num">11</span>
+      <span class="track-title"><span class="composer">Julius von Lorentz:</span> berührt – geschnitten</span>
+      <span class="track-time">9:40</span>
+    </div>
+    <div class="track-row">
+      <span class="track-num">12</span>
+      <span class="track-title"><span class="composer">Steve Reich:</span> Piano Phase</span>
+      <span class="track-time">12:01</span>
+    </div>
+  </div>
+</section>
+
+<!-- Videos -->
+<section class="cd-section">
+  <h2>Videos</h2>
+  <div class="video-grid">
+    <button class="grid-tile" data-youtube="hzvTsfQpSvo">
+      <img src="https://img.youtube.com/vi/hzvTsfQpSvo/hqdefault.jpg" alt="intimacy — Video 1" loading="lazy">
+      <span class="tile-scrim"></span>
+      <span class="play-icon" aria-hidden="true">▶</span>
+    </button>
+    <button class="grid-tile" data-youtube="j1kjDk3n-CU">
+      <img src="https://img.youtube.com/vi/j1kjDk3n-CU/hqdefault.jpg" alt="intimacy — Video 2" loading="lazy">
+      <span class="tile-scrim"></span>
+      <span class="play-icon" aria-hidden="true">▶</span>
+    </button>
+    <button class="grid-tile" data-youtube="f6qnYLaZ4Zo">
+      <img src="https://img.youtube.com/vi/f6qnYLaZ4Zo/hqdefault.jpg" alt="intimacy — Video 3" loading="lazy">
+      <span class="tile-scrim"></span>
+      <span class="play-icon" aria-hidden="true">▶</span>
+    </button>
+  </div>
+</section>
+
+<!-- Presse -->
+<section class="cd-section">
+  <h2>Pressestimmen</h2>
+  <div class="press-grid">
+    <div class="press-item">
+      <span class="press-source">Süddeutsche Zeitung — 1.10.25</span>
+      <p>„Wenn Sarah Luisa Wurmer vor einem ihrer Instrumente steht … wirkt sie wie eine Forscherin, die mit feinfühligen Fingern ihre Proben bewegt. […] Sie ist schon jetzt eine starke Botschafterin für die Zither."</p>
+      <span class="press-author">Paul Schäufele</span>
+      <a class="press-link" href="https://www.sueddeutsche.de/muenchen/muenchen-zithermusik-sarah-luisa-wurmer-debuet-album-intimacy-klassik-li.3311064" target="_blank" rel="noopener">Zum ganzen Artikel</a>
+    </div>
+    <div class="press-item">
+      <span class="press-source">Der Standard — 6.10.25</span>
+      <p>„Auf der Altzither kommt die edel dahinfließende Suite BWV 1012 überraschend substanzvoll rüber, diskret und kostbar fragil. […] Piano Phase erlangt im Dialog von Wurmer und Krajnc ganz spezielle Klarheit."</p>
+      <span class="press-author">Ljubiša Tošić</span>
+      <a class="press-link" href="https://www.derstandard.de/story/3000000290408/der-gute-ton-mit-bugge-wesseltoft-bach-zither-und-cello" target="_blank" rel="noopener">Zum ganzen Artikel</a>
+    </div>
+    <div class="press-item">
+      <span class="press-source">DIE ZEIT — Musikempfehlungen zu Weihnachten, Nr. 49/2025</span>
+      <p>„Bachs Cello-Sonate Nr. 6 auf einer Alt-Zither? Jeder Ton perlt, jedes Thema blubbert, jeder Takt bitzelt im Ohr."</p>
+      <span class="press-author">Florian Zinnecker</span>
+      <a class="press-link" href="https://www.zeit.de/2025/49/musik-empfehlung-weihnachten-interpreten" target="_blank" rel="noopener">Zum ganzen Artikel</a>
+    </div>
+    <div class="press-item">
+      <span class="press-source">musikmachen.de — 2.1.26</span>
+      <p>„Die magnetische Sensibilität ihrer Fingerkuppen ist auf dem Album in jeder Minute spürbar. […] Ihre kantable Expressivität ist besonders spürbar, als sie die Altzither gegen die mongolische Yatga eintauscht."</p>
+      <span class="press-author">Bettina Boyens</span>
+      <a class="press-link" href="https://www.musikmachen.de/orchester/mit-den-fingern-auf-der-zither-singen/" target="_blank" rel="noopener">Zum ganzen Artikel</a>
+    </div>
+    <div class="press-item">
+      <span class="press-source">Frankfurter Neue Presse — 16.1.26</span>
+      <p>„Besonders feinsinnig agiert sie bei ‚topography of fragility‘ von Leon Zmelty — sie berührt mit dem Finger ihre Haut, reibt Kieselsteine aneinander und erkundet elektronisch verstärkt alltägliche Klänge, die irgendwann zu Tönen werden."</p>
+      <span class="press-author">Bettina Boyens</span>
+    </div>
+    <div class="press-item">
+      <span class="press-source">Das Orchester — 3/26</span>
+      <p>„Das Arrangement für Altzither besticht durch einen kraftvollen und zugleich warmen Ton und eine Fülle dynamischer Nuancen. Technische Leichtigkeit verbindet sich mit großer Ausdruckskraft."</p>
+      <span class="press-author">Claudia Höpfl</span>
+    </div>
+    <div class="press-item">
+      <span class="press-source">zither Magazin — 1/26</span>
+      <p>„69 feinnervige, aber auch elektrisierende Minuten unterschiedlichster Solowerke für Zither — brillant musiziert von Sarah Luisa Wurmer und Tajda Krajnc."</p>
+      <span class="press-author">Fredrik Schwenk</span>
+    </div>
+    <div class="press-item">
+      <span class="press-source">Radio — Deutschlandfunk Kultur, 29.6.26</span>
+      <p>Sendung „Einstand", Moderation Raphael Landstorfer.</p>
+      <a class="press-link" href="https://www.deutschlandfunkkultur.de/intimacy-mit-der-zitheristin-sarah-luisa-wurmer-100.html" target="_blank" rel="noopener">Anhören</a>
+    </div>
+    <div class="press-item">
+      <span class="press-source">Radio — Deutschlandfunk Kultur, 8.8.26</span>
+      <p>Podcast „Steve Reich: Piano Phase" mit Sarah Luisa Wurmer und Tajda Krajnc, Moderation Carola Malter.</p>
+      <a class="press-link" href="https://www.deutschlandfunkkultur.de/steve-reich-piano-phase-mit-sarah-luisa-wurmer-und-tajda-krainc-100.html" target="_blank" rel="noopener">Anhören</a>
+    </div>
+    <div class="press-item">
+      <span class="press-source">Radio — Gewandhaus Radio, 14.3.26</span>
+      <p>Moderation Martin Hoffmeister.</p>
+      <a class="press-link" href="https://www.gewandhausradio.de/neue-einspielungen-12/" target="_blank" rel="noopener">Ganzes Interview anhören</a>
+    </div>
+    <div class="press-item">
+      <span class="press-source">Radio — NDR Kultur, 19.9.25</span>
+      <p>Telefoninterview, Moderation Eva Schramm.</p>
+      <a class="press-link" href="https://www.ndr.de/kultur/sarah-luisa-wurmer-spielt-bach-mit-der-zither,audio-287820.html" target="_blank" rel="noopener">Ganzes Interview anhören</a>
+    </div>
+  </div>
+</section>
+
+<div class="modal-backdrop" id="modal-backdrop">
+  <div class="modal-card" role="dialog" aria-modal="true">
+    <button class="modal-close" id="modal-close" aria-label="Schließen">✕</button>
+    <div class="video-embed" id="modal-media"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var backdrop = document.getElementById('modal-backdrop');
+  var mediaSlot = document.getElementById('modal-media');
+  var closeBtn = document.getElementById('modal-close');
+  var lastFocused = null;
+
+  function openModal(videoId){
+    lastFocused = document.activeElement;
+    mediaSlot.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + videoId +
+      '" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+    backdrop.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    closeBtn.focus();
+  }
+  function closeModal(){
+    backdrop.classList.remove('open');
+    document.body.style.overflow = '';
+    mediaSlot.innerHTML = '';
+    if(lastFocused) lastFocused.focus();
+  }
+
+  document.querySelectorAll('.grid-tile[data-youtube]').forEach(function(tile){
+    tile.addEventListener('click', function(){
+      openModal(tile.getAttribute('data-youtube'));
+    });
+  });
+  closeBtn.addEventListener('click', closeModal);
+  backdrop.addEventListener('click', function(e){ if(e.target === backdrop) closeModal(); });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && backdrop.classList.contains('open')) closeModal();
+  });
+})();
+</script>
+
+</body>
+</html>
