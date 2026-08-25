@@ -105,72 +105,66 @@
   }
 
   /* ---------- Large video tiles, stacked full-width ---------- */
-  /* ---------- Video slider: one reasonably sized frame that
-     automatically cycles between videos, not a wall of tiles ---------- */
+  /* ---------- Video filmstrip: all 4 videos visible at once, the
+     active one grows wider while the others stay narrow — nothing
+     is hidden, focus just shifts smoothly between them. ---------- */
   .video-slider{
-    max-width:640px;
+    max-width:920px;
   }
   .slide-viewport{
-    position:relative;
+    display:flex;
+    gap:0.7rem;
     width:100%;
-    aspect-ratio:16/9;
-    border-radius:16px;
-    overflow:hidden;
-    box-shadow:0 20px 45px rgba(0,0,0,0.3);
+    height:clamp(210px, 28vw, 360px);
   }
   .slide{
     all:unset;
     cursor:pointer;
-    position:absolute;
-    inset:0;
+    position:relative;
     display:block;
-    opacity:0;
-    pointer-events:none;
-    transition:opacity .6s ease;
+    flex:1;
+    min-width:0;
+    height:100%;
+    border-radius:14px;
+    overflow:hidden;
+    transition:flex 0.65s cubic-bezier(.4,0,.2,1);
   }
-  .slide.active{opacity:1;pointer-events:auto;}
+  .slide.active{flex:3.2;}
   .slide img{
     width:100%;height:100%;
     object-fit:cover;
     display:block;
+    filter:brightness(0.68) saturate(0.9);
+    transition:filter .5s ease;
   }
+  .slide.active img{filter:brightness(1) saturate(1);}
+  .slide:hover img{filter:brightness(0.85) saturate(1);}
+  .slide.active:hover img{filter:brightness(1) saturate(1);}
   .slide:focus-visible{outline:2px solid var(--teal);outline-offset:3px;}
-  .tile-scrim{position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.05) 40%, rgba(0,0,0,0.72) 100%);}
+  .tile-scrim{position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.05) 45%, rgba(0,0,0,0.75) 100%);}
   .tile-name{
-    position:absolute;left:1.1rem;right:1.1rem;bottom:0.95rem;
+    position:absolute;left:1rem;right:1rem;bottom:0.85rem;
     color:#fff;
     font-family:'Bricolage Grotesque',sans-serif;
     font-weight:600;
-    font-size:1.05rem;
+    font-size:1.02rem;
     text-shadow:0 1px 6px rgba(0,0,0,0.4);
+    opacity:0;
+    transform:translateY(6px);
+    transition:opacity .35s ease .15s, transform .35s ease .15s;
   }
+  .slide.active .tile-name{opacity:1;transform:translateY(0);}
   .play-icon{
-    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-    width:58px;height:58px;border-radius:50%;
-    background:rgba(255,255,255,0.88);color:var(--ink);
-    display:flex;align-items:center;justify-content:center;font-size:1.15rem;
-    transition:background .3s ease, transform .3s ease;
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.8);
+    width:52px;height:52px;border-radius:50%;
+    background:rgba(255,255,255,0.9);color:var(--ink);
+    display:flex;align-items:center;justify-content:center;font-size:1.05rem;
+    opacity:0;
+    transition:background .3s ease, opacity .3s ease, transform .3s ease;
   }
-  .slide:hover .play-icon, .slide:focus-visible .play-icon{background:#fff;transform:translate(-50%,-50%) scale(1.08);}
-
-  .slide-dots{
-    display:flex;
-    gap:0.55rem;
-    margin-top:0.9rem;
-  }
-  .dot{
-    width:9px;height:9px;
-    border-radius:50%;
-    background:rgba(23,21,18,0.25);
-    border:none;
-    padding:0;
-    cursor:pointer;
-    transition:background .3s ease, transform .3s ease;
-  }
-  .dot.active{background:var(--coral-dark);transform:scale(1.25);}
-  .dot:hover{background:var(--coral-dark);}
-
-  /* legacy tile class kept for other pages' shared styles; unused here */
+  .slide.active .play-icon{opacity:1;transform:translate(-50%,-50%) scale(1);}
+  .slide:hover .play-icon{opacity:1;transform:translate(-50%,-50%) scale(1);}
+  .slide:hover .play-icon, .slide:focus-visible .play-icon{background:#fff;}
 
   /* ---------- Presse ---------- */
   .press-list{
@@ -390,12 +384,6 @@
         <span class="tile-name">Duo Hadassa — Trailer</span>
       </button>
     </div>
-    <div class="slide-dots">
-      <button class="dot active" data-index="0" aria-label="L. Hurt — Flashback X"></button>
-      <button class="dot" data-index="1" aria-label="H. von Bingen — O virtus sapientiae"></button>
-      <button class="dot" data-index="2" aria-label="Trailer — Thüringer Bachwochen 2024"></button>
-      <button class="dot" data-index="3" aria-label="Duo Hadassa — Trailer"></button>
-    </div>
   </div>
 </section>
 
@@ -499,22 +487,17 @@
     if(lastFocused) lastFocused.focus();
   }
 
-  document.querySelectorAll('.slide[data-youtube]').forEach(function(tile){
-    tile.addEventListener('click', function(){
-      openModal(tile.getAttribute('data-youtube'));
-    });
-  });
   closeBtn.addEventListener('click', closeModal);
   backdrop.addEventListener('click', function(e){ if(e.target === backdrop) closeModal(); });
   document.addEventListener('keydown', function(e){
     if(e.key === 'Escape' && backdrop.classList.contains('open')) closeModal();
   });
 
-  // Video slider: auto-advance, dot navigation, pause on hover
+  // Video filmstrip: all slides visible, active one wider; auto-advance,
+  // click an inactive slide to bring it forward, click the active one to play it.
   var slider = document.getElementById('video-slider');
   if(slider){
     var slides = Array.prototype.slice.call(slider.querySelectorAll('.slide'));
-    var dots = Array.prototype.slice.call(slider.querySelectorAll('.dot'));
     var idx = 0;
     var ROTATE_MS = 5000;
     var timer = null;
@@ -522,16 +505,19 @@
     function setActive(i){
       idx = i;
       slides.forEach(function(s, si){ s.classList.toggle('active', si === i); });
-      dots.forEach(function(d, di){ d.classList.toggle('active', di === i); });
     }
     function start(){ timer = setInterval(function(){ setActive((idx + 1) % slides.length); }, ROTATE_MS); }
     function stop(){ if(timer) clearInterval(timer); }
 
     start();
-    dots.forEach(function(dot, di){
-      dot.addEventListener('click', function(){
+    slides.forEach(function(slide, si){
+      slide.addEventListener('click', function(){
         stop();
-        setActive(di);
+        if(slide.classList.contains('active')){
+          openModal(slide.getAttribute('data-youtube'));
+        } else {
+          setActive(si);
+        }
         start();
       });
     });
