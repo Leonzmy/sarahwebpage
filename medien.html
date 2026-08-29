@@ -213,6 +213,42 @@
     text-shadow:0 1px 3px rgba(255,255,255,0.5);
   }
 
+  /* ---------- Instagram grid: plain square thumbnails, no Instagram chrome ---------- */
+  .insta-grid{
+    display:grid;
+    grid-template-columns:repeat(6, 1fr);
+    gap:0.6rem;
+    max-width:640px;
+  }
+  .insta-item{
+    position:relative;
+    display:block;
+    aspect-ratio:1/1;
+    border-radius:8px;
+    overflow:hidden;
+    background:rgba(23,21,18,0.08);
+  }
+  .insta-item img{
+    width:100%;height:100%;
+    object-fit:cover;
+    display:block;
+    transition:transform .4s ease;
+  }
+  .insta-item:hover img{transform:scale(1.06);}
+  .insta-placeholder{
+    width:100%;height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:rgba(23,21,18,0.4);
+    transition:color .3s ease, background .3s ease;
+  }
+  .insta-item:hover .insta-placeholder{color:var(--coral-dark);background:rgba(23,21,18,0.04);}
+  .insta-placeholder svg{width:22px;height:22px;}
+  @media(max-width:520px){
+    .insta-grid{grid-template-columns:repeat(3, 1fr);}
+  }
+
   /* ---------- Presse ---------- */
   .press-list{
     display:flex;
@@ -404,6 +440,43 @@
   </div>
 </section>
 
+<!-- Instagram -->
+<section class="medien-section">
+  <h2 class="section-title">Instagram</h2>
+  <div class="insta-grid" id="insta-grid">
+    <a class="insta-item" href="https://www.instagram.com/sarah.luw/" target="_blank" rel="noopener">
+      <span class="insta-placeholder" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>
+      </span>
+    </a>
+    <a class="insta-item" href="https://www.instagram.com/sarah.luw/" target="_blank" rel="noopener">
+      <span class="insta-placeholder" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>
+      </span>
+    </a>
+    <a class="insta-item" href="https://www.instagram.com/sarah.luw/" target="_blank" rel="noopener">
+      <span class="insta-placeholder" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>
+      </span>
+    </a>
+    <a class="insta-item" href="https://www.instagram.com/sarah.luw/" target="_blank" rel="noopener">
+      <span class="insta-placeholder" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>
+      </span>
+    </a>
+    <a class="insta-item" href="https://www.instagram.com/sarah.luw/" target="_blank" rel="noopener">
+      <span class="insta-placeholder" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>
+      </span>
+    </a>
+    <a class="insta-item" href="https://www.instagram.com/sarah.luw/" target="_blank" rel="noopener">
+      <span class="insta-placeholder" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>
+      </span>
+    </a>
+  </div>
+</section>
+
 <!-- CD -->
 <section class="medien-section">
   <h2 class="section-title">Debütalbum</h2>
@@ -478,6 +551,66 @@
       openModal(row.getAttribute('data-youtube'));
     });
   });
+})();
+</script>
+
+<script>
+(function(){
+  var SHEET_ID = "1fKlSevXrU3xcedsUj2UGBNeDw2BEh7OnCQ7lGGTVBcA";
+  var SHEET_NAME = "Tabellenblatt2";
+  var CALLBACK_NAME = "slwInstaHandler";
+
+  function escapeHtml(str){
+    if(str === null || str === undefined) return "";
+    return String(str)
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;");
+  }
+
+  function cellValue(cell){
+    if(!cell) return "";
+    if(cell.f !== undefined && cell.f !== null && cell.f !== "") return cell.f;
+    if(cell.v !== undefined && cell.v !== null) return cell.v;
+    return "";
+  }
+
+  var instaIconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>';
+
+  window[CALLBACK_NAME] = function(response){
+    try{
+      var rows = (response && response.table && response.table.rows) || [];
+      var html = "";
+      for(var i=0;i<rows.length;i++){
+        var c = (rows[i].c || []);
+        var link = cellValue(c[0]);
+        var image = cellValue(c[1]);
+        if(!link) continue;
+        html += '<a class="insta-item" href="' + escapeHtml(link) + '" target="_blank" rel="noopener">';
+        if(image){
+          html += '<img src="' + escapeHtml(image) + '" alt="Instagram Beitrag" loading="lazy">';
+        } else {
+          html += '<span class="insta-placeholder" aria-hidden="true">' + instaIconSvg + '</span>';
+        }
+        html += '</a>';
+      }
+      if(html){
+        document.getElementById("insta-grid").innerHTML = html;
+      }
+    }catch(e){
+      /* Fallback-Kacheln im HTML bleiben stehen */
+    }
+  };
+
+  var url = "https://docs.google.com/spreadsheets/d/" + SHEET_ID +
+    "/gviz/tq?tqx=out:json;responseHandler:" + CALLBACK_NAME +
+    "&sheet=" + encodeURIComponent(SHEET_NAME);
+
+  var script = document.createElement("script");
+  script.src = url;
+  script.onerror = function(){ /* Fallback-Kacheln im HTML bleiben stehen */ };
+  document.head.appendChild(script);
 })();
 </script>
 
