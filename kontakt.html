@@ -252,6 +252,18 @@
   .socials a svg{width:22px;height:22px;}
   .socials a:hover{background:var(--ink);border-color:var(--ink);color:#fff;transform:translateY(-2px);}
 
+  .legal-link{
+    position:fixed;
+    bottom:1rem;left:1.1rem;
+    z-index:90;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.72rem;
+    color:rgba(23,21,18,0.45);
+    border-bottom:1px solid transparent;
+    transition:color .3s ease, border-color .3s ease;
+  }
+  .legal-link:hover{color:var(--coral-dark);border-color:var(--coral-dark);}
+
   /* ---------- Responsive ---------- */
   @media(max-width:900px){
     body{overflow-y:auto;height:auto;}
@@ -369,6 +381,8 @@ document.getElementById('contact-form').addEventListener('submit', function(e){
   onScroll();
 })();
 </script>
+
+<a class="legal-link" href="impressum.html">Impressum</a>
 
 </body>
 </html>
