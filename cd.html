@@ -284,17 +284,23 @@
     color:rgba(23,21,18,0.78);
   }
   .radio-item a{
+    padding:0.5rem 1.1rem;
+    background:var(--gold);
+    border:1px solid var(--gold);
+    border-radius:999px;
     font-size:0.8rem;
-    font-weight:500;
-    color:var(--gold);
-    border-bottom:1px solid var(--gold);
+    font-weight:600;
+    color:#fff;
     flex:0 0 auto;
+    transition:background .3s ease, border-color .3s ease, transform .3s ease;
   }
-  .radio-item a:hover{color:var(--coral-dark);border-color:var(--coral-dark);}
+  .radio-item a:hover{background:var(--coral-dark);border-color:var(--coral-dark);transform:translateY(-1px);}
   .press-item{
     padding:1.3rem 1.5rem;
     border-left:2px solid var(--gold);
-    background:rgba(23,21,18,0.03);
+    background:rgba(237,231,221,0.62);
+    backdrop-filter:blur(10px) saturate(140%);
+    -webkit-backdrop-filter:blur(10px) saturate(140%);
     border-radius:0 12px 12px 0;
   }
   .press-source{
@@ -401,6 +407,22 @@
     font-weight:600;
     color:var(--ink);
   }
+  .track-title-link{
+    all:unset;
+    cursor:pointer;
+    color:inherit;
+    border-bottom:1px dashed var(--coral-dark);
+    transition:color .3s ease, border-color .3s ease;
+  }
+  .track-title-link:hover{color:var(--coral-dark);}
+  .track-title-link::after{
+    content:"▶";
+    display:inline-block;
+    margin-left:0.45rem;
+    font-size:0.65em;
+    color:var(--coral-dark);
+    vertical-align:middle;
+  }
   .track-time{
     font-family:'IBM Plex Mono',monospace;
     font-size:0.82rem;
@@ -500,37 +522,38 @@
   </div>
 </div>
 
-<!-- Beschreibung -->
-<section class="cd-section cd-section-narrow">
-  <h2>Über das Album</h2>
-  <div class="body-text">
-    <p>Die Fanny-Mendelssohn-Förderpreisträgerin 2025 lädt mit ihrem Debütalbum <em>intimacy</em> zu einer außergewöhnlichen Begegnung zwischen Alter und Neuer Musik ein — und zur Auseinandersetzung mit vielschichtigen Interpretationen von Intimität. Das Herzstück bildet Bachs Cellosuite Nr. 6 in D-Dur (BWV 1012), arrangiert für Altzither: Die polyphonen Linien und Harmonien der Suite entfalten sich darin auf völlig neue Weise. Ergänzt wird sie durch eigens für dieses Projekt entstandene Neukompositionen zu Körperlichkeit und Berührung, die in engem Dialog mit Bachs Musik stehen, aufbrechen, verdichten und sich mit den barocken Sätzen zu einem zusammenhängenden musikalischen Narrativ verweben — mit mongolischer Yatga, Nahmikrofonierung, Live-Elektronik und zeitgenössischer Lyrik.</p>
-    <p>Während sich unsere Gesellschaft verändert, stellt sich die Frage, wie sensibles Zuhören und das Einlassen auf etwas Unbekanntes gelingen kann. In einer Zeit zunehmender Polarisierung kann Musik ein Ort der Begegnung und Berührbarkeit sein.</p>
-  </div>
-</section>
-
-<!-- Videos -->
+<!-- Radio -->
 <section class="cd-section">
-  <h2>Videos</h2>
-  <div class="video-grid">
-    <button class="grid-tile" data-youtube="hzvTsfQpSvo">
-      <img src="https://img.youtube.com/vi/hzvTsfQpSvo/hqdefault.jpg" alt="Julius von Lorentz — berührt – geschnitten" loading="lazy">
-      <span class="tile-scrim"></span>
-      <span class="play-icon" aria-hidden="true">▶</span>
-      <span class="tile-name">Julius von Lorentz — berührt – geschnitten</span>
-    </button>
-    <button class="grid-tile" data-youtube="j1kjDk3n-CU">
-      <img src="https://img.youtube.com/vi/j1kjDk3n-CU/hqdefault.jpg" alt="J. S. Bach — Gigue" loading="lazy">
-      <span class="tile-scrim"></span>
-      <span class="play-icon" aria-hidden="true">▶</span>
-      <span class="tile-name">J. S. Bach — Gigue</span>
-    </button>
-    <button class="grid-tile" data-youtube="f6qnYLaZ4Zo">
-      <img src="https://img.youtube.com/vi/f6qnYLaZ4Zo/hqdefault.jpg" alt="Eva Kuhn — wie du atmest für Yatga" loading="lazy">
-      <span class="tile-scrim"></span>
-      <span class="play-icon" aria-hidden="true">▶</span>
-      <span class="tile-name">Eva Kuhn — wie du atmest für Yatga</span>
-    </button>
+  <h2>Radio</h2>
+  <div class="radio-list">
+    <div class="radio-item">
+      <div class="radio-info">
+        <span class="radio-source">Deutschlandfunk Kultur — 29.6.26</span>
+        <p>Sendung „Einstand", Moderation Raphael Landstorfer.</p>
+      </div>
+      <a href="https://www.deutschlandfunkkultur.de/intimacy-mit-der-zitheristin-sarah-luisa-wurmer-100.html" target="_blank" rel="noopener">Anhören</a>
+    </div>
+    <div class="radio-item">
+      <div class="radio-info">
+        <span class="radio-source">Deutschlandfunk Kultur — 8.8.26</span>
+        <p>Podcast „Steve Reich: Piano Phase" mit Sarah Luisa Wurmer und Tajda Krajnc, Moderation Carola Malter.</p>
+      </div>
+      <a href="https://www.deutschlandfunkkultur.de/steve-reich-piano-phase-mit-sarah-luisa-wurmer-und-tajda-krainc-100.html" target="_blank" rel="noopener">Anhören</a>
+    </div>
+    <div class="radio-item">
+      <div class="radio-info">
+        <span class="radio-source">Gewandhaus Radio — 14.3.26</span>
+        <p>Moderation Martin Hoffmeister.</p>
+      </div>
+      <a href="https://www.gewandhausradio.de/neue-einspielungen-12/" target="_blank" rel="noopener">Anhören</a>
+    </div>
+    <div class="radio-item">
+      <div class="radio-info">
+        <span class="radio-source">NDR Kultur — 19.9.25</span>
+        <p>Telefoninterview, Moderation Eva Schramm.</p>
+      </div>
+      <a href="https://www.ndr.de/kultur/sarah-luisa-wurmer-spielt-bach-mit-der-zither,audio-287820.html" target="_blank" rel="noopener">Anhören</a>
+    </div>
   </div>
 </section>
 
@@ -587,37 +610,39 @@
       </div>
     </div>
   </div>
+</section>
 
-  <p class="radio-subhead">Radio</p>
-  <div class="radio-list">
-    <div class="radio-item">
-      <div class="radio-info">
-        <span class="radio-source">Deutschlandfunk Kultur — 29.6.26</span>
-        <p>Sendung „Einstand", Moderation Raphael Landstorfer.</p>
-      </div>
-      <a href="https://www.deutschlandfunkkultur.de/intimacy-mit-der-zitheristin-sarah-luisa-wurmer-100.html" target="_blank" rel="noopener">Anhören</a>
-    </div>
-    <div class="radio-item">
-      <div class="radio-info">
-        <span class="radio-source">Deutschlandfunk Kultur — 8.8.26</span>
-        <p>Podcast „Steve Reich: Piano Phase" mit Sarah Luisa Wurmer und Tajda Krajnc, Moderation Carola Malter.</p>
-      </div>
-      <a href="https://www.deutschlandfunkkultur.de/steve-reich-piano-phase-mit-sarah-luisa-wurmer-und-tajda-krainc-100.html" target="_blank" rel="noopener">Anhören</a>
-    </div>
-    <div class="radio-item">
-      <div class="radio-info">
-        <span class="radio-source">Gewandhaus Radio — 14.3.26</span>
-        <p>Moderation Martin Hoffmeister.</p>
-      </div>
-      <a href="https://www.gewandhausradio.de/neue-einspielungen-12/" target="_blank" rel="noopener">Anhören</a>
-    </div>
-    <div class="radio-item">
-      <div class="radio-info">
-        <span class="radio-source">NDR Kultur — 19.9.25</span>
-        <p>Telefoninterview, Moderation Eva Schramm.</p>
-      </div>
-      <a href="https://www.ndr.de/kultur/sarah-luisa-wurmer-spielt-bach-mit-der-zither,audio-287820.html" target="_blank" rel="noopener">Anhören</a>
-    </div>
+<!-- Videos -->
+<section class="cd-section">
+  <h2>Videos</h2>
+  <div class="video-grid">
+    <button class="grid-tile" data-youtube="hzvTsfQpSvo">
+      <img src="https://img.youtube.com/vi/hzvTsfQpSvo/hqdefault.jpg" alt="Julius von Lorentz — berührt – geschnitten" loading="lazy">
+      <span class="tile-scrim"></span>
+      <span class="play-icon" aria-hidden="true">▶</span>
+      <span class="tile-name">Julius von Lorentz — berührt – geschnitten</span>
+    </button>
+    <button class="grid-tile" data-youtube="j1kjDk3n-CU">
+      <img src="https://img.youtube.com/vi/j1kjDk3n-CU/hqdefault.jpg" alt="J. S. Bach — Gigue" loading="lazy">
+      <span class="tile-scrim"></span>
+      <span class="play-icon" aria-hidden="true">▶</span>
+      <span class="tile-name">J. S. Bach — Gigue</span>
+    </button>
+    <button class="grid-tile" data-youtube="f6qnYLaZ4Zo">
+      <img src="https://img.youtube.com/vi/f6qnYLaZ4Zo/hqdefault.jpg" alt="Eva Kuhn — wie du atmest für Yatga" loading="lazy">
+      <span class="tile-scrim"></span>
+      <span class="play-icon" aria-hidden="true">▶</span>
+      <span class="tile-name">Eva Kuhn — wie du atmest für Yatga</span>
+    </button>
+  </div>
+</section>
+
+<!-- Beschreibung -->
+<section class="cd-section cd-section-narrow">
+  <h2>Über das Album</h2>
+  <div class="body-text">
+    <p>Die Fanny-Mendelssohn-Förderpreisträgerin 2025 lädt mit ihrem Debütalbum <em>intimacy</em> zu einer außergewöhnlichen Begegnung zwischen Alter und Neuer Musik ein — und zur Auseinandersetzung mit vielschichtigen Interpretationen von Intimität. Das Herzstück bildet Bachs Cellosuite Nr. 6 in D-Dur (BWV 1012), arrangiert für Altzither: Die polyphonen Linien und Harmonien der Suite entfalten sich darin auf völlig neue Weise. Ergänzt wird sie durch eigens für dieses Projekt entstandene Neukompositionen zu Körperlichkeit und Berührung, die in engem Dialog mit Bachs Musik stehen, aufbrechen, verdichten und sich mit den barocken Sätzen zu einem zusammenhängenden musikalischen Narrativ verweben — mit mongolischer Yatga, Nahmikrofonierung, Live-Elektronik und zeitgenössischer Lyrik.</p>
+    <p>Während sich unsere Gesellschaft verändert, stellt sich die Frage, wie sensibles Zuhören und das Einlassen auf etwas Unbekanntes gelingen kann. In einer Zeit zunehmender Polarisierung kann Musik ein Ort der Begegnung und Berührbarkeit sein.</p>
   </div>
 </section>
 
@@ -669,17 +694,17 @@
     </div>
     <div class="track-row">
       <span class="track-num">9</span>
-      <span class="track-title"><span class="composer">Eva Kuhn:</span> wie du atmest für Yatga</span>
+      <span class="track-title"><span class="composer">Eva Kuhn:</span> <button class="track-title-link" data-youtube="f6qnYLaZ4Zo">wie du atmest für Yatga</button></span>
       <span class="track-time">3:29</span>
     </div>
     <div class="track-row sub">
       <span class="track-num">10</span>
-      <span class="track-title">Gigue</span>
+      <span class="track-title"><button class="track-title-link" data-youtube="j1kjDk3n-CU">Gigue</button></span>
       <span class="track-time">4:24</span>
     </div>
     <div class="track-row">
       <span class="track-num">11</span>
-      <span class="track-title"><span class="composer">Julius von Lorentz:</span> berührt – geschnitten</span>
+      <span class="track-title"><span class="composer">Julius von Lorentz:</span> <button class="track-title-link" data-youtube="hzvTsfQpSvo">berührt – geschnitten</button></span>
       <span class="track-time">9:40</span>
     </div>
     <div class="track-row">
@@ -724,6 +749,11 @@
   document.querySelectorAll('.grid-tile[data-youtube]').forEach(function(tile){
     tile.addEventListener('click', function(){
       openModal(tile.getAttribute('data-youtube'));
+    });
+  });
+  document.querySelectorAll('.track-title-link[data-youtube]').forEach(function(link){
+    link.addEventListener('click', function(){
+      openModal(link.getAttribute('data-youtube'));
     });
   });
   closeBtn.addEventListener('click', closeModal);
