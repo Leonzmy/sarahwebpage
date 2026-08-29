@@ -17,9 +17,11 @@
     --coral-dark:#B85A3E;
   }
   *{box-sizing:border-box;}
+  html,body{height:100%;}
   body{
     margin:0;
-    min-height:100vh;
+    height:100vh;
+    overflow:hidden;
     background:var(--cream);
     color:var(--ink);
     font-family:'Inter',sans-serif;
@@ -77,6 +79,35 @@
   nav a.active{color:var(--teal);}
   nav a.active::after{width:100%;background:var(--teal);}
 
+  /* ---------- Submenu (e.g. Medien > CD Intimacy), shown on hover ---------- */
+  .has-submenu{position:relative;}
+  .submenu{
+    position:absolute;
+    top:100%;left:0;
+    margin-top:0.6rem;
+    padding:0.4rem 0 0;
+    min-width:130px;
+    list-style:none;
+    opacity:0;
+    transform:translateY(-6px);
+    pointer-events:none;
+    transition:opacity .25s ease, transform .25s ease;
+  }
+  .has-submenu:hover .submenu,
+  .has-submenu:focus-within .submenu{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+  }
+  .submenu a{
+    display:block;
+    padding:0.5rem 1.1rem;
+    font-size:0.82rem;
+    color:rgba(255,255,255,0.85);
+    white-space:nowrap;
+  }
+  .submenu a:hover{color:var(--teal);}
+
   /* ---------- Full-screen background image (no separate color) ---------- */
   .bg-image{
     position:fixed;
@@ -95,23 +126,26 @@
     background:rgba(10,12,10,0.14);
   }
 
-  /* ---------- Project grid: flows normally over the fixed background
-     image, starting well below the top so the photo is clearly
-     visible there. The page itself scrolls, so it can reach all the
-     way to the top — nothing caps it partway down anymore. ---------- */
+  /* ---------- Project grid: fills the screen exactly, tiles evenly
+     distributed in a 3x2 grid — no scrolling, everything fits in
+     one view. ---------- */
   .projects-section{
     position:relative;
     z-index:5;
-    padding:clamp(30vh, 34vh, 40vh) clamp(1.2rem,4vw,2.4rem) 4rem;
+    height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:5.5rem clamp(1.2rem,4vw,2.4rem) 2.2rem;
   }
   .projects-grid{
     display:grid;
     grid-template-columns:repeat(3, 1fr);
-    grid-auto-rows:minmax(220px, 300px);
-    gap:clamp(1.3rem,2.4vw,2rem);
+    grid-template-rows:repeat(2, 1fr);
+    gap:clamp(1rem,2.2vw,1.8rem);
     width:100%;
     max-width:1100px;
-    margin:0 auto;
+    height:100%;
   }
   .grid-tile{
     all:unset;
@@ -252,13 +286,20 @@
 
   /* ---------- Responsive ---------- */
   @media(max-width:820px){
-    .projects-grid{grid-template-columns:repeat(2, 1fr);}
-    .projects-section{padding-top:26vh;}
+    .projects-section{padding:4.6rem clamp(1rem,3vw,1.6rem) 1.4rem;}
+    .projects-grid{
+      grid-template-columns:repeat(2, 1fr);
+      grid-template-rows:repeat(3, 1fr);
+    }
   }
   @media(max-width:520px){
-    .projects-grid{grid-template-columns:1fr;gap:1rem;}
-    .projects-section{padding-top:22vh;}
-    .tile-name{font-size:0.92rem;}
+    .projects-section{padding:4.2rem 0.8rem 1rem;}
+    .projects-grid{
+      grid-template-columns:1fr;
+      grid-template-rows:repeat(6, 1fr);
+      gap:0.6rem;
+    }
+    .tile-name{font-size:0.88rem;}
   }
 </style>
 </head>
@@ -271,7 +312,12 @@
       <li><a href="live.html">Live</a></li>
       <li><a href="about.html">About</a></li>
       <li><a class="active" href="projekte.html">Projekte</a></li>
-      <li><a href="medien.html">Medien</a></li>
+      <li class="has-submenu">
+        <a href="medien.html">Medien</a>
+        <ul class="submenu">
+          <li><a href="cd.html">CD Intimacy</a></li>
+        </ul>
+      </li>
       <li><a href="kontakt.html">Kontakt</a></li>
     </ul>
   </nav>
