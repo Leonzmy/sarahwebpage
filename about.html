@@ -20,7 +20,7 @@
   body{
     margin:0;
     min-height:100vh;
-    background:url("about-bg.jpg") center/cover fixed no-repeat;
+    background:url("about-bg2.jpg") center/cover fixed no-repeat;
     color:var(--ink);
     font-family:'Inter',sans-serif;
     -webkit-font-smoothing:antialiased;
@@ -77,6 +77,35 @@
   nav a.active{color:var(--teal);}
   nav a.active::after{width:100%;background:var(--teal);}
 
+  /* ---------- Submenu (e.g. Medien > CD Intimacy), shown on hover ---------- */
+  .has-submenu{position:relative;}
+  .submenu{
+    position:absolute;
+    top:100%;left:0;
+    margin-top:0.6rem;
+    padding:0.4rem 0 0;
+    min-width:130px;
+    list-style:none;
+    opacity:0;
+    transform:translateY(-6px);
+    pointer-events:none;
+    transition:opacity .25s ease, transform .25s ease;
+  }
+  .has-submenu:hover .submenu,
+  .has-submenu:focus-within .submenu{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+  }
+  .submenu a{
+    display:block;
+    padding:0.5rem 1.1rem;
+    font-size:0.82rem;
+    color:rgba(255,255,255,0.85);
+    white-space:nowrap;
+  }
+  .submenu a:hover{color:var(--teal);}
+
   /* ---------- Portrait, pinned to the left edge ---------- */
   .portrait{
     position:fixed;
@@ -128,6 +157,55 @@
   }
   .bio-panel p:last-child{margin-bottom:0;}
 
+  /* ---------- References, styled like press quotes ---------- */
+  .references{
+    max-width:640px;
+    margin-top:2.6rem;
+  }
+  .references-label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.74rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--indigo);
+    margin:0 0 1.2rem;
+    text-shadow:0 1px 3px rgba(255,255,255,0.5);
+  }
+  .reference-list{
+    display:flex;
+    flex-direction:column;
+    gap:1.2rem;
+  }
+  .reference-item{
+    padding:1.3rem 1.5rem;
+    border-left:2px solid var(--coral-dark);
+    background:rgba(255,255,255,0.28);
+    backdrop-filter:blur(12px) saturate(140%);
+    -webkit-backdrop-filter:blur(12px) saturate(140%);
+    border-radius:0 14px 14px 0;
+  }
+  .reference-source{
+    display:block;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.72rem;
+    letter-spacing:0.03em;
+    color:var(--indigo);
+    margin-bottom:0.6rem;
+  }
+  .reference-item p{
+    margin:0 0 0.5rem;
+    font-size:0.96rem;
+    line-height:1.6;
+    color:var(--ink);
+    font-style:italic;
+  }
+  .reference-item a{
+    color:var(--coral-dark);
+    border-bottom:1px solid var(--coral-dark);
+    font-style:normal;
+  }
+  .reference-item a:hover{color:var(--indigo);border-color:var(--indigo);}
+
   /* ---------- Responsive ---------- */
   @media(max-width:860px){
     body{background-attachment:scroll;}
@@ -152,7 +230,12 @@
       <li><a href="live.html">Live</a></li>
       <li><a class="active" href="about.html">About</a></li>
       <li><a href="projekte.html">Projekte</a></li>
-      <li><a href="medien.html">Medien</a></li>
+      <li class="has-submenu">
+        <a href="medien.html">Medien</a>
+        <ul class="submenu">
+          <li><a href="cd.html">CD Intimacy</a></li>
+        </ul>
+      </li>
       <li><a href="kontakt.html">Kontakt</a></li>
     </ul>
   </nav>
@@ -160,8 +243,8 @@
 
 <div class="portrait">
   <img
-    src="about-portrait-1300.jpg"
-    srcset="about-portrait-800.jpg 800w, about-portrait-1300.jpg 1300w"
+    src="about-portrait2-1300.jpg"
+    srcset="about-portrait2-800.jpg 800w, about-portrait2-1300.jpg 1300w"
     sizes="38vw"
     alt="Sarah Luisa Wurmer an der Zither">
 </div>
@@ -175,6 +258,20 @@
     <p>Sarah Luisa Wurmer konzertierte bereits beim Mozartfest Würzburg, den Thüringer Bachwochen, den Festspielen Mecklenburg-Vorpommern und dem Detect Classic Festival. Seit Herbst 2024 ist sie regelmäßig zu Gast beim transkulturellen Bridges Kammerorchester. Die Saison 25/26 führte sie u.a. in die Elbphilharmonie, an die Alte Oper Frankfurt und zum Heidelberger Frühling. Sie gab ihr Debüt als Solistin mit dem Konzerthausorchester Berlin unter der Leitung von Steven Sloane.</p>
     <p>Aktuell studiert die 2002 geborene Musikerin an der Hochschule für Musik und Theater München (HMTM) in der Klasse von Prof. Georg Glasl und Tajda Krajnc, ergänzt durch Aufenthalte am Mongolian State Conservatory in Ulaanbaatar und an der mdw – Universität für Musik und darstellende Kunst Wien (Master „Contemporary Arts Practice / Improviser*Composer Performance"). Zu ihren Mentorinnen zählen Hanni Liang (Konzertdesign) und Angela Metzger (Orgel).</p>
     <p>Sie wird durch Stipendien des Max-Weber-Programms des Bayerischen Staatsministeriums für Wissenschaft und Kunst sowie des Vereins YEHUDI MENUHIN Live Music Now e.V. gefördert. Für ihr künstlerisches Schaffen wurde sie mehrfach ausgezeichnet, u.a. mit dem „Ernst-Volkmann-Preis" 2024 des 10. Internationalen Zitherwettbewerbs und dem Musikstipendium der Landeshauptstadt München 2024, außerdem als Fanny Mendelssohn Förderpreisträgerin 2025. Im selben Jahr erschien ihr Debütalbum intimacy beim Label ES-DUR, das ihre Suche nach neuen Klangräumen der Zither eindrucksvoll dokumentiert.</p>
+  </div>
+
+  <div class="references">
+    <p class="references-label">Referenzen</p>
+    <div class="reference-list">
+      <div class="reference-item">
+        <span class="reference-source">Kulturkreis der Deutschen Wirtschaft — Jurybegründung Finale Musikpreis 2026</span>
+        <p>„Sarah setzt mit konzeptioneller Tiefe und klanglicher Neugier markante Impulse für die Zither als Konzertinstrument. […] Mit großer Vermittlungskraft und künstlerischer Klarheit rückt sie ihr Instrument in neue Kontexte."</p>
+      </div>
+      <div class="reference-item">
+        <span class="reference-source"><a href="https://hanni-liang.com/" target="_blank" rel="noopener">Hanni Liang</a> — Pianistin &amp; Concert Creator</span>
+        <p>„Sarah Luisa Wurmer ist eine offene Denkerin. Wagemutig in ihrer Art, Musik zu kreieren, und neugierig, alle Felder des Kunst- und Kulturbereichs kennenzulernen. Dabei entdeckt und erprobt sie stets neue Perspektiven auf das Konzert und ihr Instrument."</p>
+      </div>
+    </div>
   </div>
 </div>
 
