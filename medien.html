@@ -243,15 +243,15 @@
   .insta-embed-row{
     display:grid;
     grid-template-columns:repeat(4, 1fr);
-    gap:0.7rem;
-    max-width:900px;
+    gap:0.8rem;
+    max-width:1100px;
     align-items:start;
   }
   .insta-embed-row .instagram-media{margin:0 auto !important;}
-  @media(max-width:820px){
+  @media(max-width:700px){
     .insta-embed-row{grid-template-columns:repeat(2, 1fr);}
   }
-  @media(max-width:480px){
+  @media(max-width:420px){
     .insta-embed-row{grid-template-columns:1fr;}
   }
   .insta-note{
@@ -642,7 +642,7 @@
         var link = cellValue(c[0]);
         if(!link) continue;
         html += '<blockquote class="instagram-media" data-instgrm-permalink="' + escapeHtml(link) +
-          '" data-instgrm-version="14" style="background:#FFF; border:0; margin:0 auto; max-width:210px; min-width:200px; width:100%;"></blockquote>';
+          '" data-instgrm-version="14" style="background:#FFF; border:0; margin:0 auto; max-width:250px; min-width:230px; width:100%;"></blockquote>';
       }
       var container = document.getElementById("insta-embed-row");
       if(html){
