@@ -213,40 +213,18 @@
     text-shadow:0 1px 3px rgba(255,255,255,0.5);
   }
 
-  /* ---------- Instagram grid: plain square thumbnails, no Instagram chrome ---------- */
-  .insta-grid{
-    display:grid;
-    grid-template-columns:repeat(6, 1fr);
-    gap:0.6rem;
-    max-width:640px;
-  }
-  .insta-item{
-    position:relative;
-    display:block;
-    aspect-ratio:1/1;
-    border-radius:8px;
-    overflow:hidden;
-    background:rgba(23,21,18,0.08);
-  }
-  .insta-item img{
-    width:100%;height:100%;
-    object-fit:cover;
-    display:block;
-    transition:transform .4s ease;
-  }
-  .insta-item:hover img{transform:scale(1.06);}
-  .insta-placeholder{
-    width:100%;height:100%;
+  /* ---------- Instagram: official embeds, laid out in a wrapping row ---------- */
+  .insta-embed-row{
     display:flex;
-    align-items:center;
-    justify-content:center;
-    color:rgba(23,21,18,0.4);
-    transition:color .3s ease, background .3s ease;
+    flex-wrap:wrap;
+    gap:1.2rem;
+    max-width:1040px;
   }
-  .insta-item:hover .insta-placeholder{color:var(--coral-dark);background:rgba(23,21,18,0.04);}
-  .insta-placeholder svg{width:22px;height:22px;}
-  @media(max-width:520px){
-    .insta-grid{grid-template-columns:repeat(3, 1fr);}
+  .insta-embed-row .instagram-media{margin:0 !important;}
+  .insta-note{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.78rem;
+    color:rgba(23,21,18,0.5);
   }
 
   /* ---------- Presse ---------- */
@@ -443,37 +421,8 @@
 <!-- Instagram -->
 <section class="medien-section">
   <h2 class="section-title">Instagram</h2>
-  <div class="insta-grid" id="insta-grid">
-    <a class="insta-item" href="https://www.instagram.com/sarah.luw/" target="_blank" rel="noopener">
-      <span class="insta-placeholder" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>
-      </span>
-    </a>
-    <a class="insta-item" href="https://www.instagram.com/sarah.luw/" target="_blank" rel="noopener">
-      <span class="insta-placeholder" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>
-      </span>
-    </a>
-    <a class="insta-item" href="https://www.instagram.com/sarah.luw/" target="_blank" rel="noopener">
-      <span class="insta-placeholder" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>
-      </span>
-    </a>
-    <a class="insta-item" href="https://www.instagram.com/sarah.luw/" target="_blank" rel="noopener">
-      <span class="insta-placeholder" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>
-      </span>
-    </a>
-    <a class="insta-item" href="https://www.instagram.com/sarah.luw/" target="_blank" rel="noopener">
-      <span class="insta-placeholder" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>
-      </span>
-    </a>
-    <a class="insta-item" href="https://www.instagram.com/sarah.luw/" target="_blank" rel="noopener">
-      <span class="insta-placeholder" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>
-      </span>
-    </a>
+  <div class="insta-embed-row" id="insta-embed-row">
+    <p class="insta-note">Beiträge werden geladen …</p>
   </div>
 </section>
 
@@ -576,7 +525,14 @@
     return "";
   }
 
-  var instaIconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>';
+  function loadInstagramEmbedScript(callback){
+    if(window.instgrm){ callback(); return; }
+    var s = document.createElement("script");
+    s.src = "https://www.instagram.com/embed.js";
+    s.async = true;
+    s.onload = callback;
+    document.body.appendChild(s);
+  }
 
   window[CALLBACK_NAME] = function(response){
     try{
@@ -585,21 +541,21 @@
       for(var i=0;i<rows.length;i++){
         var c = (rows[i].c || []);
         var link = cellValue(c[0]);
-        var image = cellValue(c[1]);
         if(!link) continue;
-        html += '<a class="insta-item" href="' + escapeHtml(link) + '" target="_blank" rel="noopener">';
-        if(image){
-          html += '<img src="' + escapeHtml(image) + '" alt="Instagram Beitrag" loading="lazy">';
-        } else {
-          html += '<span class="insta-placeholder" aria-hidden="true">' + instaIconSvg + '</span>';
-        }
-        html += '</a>';
+        html += '<blockquote class="instagram-media" data-instgrm-permalink="' + escapeHtml(link) +
+          '" data-instgrm-version="14" style="background:#FFF; border:0; margin:0; max-width:326px; min-width:280px; width:100%;"></blockquote>';
       }
+      var container = document.getElementById("insta-embed-row");
       if(html){
-        document.getElementById("insta-grid").innerHTML = html;
+        container.innerHTML = html;
+        loadInstagramEmbedScript(function(){
+          if(window.instgrm) window.instgrm.Embeds.process();
+        });
+      } else {
+        container.innerHTML = '<p class="insta-note">Noch keine Beiträge im Sheet eingetragen.</p>';
       }
     }catch(e){
-      /* Fallback-Kacheln im HTML bleiben stehen */
+      /* Hinweis im HTML bleibt stehen */
     }
   };
 
@@ -609,7 +565,10 @@
 
   var script = document.createElement("script");
   script.src = url;
-  script.onerror = function(){ /* Fallback-Kacheln im HTML bleiben stehen */ };
+  script.onerror = function(){
+    var container = document.getElementById("insta-embed-row");
+    if(container) container.innerHTML = '<p class="insta-note">Instagram-Beiträge konnten nicht geladen werden.</p>';
+  };
   document.head.appendChild(script);
 })();
 </script>
