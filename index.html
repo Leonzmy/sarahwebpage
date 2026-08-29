@@ -96,6 +96,34 @@
   }
   nav a:hover::after{width:100%;}
 
+  /* ---------- Submenu (e.g. Medien > CD Intimacy), shown on hover ---------- */
+  .has-submenu{position:relative;}
+  .submenu{
+    position:absolute;
+    top:100%;left:0;
+    padding:1rem 0 0;
+    min-width:130px;
+    list-style:none;
+    opacity:0;
+    transform:translateY(-6px);
+    pointer-events:none;
+    transition:opacity .25s ease, transform .25s ease;
+  }
+  .has-submenu:hover .submenu,
+  .has-submenu:focus-within .submenu{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+  }
+  .submenu a{
+    display:block;
+    padding:0.5rem 1.1rem;
+    font-size:0.82rem;
+    color:rgba(255,255,255,0.85);
+    white-space:nowrap;
+  }
+  .submenu a:hover{color:var(--teal);}
+
   /* ---------- Main content grid ---------- */
   main{
     position:relative;
@@ -303,7 +331,12 @@
         <li><a href="live.html">Live</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="projekte.html">Projekte</a></li>
-        <li><a href="medien.html">Medien</a></li>
+        <li class="has-submenu">
+          <a href="medien.html">Medien</a>
+          <ul class="submenu">
+            <li><a href="cd.html">CD Intimacy</a></li>
+          </ul>
+        </li>
         <li><a href="kontakt.html">Kontakt</a></li>
       </ul>
     </nav>
@@ -329,8 +362,11 @@
   <footer>
     <div class="newsletter-col">
       <a class="pill" href="medien.html#intimacy">CD „Intimacy“</a>
-      <form class="signup">
-        <input type="email" placeholder="Newsletter — deine@email.de" required>
+      <form class="signup" action="https://sarahluisawurmer.us13.list-manage.com/subscribe/post?u=63c5d7f2cdf8fcef014ea164f&amp;id=d9789cae2d" method="post" target="_blank" novalidate>
+        <input type="email" name="EMAIL" placeholder="Newsletter — deine@email.de" required>
+        <div aria-hidden="true" style="position:absolute;left:-5000px;" tabindex="-1">
+          <input type="text" name="b_63c5d7f2cdf8fcef014ea164f_d9789cae2d" tabindex="-1" value="">
+        </div>
         <button type="submit" aria-label="Anmelden">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </button>
@@ -338,16 +374,16 @@
     </div>
 
     <div class="socials">
-      <a href="#" target="_blank" rel="noopener" aria-label="Instagram">
+      <a href="https://www.instagram.com/sarah.luw/" target="_blank" rel="noopener" aria-label="Instagram">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>
       </a>
-      <a href="#" target="_blank" rel="noopener" aria-label="YouTube">
+      <a href="https://www.youtube.com/channel/UCaHHFL-cvs6Ndx08p5nR0uw/about" target="_blank" rel="noopener" aria-label="YouTube">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="6" width="19" height="12" rx="4"/><polygon points="10.5 9.3 15 12 10.5 14.7" fill="currentColor" stroke="none"/></svg>
       </a>
-      <a href="#" target="_blank" rel="noopener" aria-label="SoundCloud">
+      <a href="https://soundcloud.com/sarah-luisa-wurmer" target="_blank" rel="noopener" aria-label="SoundCloud">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 15v2"/><path d="M5 13v4"/><path d="M8 11v6"/><path d="M11 9v8"/><path d="M14 8.2c.4-2 2.2-3.5 4.3-3.5 2.4 0 4.4 2 4.4 4.4 0 .3 0 .6-.1.9h-.3H14V17H21.5"/></svg>
       </a>
-      <a href="#" target="_blank" rel="noopener" aria-label="Spotify">
+      <a href="https://open.spotify.com/intl-de/artist/3Wi0PQyjhWrgSvEH2n7eoM" target="_blank" rel="noopener" aria-label="Spotify">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="9.2"/><path d="M7 10.2c3.2-1 7.6-.6 10 .9"/><path d="M7.6 13.4c2.7-.8 6.2-.5 8.4.8"/><path d="M8.3 16.3c2.1-.6 4.8-.4 6.5.6"/></svg>
       </a>
     </div>
