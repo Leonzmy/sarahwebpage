@@ -63,25 +63,51 @@
   nav a.active{color:var(--teal);}
   nav a.active::after{width:100%;background:var(--teal);}
 
-  /* ---------- Full-screen fixed, softly blurred background image ---------- */
+  /* ---------- Submenu (e.g. Medien > CD Intimacy), shown on hover ---------- */
+  .has-submenu{position:relative;}
+  .submenu{
+    position:absolute;
+    top:100%;left:0;
+    margin-top:0.6rem;
+    padding:0.4rem 0 0;
+    min-width:130px;
+    list-style:none;
+    opacity:0;
+    transform:translateY(-6px);
+    pointer-events:none;
+    transition:opacity .25s ease, transform .25s ease;
+  }
+  .has-submenu:hover .submenu,
+  .has-submenu:focus-within .submenu{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+  }
+  .submenu a{
+    display:block;
+    padding:0.5rem 1.1rem;
+    font-size:0.82rem;
+    color:rgba(255,255,255,0.85);
+    white-space:nowrap;
+  }
+  .submenu a:hover{color:var(--teal);}
+
+  /* ---------- Full-screen background image (same as Projekte) ---------- */
   .bg-image{
     position:fixed;
     inset:0;
     z-index:0;
-    overflow:hidden;
   }
   .bg-image img{
     width:100%;height:100%;
     object-fit:cover;
-    object-position:50% 25%;
+    object-position:45% 45%;
     display:block;
-    filter:blur(9px);
-    transform:scale(1.06);
   }
   .bg-image::after{
     content:"";
     position:absolute;inset:0;
-    background:rgba(237,231,221,0.32);
+    background:rgba(10,12,10,0.14);
   }
 
   /* ---------- Content: flows normally over the fixed, blurred backdrop ---------- */
@@ -104,67 +130,59 @@
     text-shadow:0 1px 3px rgba(255,255,255,0.6);
   }
 
-  /* ---------- Large video tiles, stacked full-width ---------- */
-  /* ---------- Video filmstrip: all 4 videos visible at once, the
-     active one grows wider while the others stay narrow — nothing
-     is hidden, focus just shifts smoothly between them. ---------- */
-  .video-slider{
-    max-width:920px;
-  }
-  .slide-viewport{
+  /* ---------- Video list: simple stacked rows, thumbnail + title ---------- */
+  .video-list{
     display:flex;
-    gap:0.7rem;
-    width:100%;
-    height:clamp(210px, 28vw, 360px);
+    flex-direction:column;
+    gap:0.6rem;
+    max-width:640px;
   }
-  .slide{
+  .video-row{
     all:unset;
     cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:1.1rem;
+    padding:0.7rem;
+    border-radius:12px;
+    transition:background .3s ease;
+  }
+  .video-row:hover{background:rgba(255,255,255,0.25);}
+  .video-row:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
+  .video-thumb{
     position:relative;
-    display:block;
-    flex:1;
-    min-width:0;
-    height:100%;
-    border-radius:14px;
+    width:128px;
+    flex:0 0 auto;
+    aspect-ratio:16/9;
+    border-radius:8px;
     overflow:hidden;
-    transition:flex 0.65s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 6px 16px rgba(0,0,0,0.25);
   }
-  .slide.active{flex:3.2;}
-  .slide img{
-    width:100%;height:100%;
-    object-fit:cover;
-    display:block;
-    filter:brightness(0.68) saturate(0.9);
-    transition:filter .5s ease;
+  .video-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+  .video-thumb::after{
+    content:"";
+    position:absolute;inset:0;
+    background:rgba(0,0,0,0.18);
   }
-  .slide.active img{filter:brightness(1) saturate(1);}
-  .slide:hover img{filter:brightness(0.85) saturate(1);}
-  .slide.active:hover img{filter:brightness(1) saturate(1);}
-  .slide:focus-visible{outline:2px solid var(--teal);outline-offset:3px;}
-  .tile-scrim{position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.05) 45%, rgba(0,0,0,0.75) 100%);}
-  .tile-name{
-    position:absolute;left:1rem;right:1rem;bottom:0.85rem;
-    color:#fff;
+  .mini-play{
+    position:absolute;top:50%;left:50%;
+    transform:translate(-50%,-50%);
+    width:32px;height:32px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.92);
+    color:var(--ink);
+    display:flex;align-items:center;justify-content:center;
+    font-size:0.72rem;
+    z-index:1;
+  }
+  .video-title{
     font-family:'Bricolage Grotesque',sans-serif;
     font-weight:600;
-    font-size:1.02rem;
-    text-shadow:0 1px 6px rgba(0,0,0,0.4);
-    opacity:0;
-    transform:translateY(6px);
-    transition:opacity .35s ease .15s, transform .35s ease .15s;
+    font-size:0.98rem;
+    line-height:1.35;
+    color:var(--ink);
+    text-shadow:0 1px 3px rgba(255,255,255,0.5);
   }
-  .slide.active .tile-name{opacity:1;transform:translateY(0);}
-  .play-icon{
-    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0.8);
-    width:52px;height:52px;border-radius:50%;
-    background:rgba(255,255,255,0.9);color:var(--ink);
-    display:flex;align-items:center;justify-content:center;font-size:1.05rem;
-    opacity:0;
-    transition:background .3s ease, opacity .3s ease, transform .3s ease;
-  }
-  .slide.active .play-icon{opacity:1;transform:translate(-50%,-50%) scale(1);}
-  .slide:hover .play-icon{opacity:1;transform:translate(-50%,-50%) scale(1);}
-  .slide:hover .play-icon, .slide:focus-visible .play-icon{background:#fff;}
 
   /* ---------- Presse ---------- */
   .press-list{
@@ -176,7 +194,7 @@
   .press-item{
     padding:1.3rem 1.5rem;
     border-left:2px solid var(--gold);
-    background:rgba(237,231,221,0.35);
+    background:rgba(237,231,221,0.62);
     border-radius:0 12px 12px 0;
   }
   .press-item p{
@@ -187,44 +205,11 @@
   }
   .press-item a{
     font-size:0.82rem;
-    font-weight:500;
-    color:var(--gold);
-    border-bottom:1px solid var(--gold);
+    font-weight:600;
+    color:var(--coral-dark);
+    border-bottom:1px solid var(--coral-dark);
   }
-  .press-item a:hover{color:var(--coral-dark);border-color:var(--coral-dark);}
-
-  /* ---------- Photo grid ---------- */
-  .photo-grid{
-    display:grid;
-    grid-template-columns:repeat(5, 1fr);
-    gap:0.9rem;
-  }
-  .photo-tile{
-    position:relative;
-    border-radius:10px;
-    overflow:hidden;
-    aspect-ratio:2/3;
-  }
-  .photo-tile img{
-    width:100%;height:100%;
-    object-fit:cover;
-    display:block;
-    transition:transform .4s ease;
-  }
-  .photo-tile:hover img{transform:scale(1.05);}
-  .photo-download{
-    position:absolute;
-    right:0.5rem;bottom:0.5rem;
-    width:34px;height:34px;
-    border-radius:50%;
-    background:rgba(20,24,20,0.75);
-    backdrop-filter:blur(4px);
-    color:#fff;
-    display:flex;align-items:center;justify-content:center;
-    transition:background .3s ease, transform .3s ease;
-  }
-  .photo-download:hover{background:var(--gold);color:var(--ink);transform:scale(1.08);}
-  .photo-download svg{width:16px;height:16px;}
+  .press-item a:hover{color:var(--indigo);border-color:var(--indigo);}
 
   /* ---------- CD ---------- */
   .cd-block{
@@ -234,31 +219,15 @@
     flex-wrap:wrap;
   }
   .cd-cover{
+    display:block;
     width:180px;height:180px;
     flex:0 0 auto;
     border-radius:6px;
-    position:relative;
     overflow:hidden;
-    background:linear-gradient(150deg,var(--indigo),#0d1420 75%);
     box-shadow:0 20px 45px rgba(0,0,0,0.4);
+    transition:transform .3s ease, box-shadow .3s ease;
   }
-  .cd-cover::before{
-    content:"";
-    position:absolute;inset:0;
-    background:
-      radial-gradient(circle at 30% 20%, var(--teal), transparent 55%),
-      radial-gradient(circle at 75% 80%, var(--coral), transparent 50%);
-    opacity:0.6;
-    mix-blend-mode:screen;
-  }
-  .cd-cover span{
-    position:absolute;bottom:14px;left:14px;
-    color:#fff;
-    font-family:'Bricolage Grotesque',sans-serif;
-    font-style:italic;
-    font-weight:600;
-    font-size:1.3rem;
-  }
+  .cd-cover:hover{transform:scale(1.03);box-shadow:0 24px 52px rgba(0,0,0,0.5);}
   .cd-info{flex:1;min-width:240px;}
   .cd-info h3{
     font-family:'Bricolage Grotesque',sans-serif;
@@ -276,14 +245,17 @@
   }
   .cd-links{display:flex;flex-wrap:wrap;gap:0.7rem;}
   .cd-links a{
-    padding:0.55rem 1.1rem;
+    padding:0.75rem 1.5rem;
+    background:var(--coral-dark);
     border:1px solid var(--coral-dark);
     border-radius:999px;
-    font-size:0.82rem;
-    color:var(--coral-dark);
-    transition:background .3s ease, color .3s ease;
+    font-size:0.9rem;
+    font-weight:600;
+    color:#fff;
+    box-shadow:0 8px 20px rgba(184,90,62,0.35);
+    transition:background .3s ease, transform .3s ease, box-shadow .3s ease;
   }
-  .cd-links a:hover{background:var(--coral-dark);color:#fff;}
+  .cd-links a:hover{background:var(--indigo);border-color:var(--indigo);transform:translateY(-1px);box-shadow:0 10px 24px rgba(42,53,96,0.35);}
   .cd-note{
     margin-top:1.4rem;
     font-family:'IBM Plex Mono',monospace;
@@ -325,12 +297,6 @@
   .video-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
 
   /* ---------- Responsive ---------- */
-  @media(max-width:820px){
-    .photo-grid{grid-template-columns:repeat(3, 1fr);}
-  }
-  @media(max-width:520px){
-    .photo-grid{grid-template-columns:repeat(2, 1fr);}
-  }
 </style>
 </head>
 <body>
@@ -342,14 +308,19 @@
       <li><a href="live.html">Live</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="projekte.html">Projekte</a></li>
-      <li><a class="active" href="medien.html">Medien</a></li>
+      <li class="has-submenu">
+        <a class="active" href="medien.html">Medien</a>
+        <ul class="submenu">
+          <li><a href="cd.html">CD Intimacy</a></li>
+        </ul>
+      </li>
       <li><a href="kontakt.html">Kontakt</a></li>
     </ul>
   </nav>
 </header>
 
 <div class="bg-image">
-  <img src="medien-hero.jpg" alt="Sarah Luisa Wurmer an der Zither">
+  <img src="instrument-crop.jpg" alt="Zither — Detail der Saiten">
 </div>
 
 <div class="content-wrap">
@@ -357,48 +328,50 @@
 <!-- Video -->
 <section class="medien-section">
   <h2 class="section-title">Videos</h2>
-  <div class="video-slider" id="video-slider">
-    <div class="slide-viewport">
-      <button class="slide active" data-youtube="iLUdutUV3ng">
+  <div class="video-list">
+    <button class="video-row" data-youtube="iLUdutUV3ng">
+      <span class="video-thumb">
         <img src="https://img.youtube.com/vi/iLUdutUV3ng/hqdefault.jpg" alt="L. Hurt — Flashback X" loading="lazy">
-        <span class="tile-scrim"></span>
-        <span class="play-icon" aria-hidden="true">▶</span>
-        <span class="tile-name">L. Hurt — Flashback X</span>
-      </button>
-      <button class="slide" data-youtube="yf0WwDmc3A4">
+        <span class="mini-play" aria-hidden="true">▶</span>
+      </span>
+      <span class="video-title">L. Hurt — Flashback X</span>
+    </button>
+    <button class="video-row" data-youtube="yf0WwDmc3A4">
+      <span class="video-thumb">
         <img src="https://img.youtube.com/vi/yf0WwDmc3A4/hqdefault.jpg" alt="H. von Bingen — O virtus sapientiae" loading="lazy">
-        <span class="tile-scrim"></span>
-        <span class="play-icon" aria-hidden="true">▶</span>
-        <span class="tile-name">H. von Bingen — O virtus sapientiae</span>
-      </button>
-      <button class="slide" data-youtube="79QAloNgbVE">
+        <span class="mini-play" aria-hidden="true">▶</span>
+      </span>
+      <span class="video-title">H. von Bingen — O virtus sapientiae</span>
+    </button>
+    <button class="video-row" data-youtube="79QAloNgbVE">
+      <span class="video-thumb">
         <img src="https://img.youtube.com/vi/79QAloNgbVE/hqdefault.jpg" alt="Trailer — Thüringer Bachwochen 2024" loading="lazy">
-        <span class="tile-scrim"></span>
-        <span class="play-icon" aria-hidden="true">▶</span>
-        <span class="tile-name">Trailer — Thüringer Bachwochen 2024</span>
-      </button>
-      <button class="slide" data-youtube="1TNGhifP4rU">
+        <span class="mini-play" aria-hidden="true">▶</span>
+      </span>
+      <span class="video-title">Trailer — Thüringer Bachwochen 2024</span>
+    </button>
+    <button class="video-row" data-youtube="1TNGhifP4rU">
+      <span class="video-thumb">
         <img src="https://img.youtube.com/vi/1TNGhifP4rU/hqdefault.jpg" alt="Duo Hadassa — Trailer" loading="lazy">
-        <span class="tile-scrim"></span>
-        <span class="play-icon" aria-hidden="true">▶</span>
-        <span class="tile-name">Duo Hadassa — Trailer</span>
-      </button>
-    </div>
+        <span class="mini-play" aria-hidden="true">▶</span>
+      </span>
+      <span class="video-title">Duo Hadassa — Trailer</span>
+    </button>
   </div>
 </section>
 
 <!-- CD -->
 <section class="medien-section">
-  <h2 class="section-title">Album: Intimacy</h2>
+  <h2 class="section-title">Debütalbum</h2>
   <div class="cd-block">
-    <div class="cd-cover">
+    <a class="cd-cover" href="cd.html">
       <img src="cd-cover-thumb.jpg" alt="Cover „intimacy"" style="width:100%;height:100%;object-fit:cover;display:block;">
-    </div>
+    </a>
     <div class="cd-info">
       <h3>intimacy</h3>
       <p>Bachs Cellosuite Nr. 6 für Altzither, umrahmt von Neukompositionen zu Körperlichkeit und Berührung. Erschienen beim Label ES-DUR.</p>
       <div class="cd-links">
-        <a href="cd.html">Album, Presse &amp; Videos ansehen →</a>
+        <a href="cd.html">Album, Presse &amp; Videos →</a>
       </div>
     </div>
   </div>
@@ -406,7 +379,7 @@
 
 <!-- Presse -->
 <section class="medien-section">
-  <h2 class="section-title">Pressestimmen</h2>
+  <h2 class="section-title">Presse</h2>
   <div class="press-list">
     <div class="press-item">
       <p>„Intimacy mit der Zitheristin Sarah Luisa Wurmer" — Interview und Feature bei Deutschlandfunk Kultur.</p>
@@ -416,43 +389,6 @@
       <p>„Steve Reich: Piano Phase" mit Sarah Luisa Wurmer und Tajda Krajnc — bei Deutschlandfunk Kultur.</p>
       <a href="https://www.deutschlandfunkkultur.de/steve-reich-piano-phase-mit-sarah-luisa-wurmer-und-tajda-krainc-100.html" target="_blank" rel="noopener">Zur Sendung „Piano Phase"</a>
     </div>
-  </div>
-</section>
-
-<!-- Fotos -->
-<section class="medien-section">
-  <h2 class="section-title">Pressefotos</h2>
-  <div class="photo-grid">
-    <a class="photo-tile" href="presse-01-download.jpg" download>
-      <img src="presse-01-thumb.jpg" alt="Sarah Luisa Wurmer — Pressefoto 1" loading="lazy">
-      <span class="photo-download" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><polyline points="7 10 12 15 17 10"/><path d="M5 21h14"/></svg>
-      </span>
-    </a>
-    <a class="photo-tile" href="presse-02-download.jpg" download>
-      <img src="presse-02-thumb.jpg" alt="Sarah Luisa Wurmer — Pressefoto 2" loading="lazy">
-      <span class="photo-download" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><polyline points="7 10 12 15 17 10"/><path d="M5 21h14"/></svg>
-      </span>
-    </a>
-    <a class="photo-tile" href="presse-03-download.jpg" download>
-      <img src="presse-03-thumb.jpg" alt="Sarah Luisa Wurmer — Pressefoto 3" loading="lazy">
-      <span class="photo-download" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><polyline points="7 10 12 15 17 10"/><path d="M5 21h14"/></svg>
-      </span>
-    </a>
-    <a class="photo-tile" href="presse-04-download.jpg" download>
-      <img src="presse-04-thumb.jpg" alt="Sarah Luisa Wurmer — Pressefoto 4" loading="lazy">
-      <span class="photo-download" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><polyline points="7 10 12 15 17 10"/><path d="M5 21h14"/></svg>
-      </span>
-    </a>
-    <a class="photo-tile" href="presse-05-download.jpg" download>
-      <img src="presse-05-thumb.jpg" alt="Sarah Luisa Wurmer — Pressefoto 5" loading="lazy">
-      <span class="photo-download" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><polyline points="7 10 12 15 17 10"/><path d="M5 21h14"/></svg>
-      </span>
-    </a>
   </div>
 </section>
 
@@ -493,37 +429,11 @@
     if(e.key === 'Escape' && backdrop.classList.contains('open')) closeModal();
   });
 
-  // Video filmstrip: all slides visible, active one wider; auto-advance,
-  // click an inactive slide to bring it forward, click the active one to play it.
-  var slider = document.getElementById('video-slider');
-  if(slider){
-    var slides = Array.prototype.slice.call(slider.querySelectorAll('.slide'));
-    var idx = 0;
-    var ROTATE_MS = 5000;
-    var timer = null;
-
-    function setActive(i){
-      idx = i;
-      slides.forEach(function(s, si){ s.classList.toggle('active', si === i); });
-    }
-    function start(){ timer = setInterval(function(){ setActive((idx + 1) % slides.length); }, ROTATE_MS); }
-    function stop(){ if(timer) clearInterval(timer); }
-
-    start();
-    slides.forEach(function(slide, si){
-      slide.addEventListener('click', function(){
-        stop();
-        if(slide.classList.contains('active')){
-          openModal(slide.getAttribute('data-youtube'));
-        } else {
-          setActive(si);
-        }
-        start();
-      });
+  document.querySelectorAll('.video-row[data-youtube]').forEach(function(row){
+    row.addEventListener('click', function(){
+      openModal(row.getAttribute('data-youtube'));
     });
-    slider.addEventListener('mouseenter', stop);
-    slider.addEventListener('mouseleave', start);
-  }
+  });
 })();
 </script>
 
