@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Datenschutz — Sarah Luisa Wurmer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#EDE7DD;
+    --ink:#171512;
+    --indigo:#2A3560;
+    --teal:#5FC8B8;
+    --coral:#E29580;
+    --coral-dark:#B85A3E;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    min-height:100vh;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none;}
+
+  header{
+    position:fixed;
+    top:0;left:0;right:0;
+    z-index:100;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:1.6rem clamp(1.2rem,4vw,3.2rem);
+    background:var(--cream);
+    border-bottom:1px solid rgba(23,21,18,0.08);
+  }
+  .wordmark{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:600;
+    font-size:1.3rem;
+    letter-spacing:-0.01em;
+    color:var(--ink);
+    transition:color .3s ease;
+  }
+  .wordmark:hover{color:var(--coral-dark);}
+  nav ul{display:flex;gap:clamp(1rem,2.2vw,2.2rem);list-style:none;margin:0;padding:0;}
+  nav a{
+    color:rgba(23,21,18,0.7);
+    font-size:0.86rem;
+    letter-spacing:0.03em;
+    position:relative;
+    padding-bottom:3px;
+    transition:color .3s ease;
+  }
+  nav a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--coral-dark);transition:width .35s ease;}
+  nav a:hover{color:var(--ink);}
+  nav a:hover::after{width:100%;}
+
+  .has-submenu{position:relative;}
+  .submenu{
+    position:absolute;
+    top:100%;left:0;
+    padding:1rem 0 0;
+    min-width:130px;
+    list-style:none;
+    opacity:0;
+    transform:translateY(-6px);
+    pointer-events:none;
+    transition:opacity .25s ease, transform .25s ease;
+  }
+  .has-submenu:hover .submenu,
+  .has-submenu:focus-within .submenu{opacity:1;transform:translateY(0);pointer-events:auto;}
+  .submenu a{display:block;padding:0.5rem 1.1rem;font-size:0.82rem;color:rgba(23,21,18,0.7);white-space:nowrap;}
+  .submenu a:hover{color:var(--coral-dark);}
+
+  .impressum-wrap{
+    max-width:700px;
+    margin:0 auto;
+    padding:clamp(7rem,14vh,8rem) clamp(1.2rem,4vw,2.4rem) 5rem;
+  }
+  .impressum-wrap h1{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:600;
+    font-size:clamp(2rem,4vw,2.6rem);
+    margin:0 0 0.6rem;
+    color:var(--ink);
+  }
+  .impressum-wrap .intro-note{
+    font-size:0.86rem;
+    color:rgba(23,21,18,0.55);
+    margin:0 0 2.2rem;
+  }
+  .impressum-wrap h2{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:600;
+    font-size:1.15rem;
+    margin:2.2rem 0 0.8rem;
+    color:var(--ink);
+  }
+  .impressum-wrap h2:first-of-type{margin-top:0;}
+  .impressum-wrap h3{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:600;
+    font-size:0.98rem;
+    margin:1.4rem 0 0.5rem;
+    color:var(--ink);
+  }
+  .impressum-wrap p{
+    margin:0 0 1rem;
+    font-size:0.96rem;
+    line-height:1.7;
+    color:rgba(23,21,18,0.82);
+  }
+  .impressum-wrap ul{
+    margin:0 0 1rem;
+    padding-left:1.2rem;
+  }
+  .impressum-wrap li{
+    font-size:0.96rem;
+    line-height:1.7;
+    color:rgba(23,21,18,0.82);
+    margin-bottom:0.3rem;
+  }
+  .impressum-wrap a{
+    color:var(--coral-dark);
+    border-bottom:1px solid var(--coral-dark);
+  }
+  .impressum-wrap a:hover{color:var(--indigo);border-color:var(--indigo);}
+
+  .legal-links{
+    position:fixed;
+    bottom:1rem;left:1.1rem;
+    z-index:90;
+    display:flex;
+    gap:0.5rem;
+  }
+  .legal-links a{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.7rem;
+    color:#fff;
+    background:rgba(23,21,18,0.55);
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
+    padding:0.45rem 0.85rem;
+    border-radius:999px;
+    border-bottom:none !important;
+    transition:background .3s ease;
+  }
+  .legal-links a:hover{background:var(--coral-dark);color:#fff;}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="wordmark" href="index.html">Sarah Luisa Wurmer</a>
+  <nav>
+    <ul>
+      <li><a href="live.html">Live</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="projekte.html">Projekte</a></li>
+      <li class="has-submenu">
+        <a href="medien.html">Medien</a>
+        <ul class="submenu">
+          <li><a href="cd.html">CD Intimacy</a></li>
+        </ul>
+      </li>
+      <li><a href="kontakt.html">Kontakt</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="impressum-wrap">
+  <h1>Datenschutzerklärung</h1>
+  <p class="intro-note">Stand: August 2026</p>
+
+  <h2>1. Verantwortliche Stelle</h2>
+  <p>
+    Sarah Luisa Wurmer<br>
+    81675 München<br>
+    E-Mail: <a href="mailto:kontakt@sarahluisawurmer.de">kontakt@sarahluisawurmer.de</a>
+  </p>
+
+  <h2>2. Ihre Rechte</h2>
+  <p>Sie haben jederzeit das Recht auf unentgeltliche Auskunft über Ihre gespeicherten personenbezogenen Daten, deren Herkunft und Empfänger und den Zweck der Datenverarbeitung sowie ein Recht auf Berichtigung, Sperrung oder Löschung dieser Daten. Ebenso steht Ihnen ein Recht auf Einschränkung der Verarbeitung, ein Recht auf Datenübertragbarkeit sowie ein Widerspruchsrecht gegen die Verarbeitung zu. Hierzu sowie zu weiteren Fragen zum Thema Datenschutz können Sie sich jederzeit über die oben genannte E-Mail-Adresse an mich wenden.</p>
+  <p>Ihnen steht zudem ein Beschwerderecht bei der zuständigen Aufsichtsbehörde zu, z. B. beim Bayerischen Landesamt für Datenschutzaufsicht.</p>
+
+  <h2>3. Hosting</h2>
+  <p>Diese Website wird über GitHub Pages gehostet, einen Dienst der GitHub Inc., 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, USA. Beim Aufruf dieser Website werden automatisch Informationen in sogenannten Server-Logfiles erfasst, die Ihr Browser übermittelt (z. B. IP-Adresse, Datum und Uhrzeit der Anfrage, Browsertyp, verwendetes Betriebssystem, Referrer-URL). Diese Daten sind nicht bestimmten Personen zuordenbar und werden von GitHub zur Bereitstellung und Absicherung des Dienstes verarbeitet. Weitere Informationen finden Sie in der <a href="https://docs.github.com/site-policy/privacy-policies/github-privacy-statement" target="_blank" rel="noopener">Datenschutzerklärung von GitHub</a>.</p>
+
+  <h2>4. Kontaktformular</h2>
+  <p>Das Kontaktformular auf dieser Website öffnet beim Absenden direkt Ihr eigenes E-Mail-Programm mit einer vorausgefüllten Nachricht. Die eingegebenen Daten (Name, E-Mail-Adresse, Nachricht) werden dabei nicht an einen Server dieser Website übertragen oder von mir gespeichert — sie werden ausschließlich über Ihr eigenes E-Mail-Programm direkt an meine oben genannte E-Mail-Adresse gesendet, so wie bei jeder anderen E-Mail auch.</p>
+
+  <h2>5. Newsletter</h2>
+  <p>Für den Versand des Newsletters nutze ich den Dienst Mailchimp der Firma The Rocket Science Group, LLC, 675 Ponce De Leon Ave NE, Suite 5000, Atlanta, GA 30308, USA. Wenn Sie sich über das Anmeldeformular für den Newsletter anmelden, wird Ihre E-Mail-Adresse an Mailchimp übermittelt und dort gespeichert, um Ihnen den Newsletter zusenden zu können. Die Datenübertragung in die USA erfolgt auf Grundlage der Standardvertragsklauseln der EU-Kommission bzw. eines etwaigen Angemessenheitsbeschlusses. Sie können Ihre Einwilligung zum Empfang des Newsletters jederzeit widerrufen, z. B. über den Abmeldelink in jeder Newsletter-E-Mail. Weitere Informationen finden Sie in der <a href="https://mailchimp.com/legal/privacy/" target="_blank" rel="noopener">Datenschutzerklärung von Mailchimp</a>.</p>
+
+  <h2>6. Eingebettete Inhalte Dritter</h2>
+
+  <h3>Google Fonts</h3>
+  <p>Diese Website nutzt zur einheitlichen Darstellung von Schriftarten „Google Fonts", einen Dienst der Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland. Beim Aufruf einer Seite lädt Ihr Browser die benötigten Schriftarten direkt von Servern von Google, wobei Ihre IP-Adresse an Google übermittelt wird. Weitere Informationen finden Sie in der <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Datenschutzerklärung von Google</a>.</p>
+
+  <h3>YouTube-Videos</h3>
+  <p>Auf dieser Website eingebundene YouTube-Videos werden über die datenschutzfreundlichere Domain youtube-nocookie.com eingebunden. Nach Angaben von Google werden dadurch erst beim Abspielen eines Videos Daten an YouTube (Google Ireland Limited) übertragen. Weitere Informationen finden Sie in der <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Datenschutzerklärung von Google</a>.</p>
+
+  <h3>Instagram</h3>
+  <p>Auf dieser Website eingebundene Instagram-Beiträge werden über das offizielle Einbettungs-Skript von Instagram (Meta Platforms Ireland Limited, 4 Grand Canal Square, Dublin 2, Irland) dargestellt. Beim Laden einer Seite mit eingebettetem Instagram-Inhalt wird eine Verbindung zu Servern von Meta hergestellt, wobei Ihre IP-Adresse und ggf. weitere Browserdaten übertragen werden können. Weitere Informationen finden Sie in der <a href="https://privacycenter.instagram.com/policy/" target="_blank" rel="noopener">Datenschutzerklärung von Instagram</a>.</p>
+
+  <h3>Google Sheets</h3>
+  <p>Bestimmte Inhalte dieser Website (z. B. Konzerttermine und Biografietext) werden live aus einer öffentlich einsehbaren Google-Sheets-Tabelle geladen. Dabei wird eine Verbindung zu Servern der Google Ireland Limited hergestellt; es werden dabei technisch bedingt die üblichen Verbindungsdaten (u. a. Ihre IP-Adresse) übertragen, jedoch keine von Ihnen eingegebenen personenbezogenen Daten. Weitere Informationen finden Sie in der <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Datenschutzerklärung von Google</a>.</p>
+
+  <h2>7. SSL-Verschlüsselung</h2>
+  <p>Diese Website nutzt aus Sicherheitsgründen eine SSL-Verschlüsselung. Eine verschlüsselte Verbindung erkennen Sie daran, dass die Adresszeile des Browsers von „http://" auf „https://" wechselt.</p>
+
+  <h2>8. Änderung dieser Datenschutzerklärung</h2>
+  <p>Ich behalte mir vor, diese Datenschutzerklärung anzupassen, damit sie stets den aktuellen rechtlichen Anforderungen entspricht oder um Änderungen meiner Leistungen umzusetzen. Für Ihren erneuten Besuch gilt dann die neue Datenschutzerklärung.</p>
+</div>
+
+<div class="legal-links">
+  <a href="impressum.html">Impressum</a>
+</div>
+
+</body>
+</html>
