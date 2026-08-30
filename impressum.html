@@ -108,6 +108,27 @@
     border-bottom:1px solid var(--coral-dark);
   }
   .impressum-wrap a:hover{color:var(--indigo);border-color:var(--indigo);}
+
+  .legal-links{
+    position:fixed;
+    bottom:1rem;left:1.1rem;
+    z-index:90;
+    display:flex;
+    gap:0.5rem;
+  }
+  .legal-links a{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.7rem;
+    color:#fff;
+    background:rgba(23,21,18,0.55);
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
+    padding:0.45rem 0.85rem;
+    border-radius:999px;
+    border-bottom:none !important;
+    transition:background .3s ease;
+  }
+  .legal-links a:hover{background:var(--coral-dark);color:#fff;}
 </style>
 </head>
 <body>
@@ -161,6 +182,10 @@
 
   <h2>Urheberrecht</h2>
   <p>Die durch mich erstellten Inhalte und Werke dieser Website unterliegen dem deutschen Urheberrecht. Die Speicherung, Vervielfältigung, Übersetzung, Verbreitung und jede weitere Art der Verwertung außerhalb des Anwendungsbereichs des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Rechtsinhabers. Downloads und Kopien meiner Website sind nicht für den kommerziellen, nur für den privaten Gebrauch gestattet. Die unerlaubte Vervielfältigung oder Weitergabe einzelner Inhalte oder kompletter Seiten ist nicht gestattet und strafbar. Soweit die Inhalte auf dieser Website nicht von mir erstellt wurden, werden die Urheberrechte Dritter beachtet. Die Beiträge Dritter werden als solche gekennzeichnet. Sollten Sie trotzdem auf eine Urheberrechtsverletzung aufmerksam werden, bitte ich um einen entsprechenden Hinweis. Bei Kenntnisnahme von Rechtsverletzungen werde ich derartige Inhalte umgehend entfernen.</p>
+</div>
+
+<div class="legal-links">
+  <a href="impressum.html">Impressum</a>
 </div>
 
 </body>
