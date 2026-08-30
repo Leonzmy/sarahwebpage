@@ -59,6 +59,52 @@
     text-shadow:0 0 10px rgba(95,200,184,0.85), 0 0 22px rgba(95,200,184,0.5);
   }
   nav ul{display:flex;gap:clamp(1rem,2.2vw,2.2rem);list-style:none;margin:0;padding:0;}
+  .nav-toggle{
+    display:none;
+    all:unset;
+    cursor:pointer;
+    width:26px;height:20px;
+    position:relative;
+    z-index:110;
+  }
+  .nav-toggle span{
+    display:block;
+    position:absolute;
+    left:0;right:0;
+    height:2px;
+    background:#fff;
+    border-radius:2px;
+    transition:transform .3s ease, opacity .3s ease;
+  }
+  .nav-toggle span:nth-child(1){top:1px;}
+  .nav-toggle span:nth-child(2){top:9px;}
+  .nav-toggle span:nth-child(3){top:17px;}
+  .nav-toggle.open span:nth-child(1){transform:translateY(8px) rotate(45deg);}
+  .nav-toggle.open span:nth-child(2){opacity:0;}
+  .nav-toggle.open span:nth-child(3){transform:translateY(-8px) rotate(-45deg);}
+  @media(max-width:680px){
+    .nav-toggle{display:block;}
+    nav ul{
+      position:fixed;
+      top:0;right:0;
+      height:100vh;
+      width:min(78vw,300px);
+      flex-direction:column;
+      align-items:flex-start;
+      justify-content:center;
+      gap:1.6rem;
+      padding:2rem;
+      background:rgba(23,21,18,0.94);
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+      transform:translateX(100%);
+      transition:transform .35s ease;
+      z-index:105;
+    }
+    nav ul.open{transform:translateX(0);}
+    nav a{color:#fff !important;font-size:1.05rem;}
+    .submenu{position:static !important;opacity:1 !important;pointer-events:auto !important;transform:none !important;padding-left:0.8rem !important;margin-top:0.6rem !important;}
+  }
   nav a{
     color:rgba(255,255,255,0.85);
     font-size:0.86rem;
@@ -255,6 +301,17 @@
   }
   .socials a svg{width:22px;height:22px;}
   .socials a:hover{background:var(--ink);border-color:var(--ink);color:#fff;transform:translateY(-2px);}
+  .impressum-subtle{
+    display:block;
+    text-align:right;
+    margin-top:0.8rem;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.68rem;
+    color:rgba(23,21,18,0.4);
+    border-bottom:1px solid transparent;
+    transition:color .3s ease, border-color .3s ease;
+  }
+  .impressum-subtle:hover{color:var(--ink);border-color:rgba(23,21,18,0.5);}
 
   .legal-links{
     position:fixed;
@@ -319,18 +376,32 @@
 
   /* ---------- Responsive ---------- */
   @media(max-width:900px){
-    body{overflow-y:auto;height:auto;}
+    body{
+      overflow-y:auto;height:auto;
+      background-attachment:scroll;
+    }
     .kontakt-stage{
       height:auto;
       flex-direction:column;
       padding-top:6rem;
-      gap:2.4rem;
+      padding-bottom:6.5rem;
+      gap:2.6rem;
     }
-    .portrait-center{position:relative;left:0;top:0;transform:none;width:100%;height:46vh;order:-1;}
-    .col{max-width:440px;height:auto;}
+    .portrait-center{position:relative;left:0;top:0;transform:none;width:100%;height:42vh;order:-1;margin-bottom:0.4rem;}
+    .col{max-width:440px;height:auto;width:100%;}
     .col-right{align-items:flex-start;text-align:left;}
     form.signup input{text-align:left;}
     .socials{justify-content:flex-start;}
+    .photo-credits{
+      position:static;
+      transform:none;
+      justify-content:flex-start;
+      margin-top:1rem;
+      flex-wrap:wrap;
+    }
+    .ensemble-credits{left:0;transform:none;}
+    .ensemble-credits.open{transform:translateY(0);}
+    .legal-links{position:static;margin-top:0.8rem;}
   }
 </style>
 </head>
@@ -338,8 +409,11 @@
 
 <header>
   <a class="wordmark" href="index.html">Sarah Luisa Wurmer</a>
+  <button class="nav-toggle" id="nav-toggle" aria-label="Menü" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
   <nav>
-    <ul>
+    <ul id="nav-list">
       <li><a href="live.html">Live</a></li>
       <li><a href="about.html">About</a></li>
       <li><a href="projekte.html">Projekte</a></li>
@@ -407,6 +481,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="9.2"/><path d="M7 10.2c3.2-1 7.6-.6 10 .9"/><path d="M7.6 13.4c2.7-.8 6.2-.5 8.4.8"/><path d="M8.3 16.3c2.1-.6 4.8-.4 6.5.6"/></svg>
         </a>
       </div>
+      <a class="impressum-subtle" href="impressum.html">Impressum</a>
     </div>
   </div>
 
@@ -436,7 +511,6 @@ document.getElementById('contact-form').addEventListener('submit', function(e){
 </script>
 
 <div class="legal-links">
-  <a href="impressum.html">Impressum</a>
   <a href="datenschutz.html">Datenschutz</a>
 </div>
 
@@ -464,6 +538,26 @@ document.getElementById('contact-form').addEventListener('submit', function(e){
       panel.classList.remove('open');
       toggle.setAttribute('aria-expanded', 'false');
     }
+  });
+})();
+</script>
+
+<script>
+(function(){
+  var toggle = document.getElementById('nav-toggle');
+  var navList = document.getElementById('nav-list');
+  if(!toggle || !navList) return;
+  toggle.addEventListener('click', function(){
+    var isOpen = navList.classList.toggle('open');
+    toggle.classList.toggle('open', isOpen);
+    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  navList.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      navList.classList.remove('open');
+      toggle.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    });
   });
 })();
 </script>
