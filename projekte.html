@@ -59,8 +59,8 @@
     margin:0;padding:0;
   }
   .nav-toggle{
-    display:none;
     all:unset;
+    display:none;
     cursor:pointer;
     width:26px;height:20px;
     position:relative;
@@ -83,7 +83,7 @@
   .nav-toggle.open span:nth-child(3){transform:translateY(-8px) rotate(-45deg);}
   @media(max-width:680px){
     .nav-toggle{display:block;}
-    nav ul{
+    nav > ul{
       position:fixed;
       top:0;right:0;
       height:100vh;
@@ -100,7 +100,7 @@
       transition:transform .35s ease;
       z-index:105;
     }
-    nav ul.open{transform:translateX(0);}
+    nav > ul.open{transform:translateX(0);}
     nav a{color:#fff !important;font-size:1.05rem;}
     .submenu{position:static !important;opacity:1 !important;pointer-events:auto !important;transform:none !important;padding-left:0.8rem !important;margin-top:0.6rem !important;}
   }
