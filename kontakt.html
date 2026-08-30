@@ -256,22 +256,29 @@
   .socials a svg{width:22px;height:22px;}
   .socials a:hover{background:var(--ink);border-color:var(--ink);color:#fff;transform:translateY(-2px);}
 
-  .legal-link{
+  .legal-links{
     position:fixed;
     bottom:1rem;left:1.1rem;
     z-index:90;
-    font-family:'IBM Plex Mono',monospace;
-    font-size:0.72rem;
-    color:rgba(23,21,18,0.45);
-    border-bottom:1px solid transparent;
-    transition:color .3s ease, border-color .3s ease;
+    display:flex;
+    gap:0.5rem;
   }
-  .legal-link:hover{color:var(--coral-dark);border-color:var(--coral-dark);}
+  .legal-links a{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.7rem;
+    color:#fff;
+    background:rgba(23,21,18,0.55);
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
+    padding:0.45rem 0.85rem;
+    border-radius:999px;
+    transition:background .3s ease;
+  }
+  .legal-links a:hover{background:var(--coral-dark);}
 
   .photo-credits{
     position:fixed;
-    bottom:1rem;left:50%;
-    transform:translateX(-50%);
+    bottom:1rem;right:1.1rem;
     z-index:90;
     display:flex;
     align-items:center;
@@ -428,6 +435,21 @@ document.getElementById('contact-form').addEventListener('submit', function(e){
 })();
 </script>
 
+<div class="legal-links">
+  <a href="impressum.html">Impressum</a>
+  <a href="datenschutz.html">Datenschutz</a>
+</div>
+
+<div class="photo-credits">
+  <span>Fotos: Sophia Hegewald</span>
+  <span>·</span>
+  <button type="button" id="ensemble-toggle" aria-expanded="false">Ensemblefotos</button>
+  <div class="ensemble-credits" id="ensemble-credits">
+    <div>Duo Hadassa &amp; Eva Kuhn © <a href="https://www.die-emotionsfotografin.com/wordpress/" target="_blank" rel="noopener">Elisabeth Pfahler-Scharf</a></div>
+    <div>Antara © Theresa Rundel</div>
+  </div>
+</div>
+
 <script>
 (function(){
   var toggle = document.getElementById('ensemble-toggle');
@@ -445,18 +467,6 @@ document.getElementById('contact-form').addEventListener('submit', function(e){
   });
 })();
 </script>
-
-<a class="legal-link" href="impressum.html">Impressum</a>
-
-<div class="photo-credits">
-  <span>Fotos: Sophia Hegewald</span>
-  <span>·</span>
-  <button type="button" id="ensemble-toggle" aria-expanded="false">Ensemblefotos</button>
-  <div class="ensemble-credits" id="ensemble-credits">
-    <div>Duo Hadassa &amp; Eva Kuhn © <a href="https://www.die-emotionsfotografin.com/wordpress/" target="_blank" rel="noopener">Elisabeth Pfahler-Scharf</a></div>
-    <div>Antara © Theresa Rundel</div>
-  </div>
-</div>
 
 </body>
 </html>
