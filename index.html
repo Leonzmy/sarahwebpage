@@ -74,6 +74,52 @@
     list-style:none;
     margin:0;padding:0;
   }
+  .nav-toggle{
+    display:none;
+    all:unset;
+    cursor:pointer;
+    width:26px;height:20px;
+    position:relative;
+    z-index:110;
+  }
+  .nav-toggle span{
+    display:block;
+    position:absolute;
+    left:0;right:0;
+    height:2px;
+    background:#fff;
+    border-radius:2px;
+    transition:transform .3s ease, opacity .3s ease;
+  }
+  .nav-toggle span:nth-child(1){top:1px;}
+  .nav-toggle span:nth-child(2){top:9px;}
+  .nav-toggle span:nth-child(3){top:17px;}
+  .nav-toggle.open span:nth-child(1){transform:translateY(8px) rotate(45deg);}
+  .nav-toggle.open span:nth-child(2){opacity:0;}
+  .nav-toggle.open span:nth-child(3){transform:translateY(-8px) rotate(-45deg);}
+  @media(max-width:680px){
+    .nav-toggle{display:block;}
+    nav ul{
+      position:fixed;
+      top:0;right:0;
+      height:100vh;
+      width:min(78vw,300px);
+      flex-direction:column;
+      align-items:flex-start;
+      justify-content:center;
+      gap:1.6rem;
+      padding:2rem;
+      background:rgba(23,21,18,0.94);
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+      transform:translateX(100%);
+      transition:transform .35s ease;
+      z-index:105;
+    }
+    nav ul.open{transform:translateX(0);}
+    nav a{color:#fff !important;font-size:1.05rem;}
+    .submenu{position:static !important;opacity:1 !important;pointer-events:auto !important;transform:none !important;padding-left:0.8rem !important;margin-top:0.6rem !important;}
+  }
   nav a{
     color:rgba(255,255,255,0.85);
     font-size:0.86rem;
@@ -304,35 +350,34 @@
       gap:1.6rem;
       padding-top:1.2rem;
     }
-    .aktuell-block{margin-left:0;max-width:none;align-self:auto;margin-top:0;}
+    .aktuell-block{margin-left:0;max-width:none;align-self:auto;margin-top:0;padding:1rem 1.2rem;}
+    .aktuell-block .nt-titel{font-size:0.95rem;}
+    .aktuell-block .nt-ort{font-size:0.78rem;}
     .name-block{align-self:auto;padding-bottom:0.4rem;}
     footer{
       flex-direction:column;
       align-items:stretch;
       gap:1rem;
+      margin-top:1.4rem;
     }
+    .newsletter-col{margin-top:0.6rem;}
     .socials{justify-content:center;}
   }
 
   .legal-links{
     position:fixed;
-    bottom:5.5rem;left:1.1rem;
+    bottom:1rem;right:1.1rem;
     z-index:90;
-    display:flex;
-    gap:0.5rem;
   }
   .legal-links a{
     font-family:'IBM Plex Mono',monospace;
-    font-size:0.7rem;
-    color:#fff;
-    background:rgba(23,21,18,0.55);
-    backdrop-filter:blur(6px);
-    -webkit-backdrop-filter:blur(6px);
-    padding:0.45rem 0.85rem;
-    border-radius:999px;
-    transition:background .3s ease;
+    font-size:0.68rem;
+    color:rgba(255,255,255,0.5);
+    text-shadow:0 1px 3px rgba(0,0,0,0.4);
+    border-bottom:1px solid transparent;
+    transition:color .3s ease, border-color .3s ease;
   }
-  .legal-links a:hover{background:var(--coral-dark);}
+  .legal-links a:hover{color:#fff;border-color:rgba(255,255,255,0.6);}
 </style>
 </head>
 <body>
@@ -347,8 +392,11 @@
   <div class="scrim-bottom"></div>
 
   <header>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menü" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
     <nav>
-      <ul>
+      <ul id="nav-list">
         <li><a href="live.html">Live</a></li>
         <li><a href="about.html">About</a></li>
         <li><a href="projekte.html">Projekte</a></li>
@@ -473,8 +521,27 @@
 
 <div class="legal-links">
   <a href="impressum.html">Impressum</a>
-  <a href="datenschutz.html">Datenschutz</a>
 </div>
+
+<script>
+(function(){
+  var toggle = document.getElementById('nav-toggle');
+  var navList = document.getElementById('nav-list');
+  if(!toggle || !navList) return;
+  toggle.addEventListener('click', function(){
+    var isOpen = navList.classList.toggle('open');
+    toggle.classList.toggle('open', isOpen);
+    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  navList.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      navList.classList.remove('open');
+      toggle.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+})();
+</script>
 
 </body>
 </html>
