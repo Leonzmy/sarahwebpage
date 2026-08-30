@@ -199,8 +199,9 @@
   .nt-date{
     display:block;
     font-family:'IBM Plex Mono',monospace;
-    font-size:0.8rem;
-    color:var(--coral-dark);
+    font-weight:500;
+    font-size:0.85rem;
+    color:var(--teal);
     margin-bottom:0.4rem;
     text-shadow:0 1px 3px rgba(255,255,255,0.4);
   }
@@ -312,6 +313,26 @@
     }
     .socials{justify-content:center;}
   }
+
+  .legal-links{
+    position:fixed;
+    bottom:5.5rem;left:1.1rem;
+    z-index:90;
+    display:flex;
+    gap:0.5rem;
+  }
+  .legal-links a{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.7rem;
+    color:#fff;
+    background:rgba(23,21,18,0.55);
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
+    padding:0.45rem 0.85rem;
+    border-radius:999px;
+    transition:background .3s ease;
+  }
+  .legal-links a:hover{background:var(--coral-dark);}
 </style>
 </head>
 <body>
@@ -361,7 +382,7 @@
 
   <footer>
     <div class="newsletter-col">
-      <a class="pill" href="medien.html#intimacy">CD „Intimacy“</a>
+      <a class="pill" href="cd.html">CD „Intimacy“</a>
       <form class="signup" action="https://sarahluisawurmer.us13.list-manage.com/subscribe/post?u=63c5d7f2cdf8fcef014ea164f&amp;id=d9789cae2d" method="post" target="_blank" novalidate>
         <input type="email" name="EMAIL" placeholder="Newsletter — deine@email.de" required>
         <div aria-hidden="true" style="position:absolute;left:-5000px;" tabindex="-1">
@@ -449,6 +470,11 @@
   document.head.appendChild(script);
 })();
 </script>
+
+<div class="legal-links">
+  <a href="impressum.html">Impressum</a>
+  <a href="datenschutz.html">Datenschutz</a>
+</div>
 
 </body>
 </html>
