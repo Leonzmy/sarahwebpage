@@ -98,14 +98,18 @@
     transition:color .3s ease, text-shadow .3s ease;
   }
   .wordmark:hover{color:var(--teal);text-shadow:0 0 10px rgba(95,200,184,0.85), 0 0 22px rgba(95,200,184,0.5);}
-  .lang-switch{
+    .lang-switch{
     font-family:'IBM Plex Mono',monospace;
-    font-size:0.78rem;
-    color:rgba(255,255,255,0.7);
-    border-bottom:1px solid transparent;
-    transition:color .3s ease, border-color .3s ease;
+    font-size:0.72rem;
+    font-weight:600;
+    letter-spacing:0.03em;
+    color:#fff;
+    background:var(--coral-dark);
+    padding:0.32rem 0.7rem;
+    border-radius:999px;
+    transition:background .3s ease;
   }
-  .lang-switch:hover{color:#fff;border-color:rgba(255,255,255,0.6);}
+  .lang-switch:hover{background:var(--indigo);}
   .header-right{display:flex;align-items:center;gap:1.4rem;}
   nav ul{display:flex;gap:clamp(1rem,2.2vw,2.2rem);list-style:none;margin:0;padding:0;}
   .nav-toggle{
@@ -320,36 +324,6 @@
   }
   .video-acc-large:hover .play-icon{background:#fff;transform:translate(-50%,-50%) scale(1.08);}
 
-  /* ---------- Instagram: official embeds, force-scaled down so
-     4 always fit in a row regardless of Instagram's own minimum
-     render width ---------- */
-  .insta-embed-row{
-    display:flex;
-    flex-wrap:nowrap;
-    gap:0.6rem;
-    max-width:820px;
-    overflow-x:auto;
-  }
-  .insta-scale-wrap{
-    flex:0 0 auto;
-    width:180px;
-    overflow:hidden;
-    border-radius:8px;
-  }
-  .insta-scale-inner{
-    width:400px;
-    transform:scale(0.45);
-    transform-origin:top left;
-  }
-  .insta-note{
-    font-family:'IBM Plex Mono',monospace;
-    font-size:0.78rem;
-    color:rgba(23,21,18,0.5);
-  }
-  @media(max-width:480px){
-    .insta-scale-wrap{width:140px;}
-    .insta-scale-inner{transform:scale(0.35);}
-  }
   @media(max-width:700px){
     .medien-section{
       background:none;
@@ -611,14 +585,6 @@
   </div>
 </section>
 
-<!-- Instagram -->
-<section class="medien-section">
-  <h2 class="section-title">Instagram</h2>
-  <div class="insta-embed-row" id="insta-embed-row">
-    <p class="insta-note">Beiträge werden geladen …</p>
-  </div>
-</section>
-
 <div class="site-social">
   <a href="https://www.instagram.com/sarah.luw/" target="_blank" rel="noopener" aria-label="Instagram">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>
@@ -709,97 +675,6 @@
     videoList.addEventListener('mouseenter', stop);
     videoList.addEventListener('mouseleave', start);
   }
-})();
-</script>
-
-<script>
-(function(){
-  var SHEET_ID = "1fKlSevXrU3xcedsUj2UGBNeDw2BEh7OnCQ7lGGTVBcA";
-  var SHEET_NAME = "Tabellenblatt2";
-  var CALLBACK_NAME = "slwInstaHandler";
-
-  function escapeHtml(str){
-    if(str === null || str === undefined) return "";
-    return String(str)
-      .replace(/&/g,"&amp;")
-      .replace(/</g,"&lt;")
-      .replace(/>/g,"&gt;")
-      .replace(/"/g,"&quot;");
-  }
-
-  function cellValue(cell){
-    if(!cell) return "";
-    if(cell.f !== undefined && cell.f !== null && cell.f !== "") return cell.f;
-    if(cell.v !== undefined && cell.v !== null) return cell.v;
-    return "";
-  }
-
-  var SCALE = 0.45;
-
-  function loadInstagramEmbedScript(callback){
-    if(window.instgrm){ callback(); return; }
-    var s = document.createElement("script");
-    s.src = "https://www.instagram.com/embed.js";
-    s.async = true;
-    s.onload = callback;
-    document.body.appendChild(s);
-  }
-
-  function syncScaledHeights(container){
-    if(!window.ResizeObserver) return;
-    container.querySelectorAll(".insta-scale-wrap").forEach(function(wrap){
-      var iframe = wrap.querySelector("iframe");
-      if(!iframe || wrap.dataset.observed) return;
-      wrap.dataset.observed = "true";
-      var ro = new ResizeObserver(function(){
-        var h = iframe.offsetHeight || iframe.getBoundingClientRect().height;
-        if(h) wrap.style.height = Math.round(h * SCALE) + "px";
-      });
-      ro.observe(iframe);
-    });
-  }
-
-  window[CALLBACK_NAME] = function(response){
-    try{
-      var rows = (response && response.table && response.table.rows) || [];
-      var html = "";
-      for(var i=0;i<rows.length;i++){
-        var c = (rows[i].c || []);
-        var link = cellValue(c[0]);
-        if(!link) continue;
-        html += '<div class="insta-scale-wrap"><div class="insta-scale-inner">' +
-          '<blockquote class="instagram-media" data-instgrm-permalink="' + escapeHtml(link) +
-          '" data-instgrm-version="14" style="background:#FFF; border:0; margin:0; width:400px;"></blockquote>' +
-          '</div></div>';
-      }
-      var container = document.getElementById("insta-embed-row");
-      if(html){
-        container.innerHTML = html;
-        loadInstagramEmbedScript(function(){
-          if(window.instgrm){
-            window.instgrm.Embeds.process();
-            setTimeout(function(){ syncScaledHeights(container); }, 800);
-          }
-        });
-      } else {
-        container.innerHTML = '<p class="insta-note">Noch keine Beiträge im Sheet eingetragen.</p>';
-      }
-    }catch(e){
-      /* Hinweis im HTML bleibt stehen */
-    }
-  };
-
-  var url = "https://docs.google.com/spreadsheets/d/" + SHEET_ID +
-    "/gviz/tq?tqx=out:json;responseHandler:" + CALLBACK_NAME +
-    "&sheet=" + encodeURIComponent(SHEET_NAME);
-
-  var script = document.createElement("script");
-  script.src = url;
-  script.onerror = function(){
-    var container = document.getElementById("insta-embed-row");
-    if(container) container.innerHTML = '<p class="insta-note">Instagram-Beiträge konnten nicht geladen werden.</p>';
-  };
-  document.head.appendChild(script);
 })();
 </script>
 
