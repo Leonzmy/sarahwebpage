@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon-32.png" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <title>Impressum — Sarah Luisa Wurmer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -77,6 +80,16 @@
   .submenu a{display:block;padding:0.5rem 1.1rem;font-size:0.82rem;color:rgba(23,21,18,0.7);white-space:nowrap;}
   .submenu a:hover{color:var(--coral-dark);}
 
+  .lang-switch{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.78rem;
+    color:rgba(23,21,18,0.5);
+    border-bottom:1px solid transparent;
+    transition:color .3s ease, border-color .3s ease;
+  }
+  .lang-switch:hover{color:var(--ink);border-color:rgba(23,21,18,0.5);}
+  .header-right{display:flex;align-items:center;gap:1.4rem;}
+
   .impressum-wrap{
     max-width:700px;
     margin:0 auto;
@@ -135,6 +148,9 @@
 
 <header>
   <a class="wordmark" href="index.html">Sarah Luisa Wurmer</a>
+  <div class="header-right">
+    <a class="lang-switch" href="en/impressum.html">EN</a>
+  </div>
   <nav>
     <ul>
       <li><a href="live.html">Live</a></li>
