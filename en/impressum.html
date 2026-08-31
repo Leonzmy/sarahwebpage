@@ -6,7 +6,7 @@
 <link rel="icon" href="../favicon.ico" sizes="any">
 <link rel="icon" href="../favicon-32.png" type="image/png">
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
-<title>Legal Notice — Sarah Luisa Wurmer</title>
+<title>Contact — Sarah Luisa Wurmer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -20,16 +20,19 @@
     --coral-dark:#B85A3E;
   }
   *{box-sizing:border-box;}
+  html,body{height:100%;}
   body{
     margin:0;
-    min-height:100vh;
-    background:var(--cream);
+    height:100vh;
+    overflow:hidden;
+    background:url("../kontakt-bg.jpg") center/cover fixed no-repeat, var(--cream);
     color:var(--ink);
     font-family:'Inter',sans-serif;
     -webkit-font-smoothing:antialiased;
   }
   a{color:inherit;text-decoration:none;}
 
+  /* ---------- Fixed header ---------- */
   header{
     position:fixed;
     top:0;left:0;right:0;
@@ -38,30 +41,102 @@
     justify-content:space-between;
     align-items:center;
     padding:1.6rem clamp(1.2rem,4vw,3.2rem);
-    background:var(--cream);
-    border-bottom:1px solid rgba(23,21,18,0.08);
+    transition:background .3s ease, backdrop-filter .3s ease;
+  }
+  header.scrolled{
+    background:rgba(23,21,18,0.42);
+    backdrop-filter:blur(14px) saturate(140%);
+    -webkit-backdrop-filter:blur(14px) saturate(140%);
   }
   .wordmark{
     font-family:'Bricolage Grotesque',sans-serif;
     font-weight:600;
     font-size:1.3rem;
     letter-spacing:-0.01em;
-    color:var(--ink);
-    transition:color .3s ease;
+    color:#fff;
+    text-shadow:0 1px 8px rgba(0,0,0,0.4);
+    transition:color .3s ease, text-shadow .3s ease;
   }
-  .wordmark:hover{color:var(--coral-dark);}
+  .wordmark:hover{
+    color:var(--teal);
+    text-shadow:0 0 10px rgba(95,200,184,0.85), 0 0 22px rgba(95,200,184,0.5);
+  }
+    .lang-switch{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.72rem;
+    font-weight:600;
+    letter-spacing:0.03em;
+    color:#fff;
+    background:var(--coral-dark);
+    padding:0.32rem 0.7rem;
+    border-radius:999px;
+    transition:background .3s ease;
+  }
+  .lang-switch:hover{background:var(--indigo);}
+  .header-right{display:flex;align-items:center;gap:1.4rem;}
   nav ul{display:flex;gap:clamp(1rem,2.2vw,2.2rem);list-style:none;margin:0;padding:0;}
+  .nav-toggle{
+    all:unset;
+    display:none;
+    cursor:pointer;
+    width:26px;height:20px;
+    position:relative;
+    z-index:110;
+  }
+  .nav-toggle span{
+    display:block;
+    position:absolute;
+    left:0;right:0;
+    height:2px;
+    background:#fff;
+    border-radius:2px;
+    transition:transform .3s ease, opacity .3s ease;
+  }
+  .nav-toggle span:nth-child(1){top:1px;}
+  .nav-toggle span:nth-child(2){top:9px;}
+  .nav-toggle span:nth-child(3){top:17px;}
+  .nav-toggle.open span:nth-child(1){transform:translateY(8px) rotate(45deg);}
+  .nav-toggle.open span:nth-child(2){opacity:0;}
+  .nav-toggle.open span:nth-child(3){transform:translateY(-8px) rotate(-45deg);}
+  @media(max-width:680px){
+    .nav-toggle{display:block;}
+    nav > ul{
+      position:absolute;
+      top:calc(100% + 0.6rem);right:0;
+      height:auto;
+      width:min(60vw,220px);
+      flex-direction:column;
+      align-items:flex-start;
+      justify-content:flex-start;
+      gap:0.9rem;
+      padding:1.2rem 1.3rem;
+      background:rgba(23,21,18,0.94);
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+      border-radius:14px;
+      opacity:0;
+      transform:translateY(-8px);
+      pointer-events:none;
+      transition:opacity .25s ease, transform .25s ease;
+      z-index:105;
+    }
+    nav > ul.open{opacity:1;transform:translateY(0);pointer-events:auto;}
+    nav a{color:#fff !important;font-size:0.92rem;}
+    .submenu{position:static !important;opacity:1 !important;pointer-events:auto !important;transform:none !important;padding-left:0.7rem !important;margin-top:0.4rem !important;min-width:0 !important;}
+  }
   nav a{
-    color:rgba(23,21,18,0.7);
+    color:rgba(255,255,255,0.85);
     font-size:0.86rem;
     letter-spacing:0.03em;
     position:relative;
     padding-bottom:3px;
-    transition:color .3s ease;
+    transition:color .3s ease, text-shadow .3s ease;
   }
-  nav a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--coral-dark);transition:width .35s ease;}
-  nav a:hover{color:var(--ink);}
+  nav a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--teal);transition:width .35s ease;}
+  nav a:hover{color:#fff;text-shadow:0 0 10px rgba(95,200,184,0.85), 0 0 22px rgba(95,200,184,0.5);}
   nav a:hover::after{width:100%;}
+  nav a.active{color:var(--teal);}
+  nav a.active::after{width:100%;background:var(--teal);}
 
   .has-submenu{position:relative;}
   .submenu{
@@ -77,50 +152,185 @@
   }
   .has-submenu:hover .submenu,
   .has-submenu:focus-within .submenu{opacity:1;transform:translateY(0);pointer-events:auto;}
-  .submenu a{display:block;padding:0.5rem 1.1rem;font-size:0.82rem;color:rgba(23,21,18,0.7);white-space:nowrap;}
-  .submenu a:hover{color:var(--coral-dark);}
+  .submenu a{display:block;padding:0.5rem 1.1rem;font-size:0.82rem;color:rgba(255,255,255,0.85);white-space:nowrap;}
+  .submenu a:hover{color:var(--teal);}
 
-  .lang-switch{
+  /* ---------- Centered portrait strip, soft edges on both sides ---------- */
+  .portrait-center{
+    position:fixed;
+    top:0;bottom:0;
+    left:50%;
+    transform:translateX(-50%);
+    width:min(30vw, 420px);
+    height:100vh;
+    z-index:1;
+    -webkit-mask-image:linear-gradient(to right, transparent 0%, #000 18%, #000 82%, transparent 100%);
+    mask-image:linear-gradient(to right, transparent 0%, #000 18%, #000 82%, transparent 100%);
+  }
+  .portrait-center img{
+    width:100%;height:100%;
+    object-fit:cover;
+    object-position:50% 30%;
+    display:block;
+  }
+
+  /* ---------- Page layout: two content columns flanking the photo ---------- */
+  .kontakt-stage{
+    position:relative;
+    z-index:5;
+    height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:2vw;
+    padding:clamp(5.5rem,10vh,6.5rem) clamp(1.2rem,3vw,2.4rem) clamp(1.5rem,4vh,2.2rem);
+  }
+  .col{
+    flex:1;
+    min-width:0;
+    max-width:340px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    height:100%;
+  }
+  .col-left{align-items:flex-start;}
+  .col-right{align-items:flex-end;text-align:right;}
+
+  .eyebrow{
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:0.8rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--coral-dark);
+    display:block;
+    margin:0 0 0.6rem;
+  }
+  h1.kontakt-title{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:600;
+    font-size:clamp(1.7rem,2.6vw,2.2rem);
+    margin:0 0 1.2rem;
+    color:var(--ink);
+  }
+
+  /* ---------- Contact form ---------- */
+  .contact-form{
+    display:flex;
+    flex-direction:column;
+    gap:0.6rem;
+    width:100%;
+  }
+  .contact-form input,
+  .contact-form textarea{
+    width:100%;
+    font-family:'Inter',sans-serif;
+    font-size:0.86rem;
+    padding:0.55rem 0;
+    background:transparent;
+    border:none;
+    border-bottom:1px solid rgba(23,21,18,0.3);
+    color:var(--ink);
+    outline:none;
+    resize:none;
+  }
+  .contact-form input::placeholder,
+  .contact-form textarea::placeholder{color:rgba(23,21,18,0.45);}
+  .contact-form input:focus,
+  .contact-form textarea:focus{border-color:var(--coral-dark);}
+  .contact-form button{
+    all:unset;
+    cursor:pointer;
+    margin-top:0.7rem;
+    align-self:flex-start;
+    padding:0.6rem 1.3rem;
+    background:var(--ink);
+    color:#fff;
+    border-radius:999px;
+    font-size:0.84rem;
+    font-weight:500;
+    transition:background .3s ease;
+  }
+  .contact-form button:hover{background:var(--coral-dark);}
+
+  .email-line{
+    margin-top:1.2rem;
+    font-size:0.86rem;
+    color:rgba(23,21,18,0.7);
+  }
+  .email-line a{
+    color:var(--ink);
+    font-weight:500;
+    border-bottom:1px solid var(--ink);
+  }
+  .email-line a:hover{color:var(--coral-dark);border-color:var(--coral-dark);}
+
+  /* ---------- Newsletter ---------- */
+  .newsletter-block{width:100%;}
+  form.signup{
+    display:flex;
+    align-items:center;
+    border-bottom:1px solid rgba(23,21,18,0.3);
+    width:100%;
+    margin-top:0.6rem;
+  }
+  form.signup input{
+    flex:1;
+    background:transparent;
+    border:none;
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    font-size:0.86rem;
+    padding:0.55rem 0.2rem;
+    outline:none;
+    text-align:right;
+  }
+  form.signup input::placeholder{color:rgba(23,21,18,0.45);}
+  form.signup button{
+    all:unset;
+    cursor:pointer;
+    color:var(--coral-dark);
+    display:flex;
+    align-items:center;
+    padding:0.4rem;
+  }
+  form.signup button:hover{color:var(--ink);}
+  form.signup button svg{width:17px;height:17px;}
+
+  /* ---------- Social — larger, more prominent ---------- */
+  .social-block{margin-top:2.2rem;width:100%;}
+  .socials{
+    display:flex;
+    gap:0.9rem;
+    justify-content:flex-end;
+    margin-top:0.7rem;
+  }
+  .socials a{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:52px;height:52px;
+    border-radius:50%;
+    border:1px solid rgba(23,21,18,0.35);
+    color:var(--ink);
+    background:rgba(255,255,255,0.35);
+    backdrop-filter:blur(6px);
+    transition:background .3s ease, border-color .3s ease, transform .3s ease;
+  }
+  .socials a svg{width:22px;height:22px;}
+  .socials a:hover{background:var(--ink);border-color:var(--ink);color:#fff;transform:translateY(-2px);}
+  .impressum-subtle{
+    display:block;
+    text-align:right;
+    margin-top:0.8rem;
     font-family:'IBM Plex Mono',monospace;
-    font-size:0.78rem;
-    color:rgba(23,21,18,0.5);
+    font-size:0.68rem;
+    color:rgba(23,21,18,0.4);
     border-bottom:1px solid transparent;
     transition:color .3s ease, border-color .3s ease;
   }
-  .lang-switch:hover{color:var(--ink);border-color:rgba(23,21,18,0.5);}
-  .header-right{display:flex;align-items:center;gap:1.4rem;}
-
-  .impressum-wrap{
-    max-width:700px;
-    margin:0 auto;
-    padding:clamp(7rem,14vh,8rem) clamp(1.2rem,4vw,2.4rem) 5rem;
-  }
-  .impressum-wrap h1{
-    font-family:'Bricolage Grotesque',sans-serif;
-    font-weight:600;
-    font-size:clamp(2rem,4vw,2.6rem);
-    margin:0 0 2.2rem;
-    color:var(--ink);
-  }
-  .impressum-wrap h2{
-    font-family:'Bricolage Grotesque',sans-serif;
-    font-weight:600;
-    font-size:1.15rem;
-    margin:2.2rem 0 0.8rem;
-    color:var(--ink);
-  }
-  .impressum-wrap h2:first-of-type{margin-top:0;}
-  .impressum-wrap p{
-    margin:0 0 1rem;
-    font-size:0.96rem;
-    line-height:1.7;
-    color:rgba(23,21,18,0.82);
-  }
-  .impressum-wrap a{
-    color:var(--coral-dark);
-    border-bottom:1px solid var(--coral-dark);
-  }
-  .impressum-wrap a:hover{color:var(--indigo);border-color:var(--indigo);}
+  .impressum-subtle:hover{color:var(--ink);border-color:rgba(23,21,18,0.5);}
 
   .legal-links{
     position:fixed;
@@ -138,10 +348,105 @@
     -webkit-backdrop-filter:blur(6px);
     padding:0.45rem 0.85rem;
     border-radius:999px;
-    border-bottom:none !important;
     transition:background .3s ease;
   }
-  .legal-links a:hover{background:var(--coral-dark);color:#fff;}
+  .legal-links a:hover{background:var(--coral-dark);}
+
+  .photo-credits{
+    position:fixed;
+    bottom:1rem;right:1.1rem;
+    z-index:90;
+    display:flex;
+    align-items:center;
+    gap:0.5rem;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.72rem;
+    color:rgba(23,21,18,0.45);
+  }
+  .photo-credits button{
+    all:unset;
+    cursor:pointer;
+    color:rgba(23,21,18,0.45);
+    border-bottom:1px dashed rgba(23,21,18,0.45);
+    transition:color .3s ease, border-color .3s ease;
+  }
+  .photo-credits button:hover{color:var(--coral-dark);border-color:var(--coral-dark);}
+  .ensemble-credits{
+    position:absolute;
+    bottom:100%;left:50%;
+    transform:translateX(-50%);
+    margin-bottom:0.6rem;
+    padding:0.8rem 1.1rem;
+    background:rgba(255,255,255,0.85);
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    border-radius:10px;
+    white-space:nowrap;
+    text-align:left;
+    opacity:0;
+    transform-origin:bottom center;
+    pointer-events:none;
+    transition:opacity .25s ease, transform .25s ease;
+  }
+  .ensemble-credits.open{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0);}
+  .ensemble-credits div{font-size:0.72rem;color:rgba(23,21,18,0.75);line-height:1.6;}
+  .ensemble-credits a{color:var(--coral-dark);border-bottom:1px solid var(--coral-dark);}
+  .ensemble-credits a:hover{color:var(--indigo);border-color:var(--indigo);}
+
+  /* ---------- Responsive ---------- */
+  @media(max-width:900px){
+    body{
+      overflow-y:auto;height:auto;
+      background:var(--cream);
+    }
+    .kontakt-stage{
+      height:auto;
+      flex-direction:column;
+      padding-top:6rem;
+      padding-bottom:6.5rem;
+      gap:1.6rem;
+      position:relative;
+      z-index:5;
+    }
+    .portrait-center{
+      position:fixed;
+      inset:0;
+      left:0;top:0;
+      transform:none;
+      width:100%;
+      height:100vh;
+      -webkit-mask-image:none;
+      mask-image:none;
+      z-index:0;
+    }
+    .portrait-center::after{
+      content:"";
+      position:absolute;inset:0;
+      background:rgba(15,14,11,0.22);
+    }
+    .col{max-width:440px;height:auto;width:100%;}
+    .col-left, .col-right{
+      background:rgba(237,231,221,0.6);
+      backdrop-filter:blur(14px) saturate(140%);
+      -webkit-backdrop-filter:blur(14px) saturate(140%);
+      border-radius:20px;
+      padding:1.5rem 1.4rem;
+    }
+    .col-right{align-items:flex-start;text-align:left;}
+    form.signup input{text-align:left;}
+    .socials{justify-content:flex-start;}
+    .photo-credits{
+      position:relative;
+      z-index:5;
+      bottom:auto;right:auto;
+      justify-content:flex-start;
+      margin-top:0.4rem;
+      flex-wrap:wrap;
+    }
+    .ensemble-credits{left:0;transform:none;}
+    .ensemble-credits.open{transform:translateY(0);}
+    .legal-links{position:relative;z-index:5;margin-top:0.8rem;}
+  }
 </style>
 </head>
 <body>
@@ -149,62 +454,160 @@
 <header>
   <a class="wordmark" href="index.html">Sarah Luisa Wurmer</a>
   <div class="header-right">
-    <a class="lang-switch" href="../impressum.html">DE</a>
+    <a class="lang-switch" href="../kontakt.html">DE</a>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav>
+      <ul id="nav-list">
+        <li><a href="live.html">Live</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="projekte.html">Projects</a></li>
+        <li class="has-submenu">
+          <a href="medien.html">Media</a>
+          <ul class="submenu">
+            <li><a href="cd.html">CD Intimacy</a></li>
+          </ul>
+        </li>
+        <li><a class="active" href="kontakt.html">Contact</a></li>
+      </ul>
+    </nav>
   </div>
-  <nav>
-    <ul>
-      <li><a href="live.html">Live</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="projekte.html">Projects</a></li>
-      <li class="has-submenu">
-        <a href="medien.html">Media</a>
-        <ul class="submenu">
-          <li><a href="cd.html">CD Intimacy</a></li>
-        </ul>
-      </li>
-      <li><a href="kontakt.html">Contact</a></li>
-    </ul>
-  </nav>
 </header>
 
-<div class="impressum-wrap">
-  <h1>Legal Notice</h1>
-
-  <p style="font-size:0.85rem;color:rgba(23,21,18,0.55);margin-top:-1.4rem;margin-bottom:2rem;">This page is provided in English for convenience. As this website is operated from Germany, it is subject to German law; the <a href="../impressum.html">German version</a> is the legally binding original.</p>
-
-  <h2>Information according to § 5 TMG</h2>
-  <p>
-    Sarah Luisa Wurmer<br>
-    81675 Munich, Germany<br>
-    Mobile: +49 176 50273258<br>
-    Email: <a href="mailto:kontakt@sarahluisawurmer.de">kontakt@sarahluisawurmer.de</a>
-  </p>
-
-  <h2>Responsible for content according to § 55 (2) RStV</h2>
-  <p>Sarah Luisa Wurmer</p>
-
-  <h2>Website design</h2>
-  <p>Concept and text: Sarah Luisa Wurmer<br>Technical implementation: Leon Zmelty</p>
-
-  <h2>Dispute resolution before a consumer arbitration board</h2>
-  <p>The European Commission provides a platform for online dispute resolution (ODR): <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener">https://ec.europa.eu/consumers/odr/</a>. My contact details can be found in this legal notice.</p>
-  <p>I am not willing or obliged to participate in dispute resolution proceedings before a consumer arbitration board.</p>
-
-  <h2>Limitation of liability</h2>
-  <p>I have created the content of this website with the greatest care; however, I cannot guarantee the accuracy, completeness or timeliness of that content.</p>
-  <p>As a service provider, I am liable for my own content on these pages in accordance with general laws under § 7 (1) of the German Telemedia Act (TMG). However, under §§ 8–10 TMG, I am not obliged to monitor transmitted or stored third-party information or to investigate circumstances that indicate unlawful activity. Obligations to remove or block the use of information under general law remain unaffected. However, liability in this regard is only possible from the point in time at which a specific infringement becomes known. Upon becoming aware of any such infringements, I will remove the relevant content immediately.</p>
-  <p>Use of my website is at the user's own risk. Contributions identified by name reflect the opinion of the respective author and not necessarily my own. Simply using the website does not create any contractual relationship between the user and me.</p>
-
-  <h2>External links</h2>
-  <p>My website contains links to external third-party websites, over whose content and design I have no influence, now or in the future. I therefore cannot assume any liability for this external content. The provision of external links does not mean that I adopt the content behind the link as my own. The respective provider is always responsible for the content of the linked pages. At the time of linking, I checked the linked pages for possible legal violations; none were apparent at that time. Continuous monitoring of the content of external links is not reasonable without concrete evidence of a legal violation. Upon becoming aware of any such infringements, I will remove such external links immediately.</p>
-
-  <h2>Copyright</h2>
-  <p>The content and works created by me on this website are subject to German copyright law. Storage, reproduction, translation, distribution and any other form of exploitation beyond the scope of copyright law require the written consent of the respective rights holder. Downloads and copies of this website are permitted for private, non-commercial use only. Unauthorised reproduction or distribution of individual content or complete pages is not permitted and is a punishable offence. Where the content on this website was not created by me, the copyrights of third parties are respected. Third-party contributions are marked as such. If you nevertheless become aware of a copyright infringement, please notify me accordingly. Upon becoming aware of any such infringements, I will remove such content immediately.</p>
+<div class="portrait-center">
+  <img
+    src="../kontakt-portrait-900.jpg"
+    srcset="../kontakt-portrait-550.jpg 550w, ../kontakt-portrait-900.jpg 900w"
+    sizes="30vw"
+    alt="Sarah Luisa Wurmer">
 </div>
+
+<div class="kontakt-stage">
+
+  <div class="col col-left">
+    <span class="eyebrow">Contact</span>
+    <h1 class="kontakt-title">Get in touch</h1>
+    <form class="contact-form" id="contact-form">
+      <input type="text" name="name" placeholder="Name" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <textarea name="message" rows="3" placeholder="Message" required></textarea>
+      <button type="submit">Send</button>
+    </form>
+    <p class="email-line">or directly to <a href="mailto:kontakt@sarahluisawurmer.de">kontakt@sarahluisawurmer.de</a></p>
+  </div>
+
+  <div class="col col-right">
+    <div class="newsletter-block">
+      <span class="eyebrow">Newsletter</span>
+      <h1 class="kontakt-title">Stay in the loop</h1>
+      <form class="signup" action="https://sarahluisawurmer.us13.list-manage.com/subscribe/post?u=63c5d7f2cdf8fcef014ea164f&amp;id=d9789cae2d" method="post" target="_blank" novalidate>
+        <input type="email" name="EMAIL" placeholder="your@email.com" required>
+        <div aria-hidden="true" style="position:absolute;left:-5000px;" tabindex="-1">
+          <input type="text" name="b_63c5d7f2cdf8fcef014ea164f_d9789cae2d" tabindex="-1" value="">
+        </div>
+        <button type="submit" aria-label="Sign up">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </form>
+    </div>
+
+    <div class="social-block">
+      <span class="eyebrow">Follow</span>
+      <div class="socials">
+        <a href="https://www.instagram.com/sarah.luw/" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="https://www.youtube.com/channel/UCaHHFL-cvs6Ndx08p5nR0uw/about" target="_blank" rel="noopener" aria-label="YouTube">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="6" width="19" height="12" rx="4"/><polygon points="10.5 9.3 15 12 10.5 14.7" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="https://soundcloud.com/sarah-luisa-wurmer" target="_blank" rel="noopener" aria-label="SoundCloud">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 15v2"/><path d="M5 13v4"/><path d="M8 11v6"/><path d="M11 9v8"/><path d="M14 8.2c.4-2 2.2-3.5 4.3-3.5 2.4 0 4.4 2 4.4 4.4 0 .3 0 .6-.1.9h-.3H14V17H21.5"/></svg>
+        </a>
+        <a href="https://open.spotify.com/intl-de/artist/3Wi0PQyjhWrgSvEH2n7eoM" target="_blank" rel="noopener" aria-label="Spotify">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="9.2"/><path d="M7 10.2c3.2-1 7.6-.6 10 .9"/><path d="M7.6 13.4c2.7-.8 6.2-.5 8.4.8"/><path d="M8.3 16.3c2.1-.6 4.8-.4 6.5.6"/></svg>
+        </a>
+      </div>
+      <a class="impressum-subtle" href="impressum.html">Legal Notice</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+document.getElementById('contact-form').addEventListener('submit', function(e){
+  e.preventDefault();
+  var name = this.name.value;
+  var email = this.email.value;
+  var message = this.message.value;
+  var subject = encodeURIComponent('Message from ' + name + ' via the website');
+  var body = encodeURIComponent(message + '\n\n— ' + name + ' (' + email + ')');
+  window.location.href = 'mailto:kontakt@sarahluisawurmer.de?subject=' + subject + '&body=' + body;
+});
+</script>
+
+<script>
+(function(){
+  var header = document.querySelector('header');
+  function onScroll(){
+    header.classList.toggle('scrolled', window.scrollY > 10);
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+})();
+</script>
 
 <div class="legal-links">
-  <a href="impressum.html">Legal Notice</a>
+  <a href="datenschutz.html">Privacy Policy</a>
 </div>
+
+<div class="photo-credits">
+  <span>Photos: Sophia Hegewald</span>
+  <span>·</span>
+  <button type="button" id="ensemble-toggle" aria-expanded="false">Ensemble photos</button>
+  <div class="ensemble-credits" id="ensemble-credits">
+    <div>Duo Hadassa &amp; Eva Kuhn © <a href="https://www.die-emotionsfotografin.com/wordpress/" target="_blank" rel="noopener">Elisabeth Pfahler-Scharf</a></div>
+    <div>Antara © Theresa Rundel</div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var toggle = document.getElementById('ensemble-toggle');
+  var panel = document.getElementById('ensemble-credits');
+  if(!toggle || !panel) return;
+  toggle.addEventListener('click', function(){
+    var isOpen = panel.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  document.addEventListener('click', function(e){
+    if(!panel.contains(e.target) && e.target !== toggle && panel.classList.contains('open')){
+      panel.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+})();
+</script>
+
+<script>
+(function(){
+  var toggle = document.getElementById('nav-toggle');
+  var navList = document.getElementById('nav-list');
+  if(!toggle || !navList) return;
+  toggle.addEventListener('click', function(){
+    var isOpen = navList.classList.toggle('open');
+    toggle.classList.toggle('open', isOpen);
+    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  navList.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      navList.classList.remove('open');
+      toggle.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+})();
+</script>
 
 </body>
 </html>
