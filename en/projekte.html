@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" href="../favicon-32.png" type="image/png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<title>Projects — Sarah Luisa Wurmer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#EDE7DD;
+    --ink:#171512;
+    --indigo:#2A3560;
+    --teal:#5FC8B8;
+    --coral:#E29580;
+    --coral-dark:#B85A3E;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    height:100vh;
+    overflow:hidden;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none;}
+
+  /* ---------- Fixed transparent header (same as Live/About) ---------- */
+  header{
+    position:fixed;
+    top:0;left:0;right:0;
+    z-index:100;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:1.6rem clamp(1.2rem,4vw,3.2rem) 0;
+  }
+  .wordmark{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:600;
+    font-size:1.3rem;
+    letter-spacing:-0.01em;
+    color:#fff;
+    text-shadow:0 1px 8px rgba(0,0,0,0.4);
+    transition:color .3s ease, text-shadow .3s ease;
+  }
+  .wordmark:hover{
+    color:var(--teal);
+    text-shadow:0 0 10px rgba(95,200,184,0.85), 0 0 22px rgba(95,200,184,0.5);
+  }
+  .lang-switch{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.78rem;
+    color:rgba(255,255,255,0.7);
+    border-bottom:1px solid transparent;
+    transition:color .3s ease, border-color .3s ease;
+  }
+  .lang-switch:hover{color:#fff;border-color:rgba(255,255,255,0.6);}
+  .header-right{display:flex;align-items:center;gap:1.4rem;}
+  nav ul{
+    display:flex;
+    gap:clamp(1rem,2.2vw,2.2rem);
+    list-style:none;
+    margin:0;padding:0;
+  }
+  .nav-toggle{
+    all:unset;
+    display:none;
+    cursor:pointer;
+    width:26px;height:20px;
+    position:relative;
+    z-index:110;
+  }
+  .nav-toggle span{
+    display:block;
+    position:absolute;
+    left:0;right:0;
+    height:2px;
+    background:#fff;
+    border-radius:2px;
+    transition:transform .3s ease, opacity .3s ease;
+  }
+  .nav-toggle span:nth-child(1){top:1px;}
+  .nav-toggle span:nth-child(2){top:9px;}
+  .nav-toggle span:nth-child(3){top:17px;}
+  .nav-toggle.open span:nth-child(1){transform:translateY(8px) rotate(45deg);}
+  .nav-toggle.open span:nth-child(2){opacity:0;}
+  .nav-toggle.open span:nth-child(3){transform:translateY(-8px) rotate(-45deg);}
+  @media(max-width:680px){
+    .nav-toggle{display:block;}
+    nav > ul{
+      position:absolute;
+      top:calc(100% + 0.6rem);right:0;
+      height:auto;
+      width:min(60vw,220px);
+      flex-direction:column;
+      align-items:flex-start;
+      justify-content:flex-start;
+      gap:0.9rem;
+      padding:1.2rem 1.3rem;
+      background:rgba(23,21,18,0.94);
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+      border-radius:14px;
+      opacity:0;
+      transform:translateY(-8px);
+      pointer-events:none;
+      transition:opacity .25s ease, transform .25s ease;
+      z-index:105;
+    }
+    nav > ul.open{opacity:1;transform:translateY(0);pointer-events:auto;}
+    nav a{color:#fff !important;font-size:0.92rem;}
+    .submenu{position:static !important;opacity:1 !important;pointer-events:auto !important;transform:none !important;padding-left:0.7rem !important;margin-top:0.4rem !important;min-width:0 !important;}
+  }
+  nav a{
+    color:rgba(255,255,255,0.85);
+    font-size:0.86rem;
+    letter-spacing:0.03em;
+    position:relative;
+    padding-bottom:3px;
+    transition:color .3s ease, text-shadow .3s ease;
+  }
+  nav a::after{
+    content:"";
+    position:absolute;
+    left:0;bottom:0;
+    width:0;height:1px;
+    background:var(--teal);
+    transition:width .35s ease;
+  }
+  nav a:hover{color:#fff;text-shadow:0 0 10px rgba(95,200,184,0.85), 0 0 22px rgba(95,200,184,0.5);}
+  nav a:hover::after{width:100%;}
+  nav a.active{color:var(--teal);}
+  nav a.active::after{width:100%;background:var(--teal);}
+
+  /* ---------- Small persistent social icon row, bottom-right ---------- */
+  .site-social{
+    position:fixed;
+    bottom:3.6rem;right:1.1rem;
+    z-index:90;
+    display:flex;
+    gap:0.6rem;
+  }
+  .site-social a{
+    width:36px;height:36px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,0.45);
+    color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    transition:background .3s ease, border-color .3s ease;
+  }
+  .site-social a svg{width:15px;height:15px;}
+  .site-social a:hover{background:rgba(255,255,255,0.16);border-color:#fff;}
+
+  .legal-links{
+    position:fixed;
+    bottom:1.1rem;right:1.1rem;
+    z-index:90;
+  }
+  .legal-links a{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.68rem;
+    color:rgba(255,255,255,0.5);
+    text-shadow:0 1px 3px rgba(0,0,0,0.4);
+    border-bottom:1px solid transparent;
+    transition:color .3s ease, border-color .3s ease;
+  }
+  .legal-links a:hover{color:#fff;border-color:rgba(255,255,255,0.6);}
+
+  /* ---------- Submenu (e.g. Medien > CD Intimacy), shown on hover ---------- */
+  .has-submenu{position:relative;}
+  .submenu{
+    position:absolute;
+    top:100%;left:0;
+    padding:1rem 0 0;
+    min-width:130px;
+    list-style:none;
+    opacity:0;
+    transform:translateY(-6px);
+    pointer-events:none;
+    transition:opacity .25s ease, transform .25s ease;
+  }
+  .has-submenu:hover .submenu,
+  .has-submenu:focus-within .submenu{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+  }
+  .submenu a{
+    display:block;
+    padding:0.5rem 1.1rem;
+    font-size:0.82rem;
+    color:rgba(255,255,255,0.85);
+    white-space:nowrap;
+  }
+  .submenu a:hover{color:var(--teal);}
+
+  /* ---------- Full-screen background image (no separate color) ---------- */
+  .bg-image{
+    position:fixed;
+    inset:0;
+    z-index:0;
+  }
+  .bg-image img{
+    width:100%;height:100%;
+    object-fit:cover;
+    object-position:45% 45%;
+    display:block;
+  }
+  .bg-image::after{
+    content:"";
+    position:absolute;inset:0;
+    background:rgba(10,12,10,0.14);
+  }
+
+  /* ---------- Project grid: fills the screen exactly, tiles evenly
+     distributed in a 3x2 grid — no scrolling, everything fits in
+     one view. ---------- */
+  .projects-section{
+    position:relative;
+    z-index:5;
+    height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:5.5rem clamp(1.2rem,4vw,2.4rem) 2.2rem;
+  }
+  .projects-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    grid-template-rows:repeat(2, 1fr);
+    gap:clamp(1rem,2.2vw,1.8rem);
+    width:100%;
+    max-width:1100px;
+    height:100%;
+  }
+  .grid-tile{
+    all:unset;
+    cursor:pointer;
+    position:relative;
+    display:block;
+    width:100%;
+    height:100%;
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 14px 30px rgba(0,0,0,0.35);
+  }
+  .grid-tile img{
+    width:100%;height:100%;
+    object-fit:cover;
+    display:block;
+    transition:transform .5s ease, filter .5s ease;
+    filter:saturate(0.92) brightness(0.94);
+  }
+  .grid-tile:hover img, .grid-tile:focus-visible img{transform:scale(1.06);filter:saturate(1) brightness(1);}
+  .grid-tile:focus-visible{outline:2px solid var(--teal);outline-offset:3px;}
+  .tile-scrim{
+    position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(20,21,18,0.12) 0%, rgba(15,17,30,0.15) 45%, rgba(10,12,24,0.82) 100%);
+  }
+  .tile-name{
+    position:absolute;
+    left:1.1rem;right:1.1rem;bottom:0.9rem;
+    color:#fff;
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:600;
+    font-size:1.05rem;
+    line-height:1.25;
+    text-shadow:0 1px 5px rgba(0,0,0,0.35);
+  }
+  .play-icon{
+    position:absolute;
+    top:50%;left:50%;
+    transform:translate(-50%,-50%);
+    width:54px;height:54px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.88);
+    color:var(--ink);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:1.05rem;
+    transition:background .3s ease, transform .3s ease;
+  }
+  .grid-tile:hover .play-icon, .grid-tile:focus-visible .play-icon{
+    background:#fff;
+    transform:translate(-50%,-50%) scale(1.08);
+  }
+
+  /* ---------- Modal ---------- */
+  .modal-backdrop{
+    position:fixed;
+    inset:0;
+    z-index:300;
+    background:rgba(23,21,18,0.6);
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:clamp(1rem,4vw,2.4rem);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .3s ease;
+  }
+  .modal-backdrop.open{opacity:1;pointer-events:auto;}
+  .modal-card{
+    position:relative;
+    background:var(--cream);
+    width:100%;
+    max-width:700px;
+    max-height:88vh;
+    overflow-y:auto;
+    border-radius:20px;
+    box-shadow:0 30px 70px rgba(0,0,0,0.35);
+    transform:translateY(10px);
+    transition:transform .3s ease;
+  }
+  .modal-backdrop.open .modal-card{transform:translateY(0);}
+  .modal-close{
+    position:absolute;
+    top:0.9rem;right:0.9rem;
+    z-index:5;
+    width:36px;height:36px;
+    border-radius:50%;
+    border:none;
+    background:rgba(255,255,255,0.85);
+    color:var(--ink);
+    cursor:pointer;
+    font-size:1rem;
+    line-height:1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .modal-close:hover{background:#fff;}
+  .modal-media img{width:100%;display:block;}
+  .modal-media .video-embed{
+    position:relative;
+    width:100%;
+    padding-top:56.25%;
+    background:#000;
+  }
+  .modal-media .video-embed iframe{
+    position:absolute;inset:0;
+    width:100%;height:100%;
+    border:0;
+  }
+  .modal-body{padding:1.7rem clamp(1.4rem,3.4vw,2.2rem) 2.1rem;}
+  .modal-body h2{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:600;
+    font-size:1.5rem;
+    margin:0 0 1rem;
+    color:var(--ink);
+  }
+  .modal-body p{
+    margin:0 0 1rem;
+    font-size:0.98rem;
+    line-height:1.65;
+    color:rgba(23,21,18,0.82);
+  }
+  .modal-body p:last-child{margin-bottom:0;}
+  .modal-body a{color:var(--coral-dark);border-bottom:1px solid var(--coral-dark);}
+  .modal-body a:hover{color:var(--indigo);border-color:var(--indigo);}
+  .modal-links{
+    display:flex;
+    flex-wrap:wrap;
+    gap:0.5rem 1rem;
+    margin-top:1.1rem;
+  }
+  .modal-links a{font-size:0.85rem;font-weight:500;}
+
+  /* ---------- Responsive ---------- */
+  @media(max-width:820px){
+    .projects-section{padding:4.6rem clamp(1rem,3vw,1.6rem) 1.4rem;}
+    .projects-grid{
+      grid-template-columns:repeat(2, 1fr);
+      grid-template-rows:repeat(3, auto);
+      height:auto;
+    }
+    .grid-tile{height:auto;aspect-ratio:1/1;}
+  }
+  @media(max-width:520px){
+    .projects-section{padding:4.2rem 0.6rem 0.8rem;}
+    .projects-grid{
+      gap:0.5rem;
+    }
+    .tile-name{font-size:0.78rem;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="wordmark" href="index.html">Sarah Luisa Wurmer</a>
+  <div class="header-right">
+    <a class="lang-switch" href="../projekte.html">DE</a>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav>
+      <ul id="nav-list">
+        <li><a href="live.html">Live</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a class="active" href="projekte.html">Projects</a></li>
+        <li class="has-submenu">
+          <a href="medien.html">Media</a>
+          <ul class="submenu">
+            <li><a href="cd.html">CD Intimacy</a></li>
+          </ul>
+        </li>
+        <li><a href="kontakt.html">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<div class="site-social">
+  <a href="https://www.instagram.com/sarah.luw/" target="_blank" rel="noopener" aria-label="Instagram">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>
+  </a>
+  <a href="https://www.youtube.com/channel/UCaHHFL-cvs6Ndx08p5nR0uw/about" target="_blank" rel="noopener" aria-label="YouTube">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="6" width="19" height="12" rx="4"/><polygon points="10.5 9.3 15 12 10.5 14.7" fill="currentColor" stroke="none"/></svg>
+  </a>
+  <a href="https://soundcloud.com/sarah-luisa-wurmer" target="_blank" rel="noopener" aria-label="SoundCloud">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 15v2"/><path d="M5 13v4"/><path d="M8 11v6"/><path d="M11 9v8"/><path d="M14 8.2c.4-2 2.2-3.5 4.3-3.5 2.4 0 4.4 2 4.4 4.4 0 .3 0 .6-.1.9h-.3H14V17H21.5"/></svg>
+  </a>
+  <a href="https://open.spotify.com/intl-de/artist/3Wi0PQyjhWrgSvEH2n7eoM" target="_blank" rel="noopener" aria-label="Spotify">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="9.2"/><path d="M7 10.2c3.2-1 7.6-.6 10 .9"/><path d="M7.6 13.4c2.7-.8 6.2-.5 8.4.8"/><path d="M8.3 16.3c2.1-.6 4.8-.4 6.5.6"/></svg>
+  </a>
+</div>
+
+<div class="bg-image">
+  <img src="../instrument-crop.jpg" alt="Zither — string detail">
+</div>
+
+<section class="projects-section">
+  <div class="projects-grid" id="projects-grid">
+
+    <button class="grid-tile" data-id="fanny">
+      <img src="https://img.youtube.com/vi/IxJw4bGPlrw/hqdefault.jpg" alt="Fanny Mendelssohn Artists" loading="lazy">
+      <span class="tile-scrim"></span>
+      <span class="play-icon" aria-hidden="true">▶</span>
+      <span class="tile-name">Fanny Mendelssohn Artists</span>
+    </button>
+
+    <button class="grid-tile" data-id="sopran">
+      <img src="https://img.youtube.com/vi/8a7ZbY_9IyM/hqdefault.jpg" alt="Sopran X Zither" loading="lazy">
+      <span class="tile-scrim"></span>
+      <span class="play-icon" aria-hidden="true">▶</span>
+      <span class="tile-name">Sopran X Zither</span>
+    </button>
+
+    <button class="grid-tile" data-id="bridges">
+      <img src="../proj-bridges.jpg" alt="Bridges Chamber Orchestra" loading="lazy">
+      <span class="tile-scrim"></span>
+      <span class="tile-name">Bridges Kammerorchester</span>
+    </button>
+
+    <button class="grid-tile" data-id="antara">
+      <img src="../proj-antara.jpg" alt="Antara" loading="lazy">
+      <span class="tile-scrim"></span>
+      <span class="tile-name">Antara</span>
+    </button>
+
+    <button class="grid-tile" data-id="hadassa">
+      <img src="../proj-hadassa.jpg" alt="Duo Hadassa" loading="lazy">
+      <span class="tile-scrim"></span>
+      <span class="tile-name">Duo Hadassa</span>
+    </button>
+
+    <button class="grid-tile" data-id="ecetra">
+      <img src="../proj-ecetra.jpg" alt="ECetra" loading="lazy">
+      <span class="tile-scrim"></span>
+      <span class="tile-name">ECetra</span>
+    </button>
+
+  </div>
+</section>
+
+<div class="modal-backdrop" id="modal-backdrop">
+  <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
+    <div class="modal-media" id="modal-media"></div>
+    <div class="modal-body">
+      <h2 id="modal-title"></h2>
+      <div id="modal-text"></div>
+      <div class="modal-links" id="modal-links"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var PROJECTS = {
+    fanny: {
+      name: "Fanny Mendelssohn Artists",
+      youtube: "IxJw4bGPlrw",
+      text: "<p>From the very beginning, the Fanny Mendelssohn Förderpreis has supported joint performance opportunities for its award winners, in which they can also pursue their solo ambitions — for example at the annual \u201cFestival der Preisträger\u201d at the Elbphilharmonie. Together they form a new ensemble of top-tier classical soloists, delighting audiences at festivals and concerts at home and abroad with creative programmes and flexible line-ups.</p>"
+    },
+    sopran: {
+      name: "Sopran X Zither",
+      youtube: "8a7ZbY_9IyM",
+      text: "<p>Camilla Saba Davies and Sarah Luisa Wurmer reinvent the format of the classical song duo. Finalists of the 58th International Vocal Competition 's-Hertogenbosch, they search for balance between early music, traditional song repertoire and contemporary works, between arrangements and original compositions. The sound of voice and zither recalls old lute songs — a subtle interplay between word and string.</p>",
+      links: [{label:"Watch on YouTube", href:"https://www.youtube.com/watch?v=8a7ZbY_9IyM"}]
+    },
+    bridges: {
+      name: "Bridges Kammerorchester",
+      image: "../proj-bridges.jpg",
+      text: "<p>Since the 2024/25 season, Sarah Luisa Wurmer has been a regular guest with the transcultural <a href=\"https://bridges-kammerorchester.de/\" target=\"_blank\" rel=\"noopener\">Bridges Kammerorchester</a>. Musicians with their instruments from various regions of the world come together here — experts in Arabic, Persian and European classical music, jazz, contemporary music, Eastern European folklore, and various forms of Central Asian and Latin American music.</p>"
+    },
+    antara: {
+      name: "Antara",
+      image: "../proj-antara.jpg",
+      text: "<p>Between breath and string, between tradition and experiment — Antara (Sanskrit: in-between), an ensemble of the <a href=\"https://bridges-kammerorchester.de/kammerorchester#mitglieder\" target=\"_blank\" rel=\"noopener\">Bridges Kammerorchester</a>, moves through that in-between space. European Baroque music, dances from the Alps and South America, and traditional Persian music form the basis for a diverse range of soundscapes.</p><p>With Johanna-Leonore Dahlhoff (flute), Alireza Meghrazi (kamancheh), Maria Carolina Pardo Reyes (cello), Sarah Luisa Wurmer (zither).</p>"
+    },
+    hadassa: {
+      name: "Duo Hadassa",
+      image: "../proj-hadassa.jpg",
+      text: "<p><a href=\"https://lisa-schoettl.de/\" target=\"_blank\" rel=\"noopener\">Lisa Schöttl</a> and Sarah Luisa Wurmer — two classically trained young musicians, with the non-classical traditional \u201cfolk instruments\u201d hammered dulcimer & zither, a modern repertoire, and plenty of curiosity to create new, scenic-experimental concert experiences. For their project \u201c<a href=\"https://lisa-schoettl.de/zeitgeloest/\" target=\"_blank\" rel=\"noopener\">zeitgelöst</a>\u201d with Eva Kuhn, they received the Munich City Music Scholarship in 2024 as well as funding from Kultursommer Rheinland-Pfalz 2025.</p>",
+      links: [{label:"Trailer", href:"https://youtu.be/1TNGhifP4rU"}]
+    },
+    ecetra: {
+      name: "ECetra",
+      image: "../proj-ecetra.jpg",
+      text: "<p>Eva Kuhn (voice, composition), Valentin Penninger (electronics) and Sarah Luisa Wurmer (zither) weave early music and new compositions into a distinctive performance, using their individual sound to make current themes tangible together.</p><p>\u201creality in lachrimae\u201d — can darkness be hopeful? In a surreal sound space, the constructed melancholy of Dowland's lute songs and mystical 18th-century prophecies are brought into relation with a crisis-ridden present.</p>"
+    }
+  };
+
+  var backdrop = document.getElementById('modal-backdrop');
+  var mediaSlot = document.getElementById('modal-media');
+  var titleEl = document.getElementById('modal-title');
+  var textEl = document.getElementById('modal-text');
+  var linksEl = document.getElementById('modal-links');
+  var closeBtn = document.getElementById('modal-close');
+  var lastFocused = null;
+
+  function buildMedia(p){
+    if(p.youtube){
+      return '<div class="video-embed"><iframe src="https://www.youtube-nocookie.com/embed/' + p.youtube +
+        '" title="' + p.name.replace(/"/g,'&quot;') +
+        '" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>';
+    }
+    if(p.image){
+      return '<img src="' + p.image + '" alt="' + p.name.replace(/"/g,'&quot;') + '">';
+    }
+    return '';
+  }
+
+  function openModal(id){
+    var p = PROJECTS[id];
+    if(!p) return;
+    lastFocused = document.activeElement;
+    mediaSlot.innerHTML = buildMedia(p);
+    titleEl.textContent = p.name;
+    textEl.innerHTML = p.text || '';
+    linksEl.innerHTML = '';
+    (p.links || []).forEach(function(l){
+      var a = document.createElement('a');
+      a.href = l.href;
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.textContent = l.label;
+      linksEl.appendChild(a);
+    });
+    backdrop.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    closeBtn.focus();
+  }
+
+  function closeModal(){
+    backdrop.classList.remove('open');
+    document.body.style.overflow = '';
+    mediaSlot.innerHTML = '';
+    if(lastFocused) lastFocused.focus();
+  }
+
+  document.querySelectorAll('.grid-tile').forEach(function(tile){
+    tile.addEventListener('click', function(){
+      openModal(tile.getAttribute('data-id'));
+    });
+  });
+
+  closeBtn.addEventListener('click', closeModal);
+  backdrop.addEventListener('click', function(e){
+    if(e.target === backdrop) closeModal();
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && backdrop.classList.contains('open')) closeModal();
+  });
+})();
+</script>
+
+<div class="legal-links">
+  <a href="impressum.html">Legal Notice</a>
+</div>
+
+<script>
+(function(){
+  var toggle = document.getElementById('nav-toggle');
+  var navList = document.getElementById('nav-list');
+  if(!toggle || !navList) return;
+  toggle.addEventListener('click', function(){
+    var isOpen = navList.classList.toggle('open');
+    toggle.classList.toggle('open', isOpen);
+    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  navList.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      navList.classList.remove('open');
+      toggle.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

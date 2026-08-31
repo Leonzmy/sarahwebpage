@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" href="../favicon-32.png" type="image/png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<title>Legal Notice — Sarah Luisa Wurmer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#EDE7DD;
+    --ink:#171512;
+    --indigo:#2A3560;
+    --teal:#5FC8B8;
+    --coral:#E29580;
+    --coral-dark:#B85A3E;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    min-height:100vh;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none;}
+
+  header{
+    position:fixed;
+    top:0;left:0;right:0;
+    z-index:100;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:1.6rem clamp(1.2rem,4vw,3.2rem);
+    background:var(--cream);
+    border-bottom:1px solid rgba(23,21,18,0.08);
+  }
+  .wordmark{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:600;
+    font-size:1.3rem;
+    letter-spacing:-0.01em;
+    color:var(--ink);
+    transition:color .3s ease;
+  }
+  .wordmark:hover{color:var(--coral-dark);}
+  nav ul{display:flex;gap:clamp(1rem,2.2vw,2.2rem);list-style:none;margin:0;padding:0;}
+  nav a{
+    color:rgba(23,21,18,0.7);
+    font-size:0.86rem;
+    letter-spacing:0.03em;
+    position:relative;
+    padding-bottom:3px;
+    transition:color .3s ease;
+  }
+  nav a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--coral-dark);transition:width .35s ease;}
+  nav a:hover{color:var(--ink);}
+  nav a:hover::after{width:100%;}
+
+  .has-submenu{position:relative;}
+  .submenu{
+    position:absolute;
+    top:100%;left:0;
+    padding:1rem 0 0;
+    min-width:130px;
+    list-style:none;
+    opacity:0;
+    transform:translateY(-6px);
+    pointer-events:none;
+    transition:opacity .25s ease, transform .25s ease;
+  }
+  .has-submenu:hover .submenu,
+  .has-submenu:focus-within .submenu{opacity:1;transform:translateY(0);pointer-events:auto;}
+  .submenu a{display:block;padding:0.5rem 1.1rem;font-size:0.82rem;color:rgba(23,21,18,0.7);white-space:nowrap;}
+  .submenu a:hover{color:var(--coral-dark);}
+
+  .lang-switch{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.78rem;
+    color:rgba(23,21,18,0.5);
+    border-bottom:1px solid transparent;
+    transition:color .3s ease, border-color .3s ease;
+  }
+  .lang-switch:hover{color:var(--ink);border-color:rgba(23,21,18,0.5);}
+  .header-right{display:flex;align-items:center;gap:1.4rem;}
+
+  .impressum-wrap{
+    max-width:700px;
+    margin:0 auto;
+    padding:clamp(7rem,14vh,8rem) clamp(1.2rem,4vw,2.4rem) 5rem;
+  }
+  .impressum-wrap h1{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:600;
+    font-size:clamp(2rem,4vw,2.6rem);
+    margin:0 0 2.2rem;
+    color:var(--ink);
+  }
+  .impressum-wrap h2{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:600;
+    font-size:1.15rem;
+    margin:2.2rem 0 0.8rem;
+    color:var(--ink);
+  }
+  .impressum-wrap h2:first-of-type{margin-top:0;}
+  .impressum-wrap p{
+    margin:0 0 1rem;
+    font-size:0.96rem;
+    line-height:1.7;
+    color:rgba(23,21,18,0.82);
+  }
+  .impressum-wrap a{
+    color:var(--coral-dark);
+    border-bottom:1px solid var(--coral-dark);
+  }
+  .impressum-wrap a:hover{color:var(--indigo);border-color:var(--indigo);}
+
+  .legal-links{
+    position:fixed;
+    bottom:1rem;left:1.1rem;
+    z-index:90;
+    display:flex;
+    gap:0.5rem;
+  }
+  .legal-links a{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.7rem;
+    color:#fff;
+    background:rgba(23,21,18,0.55);
+    backdrop-filter:blur(6px);
+    -webkit-backdrop-filter:blur(6px);
+    padding:0.45rem 0.85rem;
+    border-radius:999px;
+    border-bottom:none !important;
+    transition:background .3s ease;
+  }
+  .legal-links a:hover{background:var(--coral-dark);color:#fff;}
+</style>
+</head>
+<body>
+
+<header>
+  <a class="wordmark" href="index.html">Sarah Luisa Wurmer</a>
+  <div class="header-right">
+    <a class="lang-switch" href="../impressum.html">DE</a>
+  </div>
+  <nav>
+    <ul>
+      <li><a href="live.html">Live</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="projekte.html">Projects</a></li>
+      <li class="has-submenu">
+        <a href="medien.html">Media</a>
+        <ul class="submenu">
+          <li><a href="cd.html">CD Intimacy</a></li>
+        </ul>
+      </li>
+      <li><a href="kontakt.html">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<div class="impressum-wrap">
+  <h1>Legal Notice</h1>
+
+  <p style="font-size:0.85rem;color:rgba(23,21,18,0.55);margin-top:-1.4rem;margin-bottom:2rem;">This page is provided in English for convenience. As this website is operated from Germany, it is subject to German law; the <a href="../impressum.html">German version</a> is the legally binding original.</p>
+
+  <h2>Information according to § 5 TMG</h2>
+  <p>
+    Sarah Luisa Wurmer<br>
+    81675 Munich, Germany<br>
+    Mobile: +49 176 50273258<br>
+    Email: <a href="mailto:kontakt@sarahluisawurmer.de">kontakt@sarahluisawurmer.de</a>
+  </p>
+
+  <h2>Responsible for content according to § 55 (2) RStV</h2>
+  <p>Sarah Luisa Wurmer</p>
+
+  <h2>Website design</h2>
+  <p>Concept and text: Sarah Luisa Wurmer<br>Technical implementation: Leon Zmelty</p>
+
+  <h2>Dispute resolution before a consumer arbitration board</h2>
+  <p>The European Commission provides a platform for online dispute resolution (ODR): <a href="https://ec.europa.eu/consumers/odr/" target="_blank" rel="noopener">https://ec.europa.eu/consumers/odr/</a>. My contact details can be found in this legal notice.</p>
+  <p>I am not willing or obliged to participate in dispute resolution proceedings before a consumer arbitration board.</p>
+
+  <h2>Limitation of liability</h2>
+  <p>I have created the content of this website with the greatest care; however, I cannot guarantee the accuracy, completeness or timeliness of that content.</p>
+  <p>As a service provider, I am liable for my own content on these pages in accordance with general laws under § 7 (1) of the German Telemedia Act (TMG). However, under §§ 8–10 TMG, I am not obliged to monitor transmitted or stored third-party information or to investigate circumstances that indicate unlawful activity. Obligations to remove or block the use of information under general law remain unaffected. However, liability in this regard is only possible from the point in time at which a specific infringement becomes known. Upon becoming aware of any such infringements, I will remove the relevant content immediately.</p>
+  <p>Use of my website is at the user's own risk. Contributions identified by name reflect the opinion of the respective author and not necessarily my own. Simply using the website does not create any contractual relationship between the user and me.</p>
+
+  <h2>External links</h2>
+  <p>My website contains links to external third-party websites, over whose content and design I have no influence, now or in the future. I therefore cannot assume any liability for this external content. The provision of external links does not mean that I adopt the content behind the link as my own. The respective provider is always responsible for the content of the linked pages. At the time of linking, I checked the linked pages for possible legal violations; none were apparent at that time. Continuous monitoring of the content of external links is not reasonable without concrete evidence of a legal violation. Upon becoming aware of any such infringements, I will remove such external links immediately.</p>
+
+  <h2>Copyright</h2>
+  <p>The content and works created by me on this website are subject to German copyright law. Storage, reproduction, translation, distribution and any other form of exploitation beyond the scope of copyright law require the written consent of the respective rights holder. Downloads and copies of this website are permitted for private, non-commercial use only. Unauthorised reproduction or distribution of individual content or complete pages is not permitted and is a punishable offence. Where the content on this website was not created by me, the copyrights of third parties are respected. Third-party contributions are marked as such. If you nevertheless become aware of a copyright infringement, please notify me accordingly. Upon becoming aware of any such infringements, I will remove such content immediately.</p>
+</div>
+
+<div class="legal-links">
+  <a href="impressum.html">Legal Notice</a>
+</div>
+
+</body>
+</html>

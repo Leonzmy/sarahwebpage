@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" href="../favicon-32.png" type="image/png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<title>Intimacy — Sarah Luisa Wurmer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#EDE7DD;
+    --ink:#171512;
+    --indigo:#2A3560;
+    --teal:#5FC8B8;
+    --coral:#E29580;
+    --coral-dark:#B85A3E;
+    --gold:#B8873E;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    min-height:100vh;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none;}
+
+  /* ---------- Full-screen fixed, softly blurred background image (same as Medien) ---------- */
+  .bg-image{
+    position:fixed;
+    inset:0;
+    z-index:0;
+  }
+  .bg-image img{
+    width:100%;height:100%;
+    object-fit:cover;
+    object-position:45% 45%;
+    display:block;
+  }
+  .bg-image::after{
+    content:"";
+    position:absolute;inset:0;
+    background:rgba(10,12,10,0.14);
+  }
+
+  /* ---------- Content: flows normally over the fixed, blurred backdrop ---------- */
+  .content-wrap{
+    position:relative;
+    z-index:5;
+  }
+
+  /* ---------- Fixed transparent header (same as other pages) ---------- */
+  header{
+    position:fixed;
+    top:0;left:0;right:0;
+    z-index:100;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:1.6rem clamp(1.2rem,4vw,3.2rem);
+    transition:background .3s ease, backdrop-filter .3s ease;
+  }
+  header.scrolled{
+    background:rgba(23,21,18,0.42);
+    backdrop-filter:blur(14px) saturate(140%);
+    -webkit-backdrop-filter:blur(14px) saturate(140%);
+  }
+
+  /* ---------- Small persistent social icon row, bottom-right ---------- */
+  .site-social{
+    position:relative;
+    z-index:5;
+    display:flex;
+    justify-content:flex-end;
+    gap:0.7rem;
+    max-width:840px;
+    margin:2.4rem auto 0;
+    padding:0 clamp(1.2rem,4vw,2.4rem);
+  }
+  .site-social a{
+    width:38px;height:38px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,0.45);
+    color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    transition:background .3s ease, border-color .3s ease;
+  }
+  .site-social a svg{width:16px;height:16px;}
+  .site-social a:hover{background:rgba(255,255,255,0.16);border-color:#fff;}
+
+  .legal-links{
+    position:relative;
+    z-index:5;
+    display:block;
+    text-align:right;
+    max-width:840px;
+    margin:0.6rem auto 2.4rem;
+    padding:0 clamp(1.2rem,4vw,2.4rem);
+  }
+  .legal-links a{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.68rem;
+    color:rgba(255,255,255,0.4);
+    border-bottom:1px solid transparent;
+    transition:color .3s ease, border-color .3s ease;
+  }
+  .legal-links a:hover{color:#fff;border-color:rgba(255,255,255,0.5);}
+
+  .wordmark{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:600;
+    font-size:1.3rem;
+    letter-spacing:-0.01em;
+    color:#fff;
+    text-shadow:0 1px 8px rgba(0,0,0,0.4);
+    transition:color .3s ease, text-shadow .3s ease;
+  }
+  .wordmark:hover{
+    color:var(--teal);
+    text-shadow:0 0 10px rgba(95,200,184,0.85), 0 0 22px rgba(95,200,184,0.5);
+  }
+  .lang-switch{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.78rem;
+    color:rgba(255,255,255,0.7);
+    border-bottom:1px solid transparent;
+    transition:color .3s ease, border-color .3s ease;
+  }
+  .lang-switch:hover{color:#fff;border-color:rgba(255,255,255,0.6);}
+  .header-right{display:flex;align-items:center;gap:1.4rem;}
+  nav ul{display:flex;gap:clamp(1rem,2.2vw,2.2rem);list-style:none;margin:0;padding:0;}
+  .nav-toggle{
+    all:unset;
+    display:none;
+    cursor:pointer;
+    width:26px;height:20px;
+    position:relative;
+    z-index:110;
+  }
+  .nav-toggle span{
+    display:block;
+    position:absolute;
+    left:0;right:0;
+    height:2px;
+    background:#fff;
+    border-radius:2px;
+    transition:transform .3s ease, opacity .3s ease;
+  }
+  .nav-toggle span:nth-child(1){top:1px;}
+  .nav-toggle span:nth-child(2){top:9px;}
+  .nav-toggle span:nth-child(3){top:17px;}
+  .nav-toggle.open span:nth-child(1){transform:translateY(8px) rotate(45deg);}
+  .nav-toggle.open span:nth-child(2){opacity:0;}
+  .nav-toggle.open span:nth-child(3){transform:translateY(-8px) rotate(-45deg);}
+  @media(max-width:680px){
+    .nav-toggle{display:block;}
+    nav > ul{
+      position:absolute;
+      top:calc(100% + 0.6rem);right:0;
+      height:auto;
+      width:min(60vw,220px);
+      flex-direction:column;
+      align-items:flex-start;
+      justify-content:flex-start;
+      gap:0.9rem;
+      padding:1.2rem 1.3rem;
+      background:rgba(23,21,18,0.94);
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+      border-radius:14px;
+      opacity:0;
+      transform:translateY(-8px);
+      pointer-events:none;
+      transition:opacity .25s ease, transform .25s ease;
+      z-index:105;
+    }
+    nav > ul.open{opacity:1;transform:translateY(0);pointer-events:auto;}
+    nav a{color:#fff !important;font-size:0.92rem;}
+    .submenu{position:static !important;opacity:1 !important;pointer-events:auto !important;transform:none !important;padding-left:0.7rem !important;margin-top:0.4rem !important;min-width:0 !important;}
+  }
+  nav a{
+    color:rgba(255,255,255,0.85);
+    font-size:0.86rem;
+    letter-spacing:0.03em;
+    position:relative;
+    padding-bottom:3px;
+    transition:color .3s ease, text-shadow .3s ease;
+  }
+  nav a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--teal);transition:width .35s ease;}
+  nav a:hover{color:#fff;text-shadow:0 0 10px rgba(95,200,184,0.85), 0 0 22px rgba(95,200,184,0.5);}
+  nav a:hover::after{width:100%;}
+  nav a.active{color:var(--teal);}
+  nav a.active::after{width:100%;background:var(--teal);}
+
+  /* ---------- Submenu (e.g. Medien > CD Intimacy), shown on hover ---------- */
+  .has-submenu{position:relative;}
+  .submenu{
+    position:absolute;
+    top:100%;left:0;
+    padding:1rem 0 0;
+    min-width:130px;
+    list-style:none;
+    opacity:0;
+    transform:translateY(-6px);
+    pointer-events:none;
+    transition:opacity .25s ease, transform .25s ease;
+  }
+  .has-submenu:hover .submenu,
+  .has-submenu:focus-within .submenu{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+  }
+  .submenu a{
+    display:block;
+    padding:0.5rem 1.1rem;
+    font-size:0.82rem;
+    color:rgba(255,255,255,0.85);
+    white-space:nowrap;
+  }
+  .submenu a:hover{color:var(--teal);}
+
+  /* ---------- Hero: cover + core info ---------- */
+  .cd-hero{
+    max-width:1100px;
+    margin:0 auto;
+    padding:clamp(6rem,13vh,7.5rem) clamp(1.2rem,4vw,2.4rem) 3rem;
+    display:flex;
+    gap:clamp(2rem,5vw,3.6rem);
+    flex-wrap:wrap;
+    align-items:flex-start;
+  }
+  .cd-cover-img{
+    width:min(360px, 42vw);
+    flex:0 0 auto;
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 30px 60px rgba(23,21,18,0.22);
+  }
+  .cd-cover-img img{width:100%;display:block;}
+  .cd-hero-info{
+    flex:1;
+    min-width:260px;
+    padding:clamp(1.6rem,3vw,2.3rem);
+  }
+  .eyebrow{
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:0.85rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--coral-dark);
+    display:block;
+    margin-bottom:0.8rem;
+  }
+  .cd-hero-info h1{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-style:italic;
+    font-weight:600;
+    font-size:clamp(2.6rem,6vw,4rem);
+    margin:0 0 1.4rem;
+    color:var(--ink);
+  }
+  .cd-hero-info .lede{
+    font-size:1.02rem;
+    line-height:1.65;
+    color:rgba(23,21,18,0.8);
+    max-width:56ch;
+    margin:0 0 1.6rem;
+  }
+  .cd-primary-links{display:flex;flex-wrap:wrap;gap:0.8rem;margin-bottom:1rem;}
+  .cd-primary-links a{
+    padding:0.75rem 1.5rem;
+    border-radius:999px;
+    font-size:0.9rem;
+    font-weight:500;
+  }
+  .cd-primary-links a.solid{background:var(--ink);color:#fff;}
+  .cd-primary-links a.solid:hover{background:var(--coral-dark);}
+  .cd-primary-links a.outline{border:1px solid var(--ink);color:var(--ink);}
+  .cd-primary-links a.outline:hover{background:var(--ink);color:#fff;}
+  .cd-funding{
+    font-size:0.82rem;
+    color:rgba(23,21,18,0.55);
+    max-width:56ch;
+    line-height:1.5;
+  }
+  .cd-funding a{border-bottom:1px solid rgba(23,21,18,0.4);}
+  .cd-funding a:hover{border-color:var(--coral-dark);color:var(--coral-dark);}
+
+  /* ---------- Sections ---------- */
+  .cd-section{
+    max-width:1100px;
+    margin:0 auto 1.6rem;
+    padding:clamp(1.6rem,3vw,2.3rem);
+  }
+  .cd-section-narrow{
+    max-width:840px;
+  }
+  .cd-section-tracklist{
+    max-width:840px;
+    background:rgba(237,231,221,0.4);
+    backdrop-filter:blur(12px) saturate(140%);
+    -webkit-backdrop-filter:blur(12px) saturate(140%);
+    border-radius:20px;
+  }
+  .cd-section h2{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:600;
+    font-size:1.4rem;
+    margin:0 0 1.6rem;
+    color:var(--ink);
+  }
+  .cd-section .body-text p{
+    font-size:0.98rem;
+    line-height:1.7;
+    color:rgba(23,21,18,0.82);
+    max-width:70ch;
+    margin:0 0 1.1rem;
+    text-align:justify;
+  }
+  .cd-section .body-text p:last-child{margin-bottom:0;}
+
+  /* ---------- Press ---------- */
+  .press-list{
+    display:flex;
+    flex-direction:column;
+    gap:1.1rem;
+    max-width:720px;
+  }
+  .press-more-wrap{
+    display:grid;
+    grid-template-rows:0fr;
+    transition:grid-template-rows .5s ease;
+  }
+  .press-more-wrap.open{grid-template-rows:1fr;}
+  .press-more-inner{overflow:hidden;}
+  .press-more-inner .press-list{padding-top:1.1rem;}
+  .press-toggle{
+    all:unset;
+    cursor:pointer;
+    display:inline-block;
+    margin-top:1.4rem;
+    padding:0.7rem 1.4rem;
+    border-radius:999px;
+    background:var(--gold);
+    border:1px solid var(--gold);
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    font-size:0.85rem;
+    color:#fff;
+    box-shadow:0 8px 20px rgba(184,135,62,0.35);
+    transition:background .3s ease, transform .3s ease, box-shadow .3s ease;
+  }
+  .press-toggle:hover{background:var(--coral-dark);border-color:var(--coral-dark);transform:translateY(-1px);}
+
+  .radio-subhead{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.76rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--indigo);
+    margin:2.2rem 0 0.9rem;
+  }
+  .radio-list{
+    display:flex;
+    flex-direction:column;
+    max-width:720px;
+  }
+  .radio-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    flex-wrap:wrap;
+    gap:0.4rem 1.2rem;
+    padding:0.9rem 1.2rem;
+    background:rgba(237,231,221,0.5);
+    backdrop-filter:blur(10px) saturate(140%);
+    -webkit-backdrop-filter:blur(10px) saturate(140%);
+    border-radius:12px;
+    margin-bottom:0.7rem;
+  }
+  .radio-item:last-child{margin-bottom:0;}
+  .radio-info{flex:1;min-width:220px;}
+  .radio-source{
+    display:block;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.72rem;
+    color:var(--indigo);
+    margin-bottom:0.25rem;
+  }
+  .radio-info p{
+    margin:0;
+    font-size:0.9rem;
+    color:rgba(23,21,18,0.85);
+  }
+  .radio-item a{
+    padding:0.5rem 1.1rem;
+    background:var(--gold);
+    border:1px solid var(--gold);
+    border-radius:999px;
+    font-size:0.8rem;
+    font-weight:600;
+    color:#fff;
+    flex:0 0 auto;
+    transition:background .3s ease, border-color .3s ease, transform .3s ease;
+  }
+  .radio-item a:hover{background:var(--coral-dark);border-color:var(--coral-dark);transform:translateY(-1px);}
+  .press-item{
+    padding:1.3rem 1.5rem;
+    border-left:2px solid var(--gold);
+    background:rgba(237,231,221,0.48);
+    backdrop-filter:blur(10px) saturate(140%);
+    -webkit-backdrop-filter:blur(10px) saturate(140%);
+    border-radius:0 12px 12px 0;
+  }
+  .press-source{
+    display:block;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.7rem;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--indigo);
+    margin-bottom:0.5rem;
+  }
+  .press-item p{
+    margin:0 0 0.5rem;
+    font-size:0.94rem;
+    line-height:1.55;
+    color:rgba(23,21,18,0.85);
+    font-style:italic;
+  }
+  .press-item .press-author{
+    display:block;
+    font-size:0.82rem;
+    font-style:normal;
+    color:rgba(23,21,18,0.55);
+  }
+  .press-item a.press-link{
+    display:inline-block;
+    margin-top:0.4rem;
+    font-size:0.78rem;
+    font-weight:500;
+    font-style:normal;
+    color:var(--gold);
+    border-bottom:1px solid var(--gold);
+  }
+  .press-item a.press-link:hover{color:var(--coral-dark);border-color:var(--coral-dark);}
+
+  /* ---------- Videos ---------- */
+  .video-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:1.2rem;
+  }
+  .grid-tile{
+    all:unset;
+    cursor:pointer;
+    position:relative;
+    display:block;
+    aspect-ratio:16/9;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 12px 26px rgba(0,0,0,0.2);
+  }
+  .grid-tile img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s ease;}
+  .grid-tile:hover img{transform:scale(1.06);}
+  .tile-scrim{position:absolute;inset:0;background:linear-gradient(180deg, rgba(0,0,0,0.05) 45%, rgba(0,0,0,0.68) 100%);}
+  .play-icon{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:46px;height:46px;border-radius:50%;
+    background:rgba(255,255,255,0.88);color:var(--ink);
+    display:flex;align-items:center;justify-content:center;font-size:0.95rem;
+    transition:background .3s ease, transform .3s ease;
+  }
+  .grid-tile:hover .play-icon{background:#fff;transform:translate(-50%,-50%) scale(1.08);}
+  .tile-name{
+    position:absolute;
+    left:0.9rem;right:0.9rem;bottom:0.75rem;
+    color:#fff;
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:600;
+    font-size:0.88rem;
+    line-height:1.3;
+    text-shadow:0 1px 5px rgba(0,0,0,0.4);
+  }
+
+  /* ---------- Tracklist ---------- */
+  .tracklist{
+    display:flex;
+    flex-direction:column;
+    max-width:760px;
+  }
+  .track-row{
+    display:flex;
+    align-items:baseline;
+    gap:1rem;
+    padding:0.75rem 0;
+    border-bottom:1px solid rgba(23,21,18,0.1);
+  }
+  .track-row:last-child{border-bottom:none;}
+  .track-row.sub{padding-left:1.7rem;}
+  .track-num{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.82rem;
+    color:rgba(23,21,18,0.4);
+    width:1.6rem;
+    flex:0 0 auto;
+  }
+  .track-row.sub .track-num{color:rgba(23,21,18,0.28);}
+  .track-title{
+    flex:1;
+    font-size:0.96rem;
+    color:var(--ink);
+  }
+  .track-row.sub .track-title{color:rgba(23,21,18,0.78);}
+  .track-title .composer{
+    font-weight:600;
+    color:var(--ink);
+  }
+  .track-title-link{
+    all:unset;
+    cursor:pointer;
+    color:inherit;
+    border-bottom:1px dashed var(--coral-dark);
+    transition:color .3s ease, border-color .3s ease;
+  }
+  .track-title-link:hover{color:var(--coral-dark);}
+  .track-title-link::after{
+    content:"▶";
+    display:inline-block;
+    margin-left:0.45rem;
+    font-size:0.65em;
+    color:var(--coral-dark);
+    vertical-align:middle;
+  }
+  .track-time{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.82rem;
+    color:rgba(23,21,18,0.5);
+    flex:0 0 auto;
+  }
+  .track-group-label{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:600;
+    font-style:italic;
+    font-size:0.92rem;
+    color:var(--coral-dark);
+    margin:1.6rem 0 0.3rem;
+    padding-top:0.6rem;
+    border-top:1px solid rgba(23,21,18,0.1);
+  }
+  .track-group-label:first-child{margin-top:0;padding-top:0;border-top:none;}
+
+  /* ---------- Modal ---------- */
+  .modal-backdrop{
+    position:fixed;inset:0;z-index:300;
+    background:rgba(10,12,10,0.7);
+    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+    display:flex;align-items:center;justify-content:center;
+    padding:clamp(1rem,4vw,2.4rem);
+    opacity:0;pointer-events:none;
+    transition:opacity .3s ease;
+  }
+  .modal-backdrop.open{opacity:1;pointer-events:auto;}
+  .modal-card{
+    position:relative;
+    background:var(--cream);
+    width:100%;max-width:820px;
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 30px 70px rgba(0,0,0,0.5);
+    transform:translateY(10px);
+    transition:transform .3s ease;
+  }
+  .modal-backdrop.open .modal-card{transform:translateY(0);}
+  .modal-close{
+    position:absolute;top:0.8rem;right:0.8rem;z-index:5;
+    width:36px;height:36px;border-radius:50%;border:none;
+    background:rgba(255,255,255,0.85);color:var(--ink);
+    cursor:pointer;font-size:1rem;line-height:1;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .modal-close:hover{background:#fff;}
+  .video-embed{position:relative;width:100%;padding-top:56.25%;background:#000;}
+  .video-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+
+  /* ---------- Responsive ---------- */
+  @media(max-width:820px){
+    .video-grid{grid-template-columns:1fr;}
+    .cd-hero{flex-direction:column;align-items:center;text-align:center;}
+    .cd-cover-img{width:min(220px,55vw);margin:0 auto;}
+    .cd-hero-info{text-align:left;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="wordmark" href="index.html">Sarah Luisa Wurmer</a>
+  <div class="header-right">
+    <a class="lang-switch" href="../cd.html">DE</a>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav>
+      <ul id="nav-list">
+        <li><a href="live.html">Live</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="projekte.html">Projects</a></li>
+        <li class="has-submenu">
+          <a class="active" href="medien.html">Media</a>
+          <ul class="submenu">
+            <li><a class="active" href="cd.html">CD Intimacy</a></li>
+          </ul>
+        </li>
+        <li><a href="kontakt.html">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<div class="bg-image">
+  <img src="../instrument-crop.jpg" alt="Zither — string detail">
+</div>
+
+<div class="content-wrap">
+
+<div class="cd-hero">
+  <div class="cd-cover-img">
+    <img src="../cd-cover.jpg" alt="Cover of „intimacy“ by Sarah Luisa Wurmer">
+  </div>
+  <div class="cd-hero-info">
+    <span class="eyebrow">Debut Album</span>
+    <h1>intimacy</h1>
+    <p class="lede">Bach's Cello Suite No. 6 (BWV 1012) for alto zither, framed by newly composed works on physicality and touch — with Mongolian yatga, live electronics and contemporary poetry. Released on the ES-DUR label.</p>
+    <div class="cd-primary-links">
+      <a class="solid" href="https://lnk.to/Sarah_Luisa_Wurmer-Intimacy" target="_blank" rel="noopener">Listen now</a>
+      <a class="outline" href="https://www.c2hamburg.de/shop/de/ALL/Intimacy.html" target="_blank" rel="noopener">Label ES-DUR</a>
+    </div>
+    <p class="cd-funding">Made possible by the <a href="https://www.fannyfoerderpreis.com/" target="_blank" rel="noopener">Fanny Mendelssohn Förderpreis</a> in collaboration with the <a href="https://www.c2hamburg.de/shop/de/ES-DUR/Intimacy.html" target="_blank" rel="noopener">label ES-DUR</a>.</p>
+  </div>
+</div>
+
+<!-- Radio -->
+<section class="cd-section">
+  <h2>Radio</h2>
+  <div class="radio-list">
+    <div class="radio-item">
+      <div class="radio-info">
+        <span class="radio-source">Deutschlandfunk Kultur — 29 Jun 2026</span>
+        <p>"Einstand" programme, hosted by Raphael Landstorfer.</p>
+      </div>
+      <a href="https://www.deutschlandfunkkultur.de/intimacy-mit-der-zitheristin-sarah-luisa-wurmer-100.html" target="_blank" rel="noopener">Listen</a>
+    </div>
+    <div class="radio-item">
+      <div class="radio-info">
+        <span class="radio-source">Deutschlandfunk Kultur — 8 Aug 2026</span>
+        <p>Podcast "Steve Reich: Piano Phase" with Sarah Luisa Wurmer and Tajda Krajnc, hosted by Carola Malter.</p>
+      </div>
+      <a href="https://www.deutschlandfunkkultur.de/steve-reich-piano-phase-mit-sarah-luisa-wurmer-und-tajda-krainc-100.html" target="_blank" rel="noopener">Listen</a>
+    </div>
+    <div class="radio-item">
+      <div class="radio-info">
+        <span class="radio-source">Gewandhaus Radio — 14 Mar 2026</span>
+        <p>Hosted by Martin Hoffmeister.</p>
+      </div>
+      <a href="https://www.gewandhausradio.de/neue-einspielungen-12/" target="_blank" rel="noopener">Listen</a>
+    </div>
+    <div class="radio-item">
+      <div class="radio-info">
+        <span class="radio-source">NDR Kultur — 19 Sep 2025</span>
+        <p>Phone interview, hosted by Eva Schramm.</p>
+      </div>
+      <a href="https://www.ndr.de/kultur/sarah-luisa-wurmer-spielt-bach-mit-der-zither,audio-287820.html" target="_blank" rel="noopener">Listen</a>
+    </div>
+  </div>
+</section>
+
+<!-- Press -->
+<section class="cd-section">
+  <h2>Press</h2>
+  <div class="press-list">
+    <div class="press-item">
+      <span class="press-source">Süddeutsche Zeitung — 1 Oct 2025</span>
+      <p>"When Sarah Luisa Wurmer stands before one of her instruments … she seems like a researcher, moving her samples with sensitive fingers. […] She is already a strong ambassador for the zither."</p>
+      <span class="press-author">Paul Schäufele</span>
+      <a class="press-link" href="https://www.sueddeutsche.de/muenchen/muenchen-zithermusik-sarah-luisa-wurmer-debuet-album-intimacy-klassik-li.3311064" target="_blank" rel="noopener">Read the full article</a>
+    </div>
+    <div class="press-item">
+      <span class="press-source">DIE ZEIT — Christmas music recommendations, No. 49/2025</span>
+      <p>"Bach's Cello Suite No. 6 on an alto zither? Every note glistens, every theme bubbles, every bar tingles in the ear."</p>
+      <span class="press-author">Florian Zinnecker</span>
+      <a class="press-link" href="https://www.zeit.de/2025/49/musik-empfehlung-weihnachten-interpreten" target="_blank" rel="noopener">Read the full article</a>
+    </div>
+    <div class="press-item">
+      <span class="press-source">Der Standard — 6 Oct 2025</span>
+      <p>"On the alto zither, the nobly flowing Suite BWV 1012 comes across with surprising substance, discreet and preciously fragile. […] Piano Phase attains a very particular clarity in the dialogue between Wurmer and Krajnc."</p>
+      <span class="press-author">Ljubiša Tošić</span>
+      <a class="press-link" href="https://www.derstandard.de/story/3000000290408/der-gute-ton-mit-bugge-wesseltoft-bach-zither-und-cello" target="_blank" rel="noopener">Read the full article</a>
+    </div>
+  </div>
+
+  <button class="press-toggle" id="press-toggle" type="button" aria-expanded="false">Show 4 more reviews +</button>
+
+  <div class="press-more-wrap" id="press-more-wrap">
+    <div class="press-more-inner">
+      <div class="press-list">
+        <div class="press-item">
+          <span class="press-source">musikmachen.de — 2 Jan 2026</span>
+          <p>"The magnetic sensitivity of her fingertips is palpable in every minute of the album. […] Her cantabile expressiveness is especially striking when she trades the alto zither for the Mongolian yatga."</p>
+          <span class="press-author">Bettina Boyens</span>
+          <a class="press-link" href="https://www.musikmachen.de/orchester/mit-den-fingern-auf-der-zither-singen/" target="_blank" rel="noopener">Read the full article</a>
+        </div>
+        <div class="press-item">
+          <span class="press-source">Frankfurter Neue Presse — 16 Jan 2026</span>
+          <p>"She is especially sensitive in 'topography of fragility' by Leon Zmelty — touching her skin with her finger, rubbing pebbles together and exploring, through electronic amplification, everyday sounds that eventually become tones."</p>
+          <span class="press-author">Bettina Boyens</span>
+        </div>
+        <div class="press-item">
+          <span class="press-source">Das Orchester — 3/26</span>
+          <p>"The arrangement for alto zither impresses with a powerful yet warm tone and a wealth of dynamic nuance. Technical ease combines with great expressive power."</p>
+          <span class="press-author">Claudia Höpfl</span>
+        </div>
+        <div class="press-item">
+          <span class="press-source">zither Magazin — 1/26</span>
+          <p>"69 sensitive yet electrifying minutes of the most varied solo works for zither — brilliantly performed by Sarah Luisa Wurmer and Tajda Krajnc."</p>
+          <span class="press-author">Fredrik Schwenk</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Videos -->
+<section class="cd-section">
+  <h2>Videos</h2>
+  <div class="video-grid">
+    <button class="grid-tile" data-youtube="hzvTsfQpSvo">
+      <img src="https://img.youtube.com/vi/hzvTsfQpSvo/hqdefault.jpg" alt="Julius von Lorentz — berührt – geschnitten" loading="lazy">
+      <span class="tile-scrim"></span>
+      <span class="play-icon" aria-hidden="true">▶</span>
+      <span class="tile-name">Julius von Lorentz — berührt – geschnitten</span>
+    </button>
+    <button class="grid-tile" data-youtube="j1kjDk3n-CU">
+      <img src="https://img.youtube.com/vi/j1kjDk3n-CU/hqdefault.jpg" alt="J. S. Bach — Gigue" loading="lazy">
+      <span class="tile-scrim"></span>
+      <span class="play-icon" aria-hidden="true">▶</span>
+      <span class="tile-name">J. S. Bach — Gigue</span>
+    </button>
+    <button class="grid-tile" data-youtube="f6qnYLaZ4Zo">
+      <img src="https://img.youtube.com/vi/f6qnYLaZ4Zo/hqdefault.jpg" alt="Eva Kuhn — wie du atmest für Yatga" loading="lazy">
+      <span class="tile-scrim"></span>
+      <span class="play-icon" aria-hidden="true">▶</span>
+      <span class="tile-name">Eva Kuhn — wie du atmest für Yatga</span>
+    </button>
+  </div>
+</section>
+
+<!-- About the album -->
+<section class="cd-section cd-section-narrow">
+  <h2>About the Album</h2>
+  <div class="body-text">
+    <p>The 2025 Fanny Mendelssohn Förderpreis winner invites listeners, with her debut album <em>intimacy</em>, into an extraordinary encounter between early and new music — and into an exploration of the many layers of intimacy. At its heart is Bach's Cello Suite No. 6 in D major (BWV 1012), arranged for alto zither: the suite's polyphonic lines and harmonies unfold here in an entirely new way. It is complemented by new compositions on physicality and touch, created specifically for this project, which stand in close dialogue with Bach's music — breaking it open, condensing it, and weaving it together with the Baroque movements into a coherent musical narrative — featuring Mongolian yatga, close-miking, live electronics and contemporary poetry.</p>
+    <p>As our society changes, the question arises of how sensitive listening and openness to the unfamiliar can succeed. In a time of growing polarisation, music can be a place of encounter and openness to being touched.</p>
+  </div>
+</section>
+
+<!-- Tracklist -->
+<section class="cd-section cd-section-tracklist">
+  <h2>Tracklist</h2>
+  <div class="tracklist">
+    <div class="track-row">
+      <span class="track-num">1</span>
+      <span class="track-title">arco (Improvisation)</span>
+      <span class="track-time">1:39</span>
+    </div>
+
+    <p class="track-group-label">J. S. Bach — Suite for Solo Cello No. 6 in D major, BWV 1012</p>
+    <div class="track-row sub">
+      <span class="track-num">2</span>
+      <span class="track-title">Prélude</span>
+      <span class="track-time">5:03</span>
+    </div>
+    <div class="track-row sub">
+      <span class="track-num">3</span>
+      <span class="track-title">Allemande</span>
+      <span class="track-time">7:10</span>
+    </div>
+    <div class="track-row">
+      <span class="track-num">4</span>
+      <span class="track-title"><span class="composer">Dorothea Hofmann:</span> … mit den Fingern zu singen</span>
+      <span class="track-time">6:58</span>
+    </div>
+    <div class="track-row sub">
+      <span class="track-num">5</span>
+      <span class="track-title">Courante</span>
+      <span class="track-time">4:30</span>
+    </div>
+    <div class="track-row">
+      <span class="track-num">6</span>
+      <span class="track-title"><span class="composer">Leon Zmelty:</span> topography of fragility</span>
+      <span class="track-time">7:10</span>
+    </div>
+    <div class="track-row sub">
+      <span class="track-num">7</span>
+      <span class="track-title">Sarabande</span>
+      <span class="track-time">4:15</span>
+    </div>
+    <div class="track-row sub">
+      <span class="track-num">8</span>
+      <span class="track-title">Gavotte 1–2</span>
+      <span class="track-time">3:34</span>
+    </div>
+    <div class="track-row">
+      <span class="track-num">9</span>
+      <span class="track-title"><span class="composer">Eva Kuhn:</span> <button type="button" class="track-title-link" data-youtube="f6qnYLaZ4Zo">wie du atmest für Yatga</button></span>
+      <span class="track-time">3:29</span>
+    </div>
+    <div class="track-row sub">
+      <span class="track-num">10</span>
+      <span class="track-title"><button type="button" class="track-title-link" data-youtube="j1kjDk3n-CU">Gigue</button></span>
+      <span class="track-time">4:24</span>
+    </div>
+    <div class="track-row">
+      <span class="track-num">11</span>
+      <span class="track-title"><span class="composer">Julius von Lorentz:</span> <button type="button" class="track-title-link" data-youtube="hzvTsfQpSvo">berührt – geschnitten</button></span>
+      <span class="track-time">9:40</span>
+    </div>
+    <div class="track-row">
+      <span class="track-num">12</span>
+      <span class="track-title"><span class="composer">Steve Reich:</span> Piano Phase</span>
+      <span class="track-time">12:01</span>
+    </div>
+  </div>
+</section>
+
+<div class="site-social">
+  <a href="https://www.instagram.com/sarah.luw/" target="_blank" rel="noopener" aria-label="Instagram">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>
+  </a>
+  <a href="https://www.youtube.com/channel/UCaHHFL-cvs6Ndx08p5nR0uw/about" target="_blank" rel="noopener" aria-label="YouTube">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="6" width="19" height="12" rx="4"/><polygon points="10.5 9.3 15 12 10.5 14.7" fill="currentColor" stroke="none"/></svg>
+  </a>
+  <a href="https://soundcloud.com/sarah-luisa-wurmer" target="_blank" rel="noopener" aria-label="SoundCloud">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 15v2"/><path d="M5 13v4"/><path d="M8 11v6"/><path d="M11 9v8"/><path d="M14 8.2c.4-2 2.2-3.5 4.3-3.5 2.4 0 4.4 2 4.4 4.4 0 .3 0 .6-.1.9h-.3H14V17H21.5"/></svg>
+  </a>
+  <a href="https://open.spotify.com/intl-de/artist/3Wi0PQyjhWrgSvEH2n7eoM" target="_blank" rel="noopener" aria-label="Spotify">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="9.2"/><path d="M7 10.2c3.2-1 7.6-.6 10 .9"/><path d="M7.6 13.4c2.7-.8 6.2-.5 8.4.8"/><path d="M8.3 16.3c2.1-.6 4.8-.4 6.5.6"/></svg>
+  </a>
+</div>
+
+<div class="legal-links">
+  <a href="impressum.html">Legal Notice</a>
+</div>
+
+</div>
+
+<div class="modal-backdrop" id="modal-backdrop">
+  <div class="modal-card" role="dialog" aria-modal="true">
+    <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
+    <div class="video-embed" id="modal-media"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var backdrop = document.getElementById('modal-backdrop');
+  var mediaSlot = document.getElementById('modal-media');
+  var closeBtn = document.getElementById('modal-close');
+  var lastFocused = null;
+
+  function openModal(videoId){
+    lastFocused = document.activeElement;
+    mediaSlot.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + videoId +
+      '" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+    backdrop.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    closeBtn.focus();
+  }
+  function closeModal(){
+    backdrop.classList.remove('open');
+    document.body.style.overflow = '';
+    mediaSlot.innerHTML = '';
+    if(lastFocused) lastFocused.focus();
+  }
+
+  document.querySelectorAll('.grid-tile[data-youtube]').forEach(function(tile){
+    tile.addEventListener('click', function(){
+      openModal(tile.getAttribute('data-youtube'));
+    });
+  });
+  document.querySelectorAll('.track-title-link[data-youtube]').forEach(function(link){
+    link.addEventListener('click', function(){
+      openModal(link.getAttribute('data-youtube'));
+    });
+  });
+  closeBtn.addEventListener('click', closeModal);
+  backdrop.addEventListener('click', function(e){ if(e.target === backdrop) closeModal(); });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && backdrop.classList.contains('open')) closeModal();
+  });
+
+  var pressToggle = document.getElementById('press-toggle');
+  var pressMore = document.getElementById('press-more-wrap');
+  if(pressToggle && pressMore){
+    pressToggle.addEventListener('click', function(){
+      var isOpen = pressMore.classList.toggle('open');
+      pressToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      pressToggle.textContent = isOpen ? 'Show fewer –' : 'Show 4 more reviews +';
+    });
+  }
+})();
+</script>
+
+<script>
+(function(){
+  var header = document.querySelector('header');
+  function onScroll(){
+    header.classList.toggle('scrolled', window.scrollY > 10);
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+})();
+</script>
+
+<script>
+(function(){
+  var toggle = document.getElementById('nav-toggle');
+  var navList = document.getElementById('nav-list');
+  if(!toggle || !navList) return;
+  toggle.addEventListener('click', function(){
+    var isOpen = navList.classList.toggle('open');
+    toggle.classList.toggle('open', isOpen);
+    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  navList.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      navList.classList.remove('open');
+      toggle.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

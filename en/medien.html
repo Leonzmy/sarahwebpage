@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" href="../favicon-32.png" type="image/png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<title>Media — Sarah Luisa Wurmer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#EDE7DD;
+    --ink:#171512;
+    --indigo:#2A3560;
+    --teal:#5FC8B8;
+    --coral:#E29580;
+    --coral-dark:#B85A3E;
+    --gold:#B8873E;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    min-height:100vh;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none;}
+
+  /* ---------- Fixed transparent header (same as other pages) ---------- */
+  header{
+    position:fixed;
+    top:0;left:0;right:0;
+    z-index:100;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:1.6rem clamp(1.2rem,4vw,3.2rem);
+    transition:background .3s ease, backdrop-filter .3s ease;
+  }
+  header.scrolled{
+    background:rgba(23,21,18,0.42);
+    backdrop-filter:blur(14px) saturate(140%);
+    -webkit-backdrop-filter:blur(14px) saturate(140%);
+  }
+
+  /* ---------- Small persistent social icon row, bottom-right ---------- */
+  .site-social{
+    position:relative;
+    z-index:5;
+    display:flex;
+    justify-content:flex-end;
+    gap:0.7rem;
+    max-width:760px;
+    margin:2.4rem auto 0;
+    padding:0 clamp(1.2rem,4vw,2.4rem);
+  }
+  .site-social a{
+    width:38px;height:38px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,0.45);
+    color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    transition:background .3s ease, border-color .3s ease;
+  }
+  .site-social a svg{width:16px;height:16px;}
+  .site-social a:hover{background:rgba(255,255,255,0.16);border-color:#fff;}
+
+  .legal-links{
+    position:relative;
+    z-index:5;
+    display:block;
+    text-align:right;
+    max-width:760px;
+    margin:0.6rem auto 2.4rem;
+    padding:0 clamp(1.2rem,4vw,2.4rem);
+  }
+  .legal-links a{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.68rem;
+    color:rgba(255,255,255,0.4);
+    border-bottom:1px solid transparent;
+    transition:color .3s ease, border-color .3s ease;
+  }
+  .legal-links a:hover{color:#fff;border-color:rgba(255,255,255,0.5);}
+
+  .wordmark{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:600;
+    font-size:1.3rem;
+    letter-spacing:-0.01em;
+    color:#fff;
+    text-shadow:0 1px 8px rgba(0,0,0,0.4);
+    transition:color .3s ease, text-shadow .3s ease;
+  }
+  .wordmark:hover{color:var(--teal);text-shadow:0 0 10px rgba(95,200,184,0.85), 0 0 22px rgba(95,200,184,0.5);}
+  .lang-switch{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.78rem;
+    color:rgba(255,255,255,0.7);
+    border-bottom:1px solid transparent;
+    transition:color .3s ease, border-color .3s ease;
+  }
+  .lang-switch:hover{color:#fff;border-color:rgba(255,255,255,0.6);}
+  .header-right{display:flex;align-items:center;gap:1.4rem;}
+  nav ul{display:flex;gap:clamp(1rem,2.2vw,2.2rem);list-style:none;margin:0;padding:0;}
+  .nav-toggle{
+    all:unset;
+    display:none;
+    cursor:pointer;
+    width:26px;height:20px;
+    position:relative;
+    z-index:110;
+  }
+  .nav-toggle span{
+    display:block;
+    position:absolute;
+    left:0;right:0;
+    height:2px;
+    background:#fff;
+    border-radius:2px;
+    transition:transform .3s ease, opacity .3s ease;
+  }
+  .nav-toggle span:nth-child(1){top:1px;}
+  .nav-toggle span:nth-child(2){top:9px;}
+  .nav-toggle span:nth-child(3){top:17px;}
+  .nav-toggle.open span:nth-child(1){transform:translateY(8px) rotate(45deg);}
+  .nav-toggle.open span:nth-child(2){opacity:0;}
+  .nav-toggle.open span:nth-child(3){transform:translateY(-8px) rotate(-45deg);}
+  @media(max-width:680px){
+    .nav-toggle{display:block;}
+    nav > ul{
+      position:absolute;
+      top:calc(100% + 0.6rem);right:0;
+      height:auto;
+      width:min(60vw,220px);
+      flex-direction:column;
+      align-items:flex-start;
+      justify-content:flex-start;
+      gap:0.9rem;
+      padding:1.2rem 1.3rem;
+      background:rgba(23,21,18,0.94);
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+      border-radius:14px;
+      opacity:0;
+      transform:translateY(-8px);
+      pointer-events:none;
+      transition:opacity .25s ease, transform .25s ease;
+      z-index:105;
+    }
+    nav > ul.open{opacity:1;transform:translateY(0);pointer-events:auto;}
+    nav a{color:#fff !important;font-size:0.92rem;}
+    .submenu{position:static !important;opacity:1 !important;pointer-events:auto !important;transform:none !important;padding-left:0.7rem !important;margin-top:0.4rem !important;min-width:0 !important;}
+  }
+  nav a{
+    color:rgba(255,255,255,0.85);
+    font-size:0.86rem;
+    letter-spacing:0.03em;
+    position:relative;
+    padding-bottom:3px;
+    transition:color .3s ease, text-shadow .3s ease;
+  }
+  nav a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1px;background:var(--teal);transition:width .35s ease;}
+  nav a:hover{color:#fff;text-shadow:0 0 10px rgba(95,200,184,0.85), 0 0 22px rgba(95,200,184,0.5);}
+  nav a:hover::after{width:100%;}
+  nav a.active{color:var(--teal);}
+  nav a.active::after{width:100%;background:var(--teal);}
+
+  /* ---------- Submenu (e.g. Medien > CD Intimacy), shown on hover ---------- */
+  .has-submenu{position:relative;}
+  .submenu{
+    position:absolute;
+    top:100%;left:0;
+    padding:1rem 0 0;
+    min-width:130px;
+    list-style:none;
+    opacity:0;
+    transform:translateY(-6px);
+    pointer-events:none;
+    transition:opacity .25s ease, transform .25s ease;
+  }
+  .has-submenu:hover .submenu,
+  .has-submenu:focus-within .submenu{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+  }
+  .submenu a{
+    display:block;
+    padding:0.5rem 1.1rem;
+    font-size:0.82rem;
+    color:rgba(255,255,255,0.85);
+    white-space:nowrap;
+  }
+  .submenu a:hover{color:var(--teal);}
+
+  /* ---------- Full-screen background image (same as Projekte) ---------- */
+  .bg-image{
+    position:fixed;
+    inset:0;
+    z-index:0;
+  }
+  .bg-image img{
+    width:100%;height:100%;
+    object-fit:cover;
+    object-position:45% 45%;
+    display:block;
+  }
+  .bg-image::after{
+    content:"";
+    position:absolute;inset:0;
+    background:rgba(10,12,10,0.14);
+  }
+
+  /* ---------- Content: flows normally over the fixed, blurred backdrop ---------- */
+  .content-wrap{
+    position:relative;
+    z-index:5;
+    padding-top:clamp(6rem,13vh,7.5rem);
+  }
+  .medien-section{
+    max-width:760px;
+    margin:0 auto 1.6rem;
+    padding:clamp(1.6rem,3.4vw,2.2rem);
+    background:rgba(237,231,221,0.28);
+    backdrop-filter:blur(14px) saturate(140%);
+    -webkit-backdrop-filter:blur(14px) saturate(140%);
+    border-radius:20px;
+  }
+  .section-title{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:600;
+    font-size:clamp(1.5rem,3vw,2rem);
+    margin:0 0 1.8rem;
+    color:var(--ink);
+  }
+
+  /* ---------- Video list: simple stacked rows, thumbnail + title ---------- */
+  .video-list{
+    display:flex;
+    flex-direction:column;
+    gap:0.4rem;
+    max-width:560px;
+  }
+  .video-acc-item{
+    border-radius:14px;
+    overflow:hidden;
+    transition:background .4s ease;
+  }
+  .video-acc-item.active{background:rgba(255,255,255,0.28);}
+  .video-acc-row{
+    all:unset;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:1.1rem;
+    padding:0.65rem 0.8rem;
+    border-radius:12px;
+    width:100%;
+    box-sizing:border-box;
+    transition:background .3s ease;
+  }
+  .video-acc-item:not(.active) .video-acc-row:hover{background:rgba(255,255,255,0.2);}
+  .video-acc-row:focus-visible{outline:2px solid var(--teal);outline-offset:2px;}
+  .video-thumb{
+    position:relative;
+    width:64px;
+    flex:0 0 auto;
+    aspect-ratio:16/9;
+    border-radius:6px;
+    overflow:hidden;
+  }
+  .video-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+  .video-title{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:600;
+    font-size:0.94rem;
+    line-height:1.35;
+    color:var(--ink);
+  }
+  .video-acc-panel{
+    display:grid;
+    grid-template-rows:0fr;
+    transition:grid-template-rows .5s ease;
+  }
+  .video-acc-panel-inner{overflow:hidden;}
+  .video-acc-item.active .video-acc-panel{grid-template-rows:1fr;}
+  .video-acc-large{
+    all:unset;
+    cursor:pointer;
+    display:block;
+    position:relative;
+    width:100%;
+    aspect-ratio:16/9;
+    margin:0 0 0.9rem;
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 16px 34px rgba(0,0,0,0.3);
+  }
+  .video-acc-large img{width:100%;height:100%;object-fit:cover;display:block;}
+  .video-acc-large .tile-scrim{
+    position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(0,0,0,0.05) 45%, rgba(0,0,0,0.7) 100%);
+  }
+  .video-acc-large .play-icon{
+    position:absolute;top:50%;left:50%;
+    transform:translate(-50%,-50%);
+    width:56px;height:56px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.9);
+    color:var(--ink);
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.05rem;
+    transition:background .3s ease, transform .3s ease;
+  }
+  .video-acc-large:hover .play-icon{background:#fff;transform:translate(-50%,-50%) scale(1.08);}
+
+  /* ---------- Instagram: official embeds, force-scaled down so
+     4 always fit in a row regardless of Instagram's own minimum
+     render width ---------- */
+  .insta-embed-row{
+    display:flex;
+    flex-wrap:nowrap;
+    gap:0.6rem;
+    max-width:820px;
+    overflow-x:auto;
+  }
+  .insta-scale-wrap{
+    flex:0 0 auto;
+    width:180px;
+    overflow:hidden;
+    border-radius:8px;
+  }
+  .insta-scale-inner{
+    width:400px;
+    transform:scale(0.45);
+    transform-origin:top left;
+  }
+  .insta-note{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.78rem;
+    color:rgba(23,21,18,0.5);
+  }
+  @media(max-width:480px){
+    .insta-scale-wrap{width:140px;}
+    .insta-scale-inner{transform:scale(0.35);}
+  }
+  @media(max-width:700px){
+    .medien-section{
+      background:none;
+      backdrop-filter:none;
+      -webkit-backdrop-filter:none;
+      margin-bottom:2.2rem;
+    }
+    .section-title{text-shadow:0 1px 4px rgba(0,0,0,0.4);}
+  }
+
+  /* ---------- Presse ---------- */
+  .press-list{
+    display:flex;
+    flex-direction:column;
+    gap:1.4rem;
+    max-width:760px;
+  }
+  .press-item{
+    padding:1.3rem 1.5rem;
+    border-left:2px solid var(--gold);
+    background:rgba(237,231,221,0.62);
+    border-radius:0 12px 12px 0;
+  }
+  .press-item p{
+    margin:0 0 0.6rem;
+    font-size:1rem;
+    line-height:1.6;
+    color:rgba(23,21,18,0.9);
+  }
+  .press-item a{
+    font-size:0.82rem;
+    font-weight:600;
+    color:var(--coral-dark);
+    border-bottom:1px solid var(--coral-dark);
+  }
+  .press-item a:hover{color:var(--indigo);border-color:var(--indigo);}
+
+  /* ---------- CD ---------- */
+  .cd-block{
+    display:flex;
+    align-items:center;
+    gap:clamp(1.6rem,4vw,2.6rem);
+    flex-wrap:wrap;
+  }
+  .cd-cover{
+    display:block;
+    width:180px;height:180px;
+    flex:0 0 auto;
+    border-radius:6px;
+    overflow:hidden;
+    box-shadow:0 20px 45px rgba(0,0,0,0.4);
+    transition:transform .3s ease, box-shadow .3s ease;
+  }
+  .cd-cover:hover{transform:scale(1.03);box-shadow:0 24px 52px rgba(0,0,0,0.5);}
+  .cd-info{flex:1;min-width:240px;}
+  .cd-info h3{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:600;
+    font-size:1.3rem;
+    margin:0 0 0.6rem;
+    color:var(--ink);
+  }
+  .cd-info p{
+    margin:0 0 1rem;
+    font-size:0.96rem;
+    line-height:1.6;
+    color:rgba(23,21,18,0.75);
+    max-width:52ch;
+  }
+  .cd-links{display:flex;flex-wrap:wrap;gap:0.7rem;}
+  .cd-links a{
+    padding:0.75rem 1.5rem;
+    background:var(--coral-dark);
+    border:1px solid var(--coral-dark);
+    border-radius:999px;
+    font-size:0.9rem;
+    font-weight:600;
+    color:#fff;
+    box-shadow:0 8px 20px rgba(184,90,62,0.35);
+    transition:background .3s ease, transform .3s ease, box-shadow .3s ease;
+  }
+  .cd-links a:hover{background:var(--indigo);border-color:var(--indigo);transform:translateY(-1px);box-shadow:0 10px 24px rgba(42,53,96,0.35);}
+  .cd-note{
+    margin-top:1.4rem;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.72rem;
+    color:rgba(23,21,18,0.4);
+  }
+
+  /* ---------- Modal (video) ---------- */
+  .modal-backdrop{
+    position:fixed;inset:0;z-index:300;
+    background:rgba(10,12,10,0.7);
+    backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+    display:flex;align-items:center;justify-content:center;
+    padding:clamp(1rem,4vw,2.4rem);
+    opacity:0;pointer-events:none;
+    transition:opacity .3s ease;
+  }
+  .modal-backdrop.open{opacity:1;pointer-events:auto;}
+  .modal-card{
+    position:relative;
+    background:var(--cream);
+    width:100%;max-width:820px;
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 30px 70px rgba(0,0,0,0.5);
+    transform:translateY(10px);
+    transition:transform .3s ease;
+  }
+  .modal-backdrop.open .modal-card{transform:translateY(0);}
+  .modal-close{
+    position:absolute;top:0.8rem;right:0.8rem;z-index:5;
+    width:36px;height:36px;border-radius:50%;border:none;
+    background:rgba(255,255,255,0.85);color:var(--ink);
+    cursor:pointer;font-size:1rem;line-height:1;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .modal-close:hover{background:#fff;}
+  .video-embed{position:relative;width:100%;padding-top:56.25%;background:#000;}
+  .video-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+
+  /* ---------- Responsive ---------- */
+</style>
+</head>
+<body>
+
+<header>
+  <a class="wordmark" href="index.html">Sarah Luisa Wurmer</a>
+  <div class="header-right">
+    <a class="lang-switch" href="../medien.html">DE</a>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav>
+      <ul id="nav-list">
+        <li><a href="live.html">Live</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="projekte.html">Projects</a></li>
+        <li class="has-submenu">
+          <a class="active" href="medien.html">Media</a>
+          <ul class="submenu">
+            <li><a href="cd.html">CD Intimacy</a></li>
+          </ul>
+        </li>
+        <li><a href="kontakt.html">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<div class="bg-image">
+  <img src="../instrument-crop.jpg" alt="Zither — string detail">
+</div>
+
+<div class="content-wrap">
+
+<!-- Video -->
+<section class="medien-section">
+  <h2 class="section-title">Videos</h2>
+  <div class="video-list" id="video-list">
+
+    <div class="video-acc-item active" data-index="0">
+      <button class="video-acc-row" data-youtube="iLUdutUV3ng">
+        <span class="video-thumb"><img src="https://img.youtube.com/vi/iLUdutUV3ng/hqdefault.jpg" alt="L. Hurt — Flashback X" loading="lazy"></span>
+        <span class="video-title">L. Hurt — Flashback X</span>
+      </button>
+      <div class="video-acc-panel">
+        <div class="video-acc-panel-inner">
+          <button class="video-acc-large" data-youtube="iLUdutUV3ng">
+            <img src="https://img.youtube.com/vi/iLUdutUV3ng/hqdefault.jpg" alt="L. Hurt — Flashback X" loading="lazy">
+            <span class="tile-scrim"></span>
+            <span class="play-icon" aria-hidden="true">▶</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="video-acc-item" data-index="1">
+      <button class="video-acc-row" data-youtube="yf0WwDmc3A4">
+        <span class="video-thumb"><img src="https://img.youtube.com/vi/yf0WwDmc3A4/hqdefault.jpg" alt="H. von Bingen — O virtus sapientiae" loading="lazy"></span>
+        <span class="video-title">H. von Bingen — O virtus sapientiae</span>
+      </button>
+      <div class="video-acc-panel">
+        <div class="video-acc-panel-inner">
+          <button class="video-acc-large" data-youtube="yf0WwDmc3A4">
+            <img src="https://img.youtube.com/vi/yf0WwDmc3A4/hqdefault.jpg" alt="H. von Bingen — O virtus sapientiae" loading="lazy">
+            <span class="tile-scrim"></span>
+            <span class="play-icon" aria-hidden="true">▶</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="video-acc-item" data-index="2">
+      <button class="video-acc-row" data-youtube="79QAloNgbVE">
+        <span class="video-thumb"><img src="https://img.youtube.com/vi/79QAloNgbVE/hqdefault.jpg" alt="Trailer — Thüringer Bachwochen 2024" loading="lazy"></span>
+        <span class="video-title">Trailer — Thüringer Bachwochen 2024</span>
+      </button>
+      <div class="video-acc-panel">
+        <div class="video-acc-panel-inner">
+          <button class="video-acc-large" data-youtube="79QAloNgbVE">
+            <img src="https://img.youtube.com/vi/79QAloNgbVE/hqdefault.jpg" alt="Trailer — Thüringer Bachwochen 2024" loading="lazy">
+            <span class="tile-scrim"></span>
+            <span class="play-icon" aria-hidden="true">▶</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="video-acc-item" data-index="3">
+      <button class="video-acc-row" data-youtube="1TNGhifP4rU">
+        <span class="video-thumb"><img src="https://img.youtube.com/vi/1TNGhifP4rU/hqdefault.jpg" alt="Duo Hadassa — Trailer" loading="lazy"></span>
+        <span class="video-title">Duo Hadassa — Trailer</span>
+      </button>
+      <div class="video-acc-panel">
+        <div class="video-acc-panel-inner">
+          <button class="video-acc-large" data-youtube="1TNGhifP4rU">
+            <img src="https://img.youtube.com/vi/1TNGhifP4rU/hqdefault.jpg" alt="Duo Hadassa — Trailer" loading="lazy">
+            <span class="tile-scrim"></span>
+            <span class="play-icon" aria-hidden="true">▶</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- CD -->
+<section class="medien-section">
+  <h2 class="section-title">Debut Album</h2>
+  <div class="cd-block">
+    <a class="cd-cover" href="cd.html">
+      <img src="../cd-cover-thumb.jpg" alt="Cover of „intimacy“" style="width:100%;height:100%;object-fit:cover;display:block;">
+    </a>
+    <div class="cd-info">
+      <h3>intimacy</h3>
+      <p>Bach's Cello Suite No. 6 for alto zither, framed by new compositions on physicality and touch. Released on the ES-DUR label.</p>
+      <div class="cd-links">
+        <a href="cd.html">Album, press &amp; videos →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Press -->
+<section class="medien-section">
+  <h2 class="section-title">Press</h2>
+  <div class="press-list">
+    <div class="press-item">
+      <p>"Intimacy with zither player Sarah Luisa Wurmer" — interview and feature on Deutschlandfunk Kultur.</p>
+      <a href="https://www.deutschlandfunkkultur.de/intimacy-mit-der-zitheristin-sarah-luisa-wurmer-100.html" target="_blank" rel="noopener">To the "Einstand" programme</a>
+    </div>
+    <div class="press-item">
+      <p>"Steve Reich: Piano Phase" with Sarah Luisa Wurmer and Tajda Krajnc — on Deutschlandfunk Kultur.</p>
+      <a href="https://www.deutschlandfunkkultur.de/steve-reich-piano-phase-mit-sarah-luisa-wurmer-und-tajda-krainc-100.html" target="_blank" rel="noopener">To the "Piano Phase" programme</a>
+    </div>
+  </div>
+</section>
+
+<!-- Instagram -->
+<section class="medien-section">
+  <h2 class="section-title">Instagram</h2>
+  <div class="insta-embed-row" id="insta-embed-row">
+    <p class="insta-note">Loading posts …</p>
+  </div>
+</section>
+
+<div class="site-social">
+  <a href="https://www.instagram.com/sarah.luw/" target="_blank" rel="noopener" aria-label="Instagram">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>
+  </a>
+  <a href="https://www.youtube.com/channel/UCaHHFL-cvs6Ndx08p5nR0uw/about" target="_blank" rel="noopener" aria-label="YouTube">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="6" width="19" height="12" rx="4"/><polygon points="10.5 9.3 15 12 10.5 14.7" fill="currentColor" stroke="none"/></svg>
+  </a>
+  <a href="https://soundcloud.com/sarah-luisa-wurmer" target="_blank" rel="noopener" aria-label="SoundCloud">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 15v2"/><path d="M5 13v4"/><path d="M8 11v6"/><path d="M11 9v8"/><path d="M14 8.2c.4-2 2.2-3.5 4.3-3.5 2.4 0 4.4 2 4.4 4.4 0 .3 0 .6-.1.9h-.3H14V17H21.5"/></svg>
+  </a>
+  <a href="https://open.spotify.com/intl-de/artist/3Wi0PQyjhWrgSvEH2n7eoM" target="_blank" rel="noopener" aria-label="Spotify">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="9.2"/><path d="M7 10.2c3.2-1 7.6-.6 10 .9"/><path d="M7.6 13.4c2.7-.8 6.2-.5 8.4.8"/><path d="M8.3 16.3c2.1-.6 4.8-.4 6.5.6"/></svg>
+  </a>
+</div>
+
+<div class="legal-links">
+  <a href="impressum.html">Legal Notice</a>
+</div>
+
+</div>
+
+<div class="modal-backdrop" id="modal-backdrop">
+  <div class="modal-card" role="dialog" aria-modal="true">
+    <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
+    <div class="video-embed" id="modal-media"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var backdrop = document.getElementById('modal-backdrop');
+  var mediaSlot = document.getElementById('modal-media');
+  var closeBtn = document.getElementById('modal-close');
+  var lastFocused = null;
+
+  function openModal(videoId){
+    lastFocused = document.activeElement;
+    mediaSlot.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + videoId +
+      '" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+    backdrop.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    closeBtn.focus();
+  }
+  function closeModal(){
+    backdrop.classList.remove('open');
+    document.body.style.overflow = '';
+    mediaSlot.innerHTML = '';
+    if(lastFocused) lastFocused.focus();
+  }
+
+  closeBtn.addEventListener('click', closeModal);
+  backdrop.addEventListener('click', function(e){ if(e.target === backdrop) closeModal(); });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && backdrop.classList.contains('open')) closeModal();
+  });
+
+  // Video accordion: compact rows normally, active one expands to a
+  // large preview; clicking the large preview plays it in the modal.
+  var videoList = document.getElementById('video-list');
+  if(videoList){
+    var items = Array.prototype.slice.call(videoList.querySelectorAll('.video-acc-item'));
+    var idx = 0;
+    var ROTATE_MS = 6000;
+    var timer = null;
+
+    function setActive(i){
+      idx = i;
+      items.forEach(function(item, ii){ item.classList.toggle('active', ii === i); });
+    }
+    function start(){ timer = setInterval(function(){ setActive((idx + 1) % items.length); }, ROTATE_MS); }
+    function stop(){ if(timer) clearInterval(timer); }
+
+    start();
+
+    items.forEach(function(item, ii){
+      var row = item.querySelector('.video-acc-row');
+      row.addEventListener('click', function(){
+        stop();
+        setActive(ii);
+        start();
+      });
+      var large = item.querySelector('.video-acc-large');
+      large.addEventListener('click', function(){
+        openModal(large.getAttribute('data-youtube'));
+      });
+    });
+
+    videoList.addEventListener('mouseenter', stop);
+    videoList.addEventListener('mouseleave', start);
+  }
+})();
+</script>
+
+<script>
+(function(){
+  var SHEET_ID = "1fKlSevXrU3xcedsUj2UGBNeDw2BEh7OnCQ7lGGTVBcA";
+  var SHEET_NAME = "Tabellenblatt2";
+  var CALLBACK_NAME = "slwInstaHandler";
+
+  function escapeHtml(str){
+    if(str === null || str === undefined) return "";
+    return String(str)
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;");
+  }
+
+  function cellValue(cell){
+    if(!cell) return "";
+    if(cell.f !== undefined && cell.f !== null && cell.f !== "") return cell.f;
+    if(cell.v !== undefined && cell.v !== null) return cell.v;
+    return "";
+  }
+
+  var SCALE = 0.45;
+
+  function loadInstagramEmbedScript(callback){
+    if(window.instgrm){ callback(); return; }
+    var s = document.createElement("script");
+    s.src = "https://www.instagram.com/embed.js";
+    s.async = true;
+    s.onload = callback;
+    document.body.appendChild(s);
+  }
+
+  function syncScaledHeights(container){
+    if(!window.ResizeObserver) return;
+    container.querySelectorAll(".insta-scale-wrap").forEach(function(wrap){
+      var iframe = wrap.querySelector("iframe");
+      if(!iframe || wrap.dataset.observed) return;
+      wrap.dataset.observed = "true";
+      var ro = new ResizeObserver(function(){
+        var h = iframe.offsetHeight || iframe.getBoundingClientRect().height;
+        if(h) wrap.style.height = Math.round(h * SCALE) + "px";
+      });
+      ro.observe(iframe);
+    });
+  }
+
+  window[CALLBACK_NAME] = function(response){
+    try{
+      var rows = (response && response.table && response.table.rows) || [];
+      var html = "";
+      for(var i=0;i<rows.length;i++){
+        var c = (rows[i].c || []);
+        var link = cellValue(c[0]);
+        if(!link) continue;
+        html += '<div class="insta-scale-wrap"><div class="insta-scale-inner">' +
+          '<blockquote class="instagram-media" data-instgrm-permalink="' + escapeHtml(link) +
+          '" data-instgrm-version="14" style="background:#FFF; border:0; margin:0; width:400px;"></blockquote>' +
+          '</div></div>';
+      }
+      var container = document.getElementById("insta-embed-row");
+      if(html){
+        container.innerHTML = html;
+        loadInstagramEmbedScript(function(){
+          if(window.instgrm){
+            window.instgrm.Embeds.process();
+            setTimeout(function(){ syncScaledHeights(container); }, 800);
+          }
+        });
+      } else {
+        container.innerHTML = '<p class="insta-note">No posts entered in the sheet yet.</p>';
+      }
+    }catch(e){
+      /* Note in the HTML stays as-is */
+    }
+  };
+
+  var url = "https://docs.google.com/spreadsheets/d/" + SHEET_ID +
+    "/gviz/tq?tqx=out:json;responseHandler:" + CALLBACK_NAME +
+    "&sheet=" + encodeURIComponent(SHEET_NAME);
+
+  var script = document.createElement("script");
+  script.src = url;
+  script.onerror = function(){
+    var container = document.getElementById("insta-embed-row");
+    if(container) container.innerHTML = '<p class="insta-note">Instagram posts could not be loaded.</p>';
+  };
+  document.head.appendChild(script);
+})();
+</script>
+
+<script>
+(function(){
+  var header = document.querySelector('header');
+  function onScroll(){
+    header.classList.toggle('scrolled', window.scrollY > 10);
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+})();
+</script>
+
+<script>
+(function(){
+  var toggle = document.getElementById('nav-toggle');
+  var navList = document.getElementById('nav-list');
+  if(!toggle || !navList) return;
+  toggle.addEventListener('click', function(){
+    var isOpen = navList.classList.toggle('open');
+    toggle.classList.toggle('open', isOpen);
+    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  navList.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      navList.classList.remove('open');
+      toggle.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

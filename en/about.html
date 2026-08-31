@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="../favicon.ico" sizes="any">
+<link rel="icon" href="../favicon-32.png" type="image/png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<title>About — Sarah Luisa Wurmer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#EDE7DD;
+    --ink:#171512;
+    --indigo:#2A3560;
+    --teal:#5FC8B8;
+    --coral:#E29580;
+    --coral-dark:#B85A3E;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    min-height:100vh;
+    background:url("../about-bg2.jpg") center/cover fixed no-repeat;
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none;}
+
+  /* ---------- Fixed transparent header (same pattern as Live) ---------- */
+  header{
+    position:fixed;
+    top:0;left:0;right:0;
+    z-index:100;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:1.6rem clamp(1.2rem,4vw,3.2rem);
+    transition:background .3s ease, backdrop-filter .3s ease;
+  }
+  header.scrolled{
+    background:rgba(23,21,18,0.42);
+    backdrop-filter:blur(14px) saturate(140%);
+    -webkit-backdrop-filter:blur(14px) saturate(140%);
+  }
+
+  /* ---------- Small persistent social icon row, bottom-right ---------- */
+  .site-social{
+    position:relative;
+    z-index:5;
+    display:flex;
+    justify-content:flex-end;
+    gap:0.7rem;
+    max-width:900px;
+    margin:2.4rem auto 0;
+    padding:0 clamp(1.2rem,4vw,2.4rem);
+  }
+  .site-social a{
+    width:38px;height:38px;
+    border-radius:50%;
+    border:1px solid rgba(23,21,18,0.35);
+    color:var(--ink);
+    display:flex;align-items:center;justify-content:center;
+    transition:background .3s ease, border-color .3s ease;
+  }
+  .site-social a svg{width:16px;height:16px;}
+  .site-social a:hover{background:rgba(23,21,18,0.08);border-color:var(--ink);}
+
+  .legal-links{
+    position:relative;
+    z-index:5;
+    display:block;
+    text-align:right;
+    max-width:900px;
+    margin:0.6rem auto 2.4rem;
+    padding:0 clamp(1.2rem,4vw,2.4rem);
+  }
+  .legal-links a{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.68rem;
+    color:rgba(23,21,18,0.4);
+    border-bottom:1px solid transparent;
+    transition:color .3s ease, border-color .3s ease;
+  }
+  .legal-links a:hover{color:var(--ink);border-color:rgba(23,21,18,0.5);}
+
+  .wordmark{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:600;
+    font-size:1.3rem;
+    letter-spacing:-0.01em;
+    color:#fff;
+    text-shadow:0 1px 8px rgba(0,0,0,0.4);
+    transition:color .3s ease, text-shadow .3s ease;
+  }
+  .wordmark:hover{
+    color:var(--teal);
+    text-shadow:0 0 10px rgba(95,200,184,0.85), 0 0 22px rgba(95,200,184,0.5);
+  }
+  .lang-switch{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.78rem;
+    color:rgba(255,255,255,0.7);
+    border-bottom:1px solid transparent;
+    transition:color .3s ease, border-color .3s ease;
+  }
+  .lang-switch:hover{color:#fff;border-color:rgba(255,255,255,0.6);}
+  .header-right{display:flex;align-items:center;gap:1.4rem;}
+  nav ul{
+    display:flex;
+    gap:clamp(1rem,2.2vw,2.2rem);
+    list-style:none;
+    margin:0;padding:0;
+  }
+  .nav-toggle{
+    all:unset;
+    display:none;
+    cursor:pointer;
+    width:26px;height:20px;
+    position:relative;
+    z-index:110;
+  }
+  .nav-toggle span{
+    display:block;
+    position:absolute;
+    left:0;right:0;
+    height:2px;
+    background:#fff;
+    border-radius:2px;
+    transition:transform .3s ease, opacity .3s ease;
+  }
+  .nav-toggle span:nth-child(1){top:1px;}
+  .nav-toggle span:nth-child(2){top:9px;}
+  .nav-toggle span:nth-child(3){top:17px;}
+  .nav-toggle.open span:nth-child(1){transform:translateY(8px) rotate(45deg);}
+  .nav-toggle.open span:nth-child(2){opacity:0;}
+  .nav-toggle.open span:nth-child(3){transform:translateY(-8px) rotate(-45deg);}
+  @media(max-width:680px){
+    .nav-toggle{display:block;}
+    nav > ul{
+      position:absolute;
+      top:calc(100% + 0.6rem);right:0;
+      height:auto;
+      width:min(60vw,220px);
+      flex-direction:column;
+      align-items:flex-start;
+      justify-content:flex-start;
+      gap:0.9rem;
+      padding:1.2rem 1.3rem;
+      background:rgba(23,21,18,0.94);
+      backdrop-filter:blur(10px);
+      -webkit-backdrop-filter:blur(10px);
+      border-radius:14px;
+      opacity:0;
+      transform:translateY(-8px);
+      pointer-events:none;
+      transition:opacity .25s ease, transform .25s ease;
+      z-index:105;
+    }
+    nav > ul.open{opacity:1;transform:translateY(0);pointer-events:auto;}
+    nav a{color:#fff !important;font-size:0.92rem;}
+    .submenu{position:static !important;opacity:1 !important;pointer-events:auto !important;transform:none !important;padding-left:0.7rem !important;margin-top:0.4rem !important;min-width:0 !important;}
+  }
+  nav a{
+    color:rgba(255,255,255,0.85);
+    font-size:0.86rem;
+    letter-spacing:0.03em;
+    position:relative;
+    padding-bottom:3px;
+    transition:color .3s ease, text-shadow .3s ease;
+  }
+  nav a::after{
+    content:"";
+    position:absolute;
+    left:0;bottom:0;
+    width:0;height:1px;
+    background:var(--teal);
+    transition:width .35s ease;
+  }
+  nav a:hover{color:#fff;text-shadow:0 0 10px rgba(95,200,184,0.85), 0 0 22px rgba(95,200,184,0.5);}
+  nav a:hover::after{width:100%;}
+  nav a.active{color:var(--teal);}
+  nav a.active::after{width:100%;background:var(--teal);}
+
+  /* ---------- Submenu (e.g. Medien > CD Intimacy), shown on hover ---------- */
+  .has-submenu{position:relative;}
+  .submenu{
+    position:absolute;
+    top:100%;left:0;
+    padding:1rem 0 0;
+    min-width:130px;
+    list-style:none;
+    opacity:0;
+    transform:translateY(-6px);
+    pointer-events:none;
+    transition:opacity .25s ease, transform .25s ease;
+  }
+  .has-submenu:hover .submenu,
+  .has-submenu:focus-within .submenu{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+  }
+  .submenu a{
+    display:block;
+    padding:0.5rem 1.1rem;
+    font-size:0.82rem;
+    color:rgba(255,255,255,0.85);
+    white-space:nowrap;
+  }
+  .submenu a:hover{color:var(--teal);}
+
+  /* ---------- Portrait, pinned to the left edge ---------- */
+  .portrait{
+    position:fixed;
+    top:0;left:0;
+    width:46vw;
+    height:100vh;
+    overflow:hidden;
+    z-index:1;
+    -webkit-mask-image:linear-gradient(to right, #000 0%, #000 78%, transparent 100%);
+    mask-image:linear-gradient(to right, #000 0%, #000 78%, transparent 100%);
+  }
+  .portrait img{
+    width:100%;height:100%;
+    object-fit:cover;
+    object-position:50% 12%;
+    display:block;
+  }
+
+  /* ---------- Text column ---------- */
+  .about-content{
+    position:relative;
+    z-index:5;
+    margin-left:46vw;
+    min-height:100vh;
+    padding:clamp(6rem,14vh,8rem) clamp(1.6rem,5vw,4rem) 6rem;
+  }
+  .eyebrow{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:600;
+    font-size:clamp(1.8rem,3.6vw,2.6rem);
+    letter-spacing:-0.01em;
+    text-transform:none;
+    color:var(--coral-dark);
+    display:block;
+    margin:0 0 1.8rem;
+  }
+
+  .bio-panel{
+    max-width:640px;
+  }
+  .bio-panel p{
+    margin:0 0 1.1rem;
+    font-size:1.02rem;
+    line-height:1.7;
+    color:var(--ink);
+    text-shadow:0 1px 4px rgba(255,255,255,0.35);
+    text-align:justify;
+    hyphens:auto;
+  }
+  .bio-panel p:last-child{margin-bottom:0;}
+
+  /* ---------- References, styled like press quotes ---------- */
+  .references{
+    max-width:640px;
+    margin-top:2.6rem;
+  }
+  .references-label{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.74rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    color:var(--indigo);
+    margin:0 0 1.2rem;
+    text-shadow:0 1px 3px rgba(255,255,255,0.5);
+  }
+  .reference-list{
+    display:flex;
+    flex-direction:column;
+    gap:1.2rem;
+  }
+  .reference-item{
+    padding:1.3rem 1.5rem;
+    border-left:2px solid var(--coral-dark);
+    background:rgba(255,255,255,0.28);
+    backdrop-filter:blur(12px) saturate(140%);
+    -webkit-backdrop-filter:blur(12px) saturate(140%);
+    border-radius:0 14px 14px 0;
+  }
+  .reference-source{
+    display:block;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:0.72rem;
+    letter-spacing:0.03em;
+    color:var(--indigo);
+    margin-bottom:0.6rem;
+  }
+  .reference-item p{
+    margin:0 0 0.5rem;
+    font-size:0.96rem;
+    line-height:1.6;
+    color:var(--ink);
+    font-style:italic;
+  }
+  .reference-item a{
+    color:var(--coral-dark);
+    border-bottom:1px solid var(--coral-dark);
+    font-style:normal;
+  }
+  .reference-item a:hover{color:var(--indigo);border-color:var(--indigo);}
+
+  /* ---------- Responsive ---------- */
+  @media(max-width:860px){
+    body{background:none;}
+    .portrait{
+      position:fixed;
+      top:0;left:0;
+      width:100%;
+      height:100vh;
+      -webkit-mask-image:none;
+      mask-image:none;
+    }
+    .portrait::after{
+      content:"";
+      position:absolute;inset:0;
+      background:rgba(15,14,11,0.25);
+    }
+    .about-content{
+      margin-left:0;
+      padding:clamp(6rem,14vh,7rem) clamp(1.2rem,4vw,1.8rem) 4rem;
+    }
+    .bio-panel{
+      background:transparent;
+      backdrop-filter:blur(14px) saturate(140%);
+      -webkit-backdrop-filter:blur(14px) saturate(140%);
+      border-radius:20px;
+      padding:1.6rem 1.4rem;
+    }
+    .bio-panel p{text-shadow:0 1px 4px rgba(0,0,0,0.35);}
+    .eyebrow{
+      color:#fff;
+      text-shadow:0 2px 10px rgba(0,0,0,0.5);
+    }
+    .references{
+      background:transparent;
+      backdrop-filter:blur(14px) saturate(140%);
+      -webkit-backdrop-filter:blur(14px) saturate(140%);
+      border-radius:20px;
+      padding:1.4rem 1.4rem 1rem;
+    }
+    .reference-item{
+      background:transparent;
+      backdrop-filter:blur(10px) saturate(140%);
+      -webkit-backdrop-filter:blur(10px) saturate(140%);
+    }
+    .reference-item p{text-shadow:0 1px 4px rgba(0,0,0,0.35);}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="wordmark" href="index.html">Sarah Luisa Wurmer</a>
+  <div class="header-right">
+    <a class="lang-switch" href="../about.html">DE</a>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+    <nav>
+      <ul id="nav-list">
+        <li><a href="live.html">Live</a></li>
+        <li><a class="active" href="about.html">About</a></li>
+        <li><a href="projekte.html">Projects</a></li>
+        <li class="has-submenu">
+          <a href="medien.html">Media</a>
+          <ul class="submenu">
+            <li><a href="cd.html">CD Intimacy</a></li>
+          </ul>
+        </li>
+        <li><a href="kontakt.html">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<div class="portrait">
+  <img
+    src="../about-portrait2-1300.jpg"
+    srcset="../about-portrait2-800.jpg 800w, ../about-portrait2-1300.jpg 1300w"
+    sizes="38vw"
+    alt="Sarah Luisa Wurmer playing the zither">
+</div>
+
+<div class="about-content">
+  <span class="eyebrow">About</span>
+
+  <div class="bio-panel" id="bio-panel">
+    <p>Sarah Luisa Wurmer stands for a contemporary, sonically open approach to the zither. She combines virtuosic early music with a curiosity for contemporary sound, exploring interdisciplinary formats and international influences. As the first zither player to appear in the world's great concert halls, including Wigmore Hall, she is charting a unique path in the classical music scene and bringing the zither to an international audience. Her mission goes beyond performing: she wants to inspire people to take new and unusual paths and to celebrate diversity.</p>
+    <p>As a soloist on the treble, alto and bass zither, she draws on her diverse instrumentarium to find the ideal timbre for every programme. Her artistic work is shaped by close collaboration with composers as well as her own arrangements, through which she makes a significant contribution to expanding a new zither repertoire.</p>
+    <p>Sarah Luisa Wurmer has performed at the Mozartfest Würzburg, the Thuringian Bach Weeks, the Mecklenburg-Vorpommern Festival and the Detect Classic Festival. Since autumn 2024 she has been a regular guest with the transcultural Bridges Chamber Orchestra. In the 2025/26 season she performed at the Elbphilharmonie, the Alte Oper Frankfurt and the Heidelberger Frühling, among others, and gave her debut as soloist with the Konzerthausorchester Berlin under the direction of Steven Sloane.</p>
+    <p>Born in 2002, she is currently studying at the Munich University of Music and Performing Arts (HMTM) in the class of Prof. Georg Glasl and Tajda Krajnc, complemented by periods at the Mongolian State Conservatory in Ulaanbaatar and at the mdw – University of Music and Performing Arts Vienna (Master's in "Contemporary Arts Practice / Improviser*Composer Performance"). Her mentors include Hanni Liang (concert design) and Angela Metzger (organ).</p>
+    <p>She is supported by scholarships from the Max Weber Programme of the Bavarian State Ministry of Science and the Arts and from YEHUDI MENUHIN Live Music Now e.V. Her artistic work has received numerous awards, including the "Ernst Volkmann Prize" 2024 at the 10th International Zither Competition and the Munich City Music Scholarship 2024, as well as the Fanny Mendelssohn Förderpreis 2025. That same year, her debut album intimacy was released on the ES-DUR label, impressively documenting her search for new sonic spaces on the zither.</p>
+  </div>
+
+  <div class="references">
+    <p class="references-label">References</p>
+    <div class="reference-list">
+      <div class="reference-item">
+        <span class="reference-source">Kulturkreis der Deutschen Wirtschaft — jury citation, Musikpreis 2026 final</span>
+        <p>"With conceptual depth and sonic curiosity, Sarah gives the zither striking new impulses as a concert instrument. […] With great communicative power and artistic clarity, she places her instrument in new contexts."</p>
+      </div>
+      <div class="reference-item">
+        <span class="reference-source"><a href="https://hanni-liang.com/" target="_blank" rel="noopener">Hanni Liang</a> — pianist &amp; concert creator</span>
+        <p>"Sarah Luisa Wurmer is an open-minded thinker. Bold in her way of creating music, and curious to get to know every field of art and culture. In doing so, she constantly discovers and tries out new perspectives on the concert and her instrument."</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="site-social">
+  <a href="https://www.instagram.com/sarah.luw/" target="_blank" rel="noopener" aria-label="Instagram">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>
+  </a>
+  <a href="https://www.youtube.com/channel/UCaHHFL-cvs6Ndx08p5nR0uw/about" target="_blank" rel="noopener" aria-label="YouTube">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2.5" y="6" width="19" height="12" rx="4"/><polygon points="10.5 9.3 15 12 10.5 14.7" fill="currentColor" stroke="none"/></svg>
+  </a>
+  <a href="https://soundcloud.com/sarah-luisa-wurmer" target="_blank" rel="noopener" aria-label="SoundCloud">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 15v2"/><path d="M5 13v4"/><path d="M8 11v6"/><path d="M11 9v8"/><path d="M14 8.2c.4-2 2.2-3.5 4.3-3.5 2.4 0 4.4 2 4.4 4.4 0 .3 0 .6-.1.9h-.3H14V17H21.5"/></svg>
+  </a>
+  <a href="https://open.spotify.com/intl-de/artist/3Wi0PQyjhWrgSvEH2n7eoM" target="_blank" rel="noopener" aria-label="Spotify">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><circle cx="12" cy="12" r="9.2"/><path d="M7 10.2c3.2-1 7.6-.6 10 .9"/><path d="M7.6 13.4c2.7-.8 6.2-.5 8.4.8"/><path d="M8.3 16.3c2.1-.6 4.8-.4 6.5.6"/></svg>
+  </a>
+</div>
+
+<div class="legal-links">
+  <a href="impressum.html">Legal Notice</a>
+</div>
+
+<script>
+(function(){
+  var SHEET_ID = "12Vl-TAkbfgPzQ29qVuNM7B-oFJAC5YxRJA9bnyozB2U";
+  var SHEET_NAME = "Tabellenblatt1";
+  var CALLBACK_NAME = "slwBioHandler";
+
+  function escapeHtml(str){
+    if(str === null || str === undefined) return "";
+    return String(str)
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;")
+      .replace(/"/g,"&quot;");
+  }
+
+  function cellValue(cell){
+    if(!cell) return "";
+    if(cell.f !== undefined && cell.f !== null && cell.f !== "") return cell.f;
+    if(cell.v !== undefined && cell.v !== null) return cell.v;
+    return "";
+  }
+
+  window[CALLBACK_NAME] = function(response){
+    try{
+      var rows = (response && response.table && response.table.rows) || [];
+      var html = "";
+      for(var i=0;i<rows.length;i++){
+        var text = cellValue((rows[i].c || [])[1]);
+        if(text) html += "<p>" + escapeHtml(text) + "</p>";
+      }
+      if(html){
+        document.getElementById("bio-panel").innerHTML = html;
+      }
+    }catch(e){
+      /* Fallback text in the HTML stays as-is */
+    }
+  };
+
+  var url = "https://docs.google.com/spreadsheets/d/" + SHEET_ID +
+    "/gviz/tq?tqx=out:json;responseHandler:" + CALLBACK_NAME +
+    "&sheet=" + encodeURIComponent(SHEET_NAME);
+
+  var script = document.createElement("script");
+  script.src = url;
+  document.head.appendChild(script);
+})();
+</script>
+
+<script>
+(function(){
+  var header = document.querySelector('header');
+  function onScroll(){
+    header.classList.toggle('scrolled', window.scrollY > 10);
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
+})();
+</script>
+
+<script>
+(function(){
+  var toggle = document.getElementById('nav-toggle');
+  var navList = document.getElementById('nav-list');
+  if(!toggle || !navList) return;
+  toggle.addEventListener('click', function(){
+    var isOpen = navList.classList.toggle('open');
+    toggle.classList.toggle('open', isOpen);
+    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+  navList.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      navList.classList.remove('open');
+      toggle.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
