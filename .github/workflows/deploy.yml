@@ -1,0 +1,30 @@
+name: Deploy to Webgo
+
+on:
+  push:
+    branches:
+      - main   # ggf. anpassen, falls euer Hauptbranch anders heißt (z.B. "master")
+
+jobs:
+  ftp-deploy:
+    name: Upload via FTP
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: FTP Deploy
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: s276.goserver.host
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: 21
+          protocol: ftp
+          server-dir: /sarahluisawurmer.de/
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.github/**
+            **/node_modules/**
+            **/README.md
