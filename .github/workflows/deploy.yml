@@ -13,7 +13,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: FTP Deploy
+      - name: FTP Deploy - main site (DE)
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: s276.goserver.host
@@ -28,3 +28,15 @@ jobs:
             **/.github/**
             **/node_modules/**
             **/README.md
+            en/**
+
+      - name: FTP Deploy - English site (EN)
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: s276.goserver.host
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: 21
+          protocol: ftp
+          local-dir: ./en/
+          server-dir: /sarahluisawurmer.de/en/
