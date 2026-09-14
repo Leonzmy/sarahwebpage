@@ -30,8 +30,6 @@
   }
   a{color:inherit;text-decoration:none;}
 
-  /* ---------- Fixed, transparent header (independent of the overlap
-     technique below, so it can never get trapped under the list) ---------- */
   header{
     position:fixed;
     top:0;left:0;right:0;
@@ -48,7 +46,6 @@
     -webkit-backdrop-filter:blur(14px) saturate(140%);
   }
 
-  /* ---------- Small persistent social icon row, bottom-right ---------- */
   .site-social{
     display:flex;
     justify-content:flex-end;
@@ -93,7 +90,8 @@
     color:var(--teal);
     text-shadow:0 0 10px rgba(95,200,184,0.85), 0 0 22px rgba(95,200,184,0.5);
   }
-    .lang-switch{
+
+  .lang-switch{
     font-family:'IBM Plex Mono',monospace;
     font-size:0.72rem;
     font-weight:600;
@@ -106,6 +104,7 @@
   }
   .lang-switch:hover{background:var(--indigo);}
   .header-right{display:flex;align-items:center;gap:1.4rem;}
+
   nav ul{
     display:flex;
     gap:clamp(1rem,2.2vw,2.2rem);
@@ -182,7 +181,6 @@
   nav a.active{color:var(--teal);}
   nav a.active::after{width:100%;background:var(--teal);}
 
-  /* ---------- Submenu (e.g. Medien > CD Intimacy), shown on hover ---------- */
   .has-submenu{position:relative;}
   .submenu{
     position:absolute;
@@ -210,28 +208,31 @@
   }
   .submenu a:hover{color:var(--teal);}
 
+  /* ---------- Background image: now a genuine fixed backdrop on ALL
+     screen sizes (desktop included). This guarantees it never scrolls
+     away or leaves a gap, no matter how long the tour-date list grows —
+     the previous sticky-pin technique depended on a length-sensitive
+     formula and broke once the list got long enough. Trade-off: the
+     image is now cropped (object-fit:cover) instead of shown fully
+     uncropped, to fill the viewport edge-to-edge. ---------- */
   /* ---------- Stage: the photo scrolls normally until its own
      bottom edge reaches the viewport bottom — at that exact point it
      pins in place (position:sticky with a bottom-aligned offset) and
      stays as a static backdrop while the list keeps scrolling over it.
-     The photo is an exact 2:3 portrait, so its rendered height at
-     100% viewport width is always 150vw — that lets the pin offset
-     be expressed in pure CSS without JS. */
-  /* ---------- Stage: image and list share the same grid cell from
-     the very start, so the list already peeks into the bottom quarter
-     of the screen on load (no scrolling needed to notice it). As the
-     page scrolls, the photo moves normally until its own bottom edge
-     reaches the viewport bottom — at that point it pins in place
-     (position:sticky with a bottom-aligned offset) and stays as a
-     static backdrop while the list keeps scrolling over it.
-     The photo is an exact 2:3 portrait, so its rendered height at
-     100% viewport width is always 150vw — that lets the pin offset
-     be expressed in pure CSS without JS. */
+     The stage itself also carries the SAME photo as a repeating
+     background, so if the tour-date list ever grows longer than the
+     sticky image's own "stick range", what appears below is simply
+     more of the same image tiled vertically — never plain page
+     background. ---------- */
   .stage{
     position:relative;
     display:grid;
     grid-template-columns:1fr;
     grid-template-rows:auto;
+    background-image:url("live-hero-2200.jpg");
+    background-repeat:repeat-y;
+    background-size:100% auto;
+    background-position:top center;
   }
   .stage > *{grid-column:1;grid-row:1;}
   .image-sticky{
@@ -253,10 +254,8 @@
     pointer-events:none;
   }
 
-  /* ---------- List: starts with enough top padding that only its
-     first ~25vh (panel label + first date) peeks in in the bottom
-     quarter of the initial screen; scrolls up normally from there. ---------- */
   .list-overlay{
+    position:relative;
     z-index:5;
     display:flex;
     padding-top:75vh;
@@ -269,7 +268,6 @@
     min-width:0;
     padding:0 clamp(1rem,3vw,2rem) 4rem 0;
   }
-
   .glass-bubble{
     background:rgba(23,21,18,0.32);
     backdrop-filter:blur(18px) saturate(140%);
@@ -280,7 +278,6 @@
     color:#fff;
   }
 
-  /* ---------- Date list ---------- */
   .dates-list{
     display:flex;
     flex-direction:column;
@@ -293,7 +290,6 @@
     border-bottom:1px solid rgba(255,255,255,0.18);
   }
   .date-row:last-child{border-bottom:none;}
-
   .date-tile{
     flex:0 0 auto;
     width:60px;
@@ -342,7 +338,6 @@
     line-height:1.5;
     color:var(--teal);
   }
-
   .row-main{flex:1;min-width:0;}
   .row-main .titel{
     font-family:'Bricolage Grotesque',sans-serif;
@@ -363,7 +358,6 @@
     color:rgba(255,255,255,0.62);
   }
   .row-main .meta .dot{margin:0 0.45rem;opacity:0.6;}
-
   .row-action{
     flex:0 0 auto;
     padding-top:0.1rem;
@@ -402,7 +396,7 @@
       width:100%;height:100%;
       object-fit:cover;
     }
-    .list-overlay{display:block;padding-top:58vh;position:relative;z-index:5;}
+    .list-overlay{display:block;padding-top:58vh;}
     .list-overlay .spacer{display:none;}
     .dates-col{padding:1.6rem clamp(1rem,4vw,1.6rem) 3rem;}
   }
@@ -446,7 +440,6 @@
       sizes="100vw"
       alt="Sarah Luisa Wurmer an der Zither">
   </div>
-
   <div class="list-overlay">
     <div class="spacer"></div>
     <div class="dates-col">
@@ -460,37 +453,6 @@
         <h3 class="titel">Domplatz Open-Air: Nordlichter & Friends</h3>
         <p class="untertitel">Solistin mit dem Tonkünstlerorchester Niederösterreich (Dirigent Ross Jamie Collins)</p>
         <p class="meta">Domplatz | St. Pölten<span class="dot">·</span>19:00 Uhr</p>
-      </div>
-    </article>
-    <article class="date-row">
-      <div class="date-tile"><span class="day">7–12</span><span class="month">Sep</span></div>
-      <div class="row-main">
-        <h3 class="titel">Meisterkurs</h3>
-        <p class="untertitel">Ensemble-Akademie Freiburg mit dem Freiburger Barockorchester und ensemble recherche</p>
-        <p class="meta">Freiburg</p>
-      </div>
-    </article>
-    <article class="date-row">
-      <div class="date-tile"><span class="day">18–20</span><span class="month">Sep</span></div>
-      <div class="row-main">
-        <h3 class="titel">John Cage Award 26</h3>
-        <p class="meta">Halberstadt</p>
-      </div>
-    </article>
-    <article class="date-row">
-      <div class="date-tile"><span class="day">15</span><span class="month">Okt</span></div>
-      <div class="row-main">
-        <h3 class="titel">Fanny Mendelssohn Artists</h3>
-        <p class="untertitel">mit Jelizaveta Vasiljeva (Klavier) & Matthias Well (Geige)</p>
-        <p class="meta">St. Matthäus-Kirche | Berlin<span class="dot">·</span>19:00 Uhr</p>
-      </div>
-    </article>
-    <article class="date-row">
-      <div class="date-tile"><span class="day">16</span><span class="month">Okt</span></div>
-      <div class="row-main">
-        <h3 class="titel">Fanny Mendelssohn Artists</h3>
-        <p class="untertitel">mit Jelizaveta Vasiljeva (Klavier) & Matthias Well (Geige)</p>
-        <p class="meta">Palais Lichtenau | Potsdam<span class="dot">·</span>19:00 Uhr</p>
       </div>
     </article>
   </div>
@@ -544,19 +506,41 @@
     return "";
   }
 
-  function dateTileHtml(raw){
-    var trimmed = String(raw || "").trim();
+  // Robust: handles a real Google Sheets "Date" cell (serialized as
+  // Date(YYYY,M,D) in v, month 0-indexed) as well as any plain-text
+  // date typed as DD.MM.YYYY, DD/MM/YYYY or YYYY-MM-DD.
+  function parseDateCell(cell){
+    if(!cell) return null;
+    var v = cell.v;
+    if(typeof v === 'string'){
+      var gDate = /^Date\((\d{4}),(\d{1,2}),(\d{1,2})\)$/.exec(v);
+      if(gDate){
+        return { day: parseInt(gDate[3],10), month: parseInt(gDate[2],10) + 1, year: parseInt(gDate[1],10) };
+      }
+    }
+    var text = String(cellValue(cell) || "").trim();
+    var m = /^(\d{1,2})[.\/](\d{1,2})[.\/](\d{2,4})$/.exec(text);
+    if(m){
+      var year = m[3].length === 2 ? ('20' + m[3]) : m[3];
+      return { day: parseInt(m[1],10), month: parseInt(m[2],10), year: parseInt(year,10) };
+    }
+    var iso = /^(\d{4})-(\d{1,2})-(\d{1,2})$/.exec(text);
+    if(iso){
+      return { day: parseInt(iso[3],10), month: parseInt(iso[2],10), year: parseInt(iso[1],10) };
+    }
+    return null;
+  }
+
+  function dateTileHtml(rawCell){
+    var parsed = parseDateCell(rawCell);
+    if(parsed){
+      var label = MONTHS[parsed.month - 1] || "";
+      return '<span class="day">' + parsed.day + '</span><span class="month">' + label + '</span>';
+    }
+    var trimmed = String(cellValue(rawCell) || "").trim();
     if(!trimmed){
       return '<span class="raw">–</span>';
     }
-    var single = /^(\d{1,2})\.(\d{1,2})\.(\d{2,4})$/.exec(trimmed);
-    if(single){
-      var day = parseInt(single[1],10);
-      var month = parseInt(single[2],10);
-      var label = MONTHS[month-1] || "";
-      return '<span class="day">' + day + '</span><span class="month">' + label + '</span>';
-    }
-
     var parts = trimmed.split(/[-–]/).map(function(s){return s.trim();}).filter(Boolean);
     if(parts.length === 2){
       var rangeRe = /^(\d{1,2})\.(\d{1,2})\.?(\d{0,4})$/;
@@ -593,7 +577,7 @@
     if(uhrzeit) metaParts.push(uhrzeit + ' Uhr');
 
     var html = '<article class="date-row">';
-    html += '<div class="date-tile">' + dateTileHtml(datumRaw) + '</div>';
+    html += '<div class="date-tile">' + dateTileHtml(c[0]) + '</div>';
     html += '<div class="row-main">';
     html += '<h3 class="titel">' + titel + '</h3>';
     if(untertitel) html += '<p class="untertitel">' + untertitel + '</p>';
