@@ -208,13 +208,6 @@
   }
   .submenu a:hover{color:var(--teal);}
 
-  /* ---------- Background image: now a genuine fixed backdrop on ALL
-     screen sizes (desktop included). This guarantees it never scrolls
-     away or leaves a gap, no matter how long the tour-date list grows —
-     the previous sticky-pin technique depended on a length-sensitive
-     formula and broke once the list got long enough. Trade-off: the
-     image is now cropped (object-fit:cover) instead of shown fully
-     uncropped, to fill the viewport edge-to-edge. ---------- */
   /* ---------- Stage: the photo scrolls normally until its own
      bottom edge reaches the viewport bottom — at that exact point it
      pins in place (position:sticky with a bottom-aligned offset) and
@@ -484,9 +477,12 @@
 
 <script>
 (function(){
-  var SHEET_ID = "1fKlSevXrU3xcedsUj2UGBNeDw2BEh7OnCQ7lGGTVBcA";
-  var SHEET_NAME = "Tabellenblatt1";
-  var CALLBACK_NAME = "slwTermineHandler";
+  // Uses the sheet's official "Publish to web" CSV export — unlike the
+  // interactive gviz query endpoint, this is Google's sanctioned
+  // mechanism for public embedding and does not depend on a Google
+  // session/cookie, so browsers with strict tracking prevention (which
+  // block third-party storage access) can no longer break the request.
+  var CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQsvnMvProue68-AXQ8YjW0aRsPoLSjgB9o3j3KDGcqplL4CM6Za56IJQq6Lu7bxMX3pRdfWxmHUKWY/pub?gid=0&single=true&output=csv";
   var TIMEOUT_MS = 6000;
   var MONTHS = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
 
@@ -499,26 +495,34 @@
       .replace(/"/g,"&quot;");
   }
 
-  function cellValue(cell){
-    if(!cell) return "";
-    if(cell.f !== undefined && cell.f !== null && cell.f !== "") return cell.f;
-    if(cell.v !== undefined && cell.v !== null) return cell.v;
-    return "";
-  }
-
-  // Robust: handles a real Google Sheets "Date" cell (serialized as
-  // Date(YYYY,M,D) in v, month 0-indexed) as well as any plain-text
-  // date typed as DD.MM.YYYY, DD/MM/YYYY or YYYY-MM-DD.
-  function parseDateCell(cell){
-    if(!cell) return null;
-    var v = cell.v;
-    if(typeof v === 'string'){
-      var gDate = /^Date\((\d{4}),(\d{1,2}),(\d{1,2})\)$/.exec(v);
-      if(gDate){
-        return { day: parseInt(gDate[3],10), month: parseInt(gDate[2],10) + 1, year: parseInt(gDate[1],10) };
+  function parseCSV(text){
+    var rows = [];
+    var row = [];
+    var field = '';
+    var inQuotes = false;
+    for(var i=0;i<text.length;i++){
+      var c = text[i];
+      if(inQuotes){
+        if(c === '"'){
+          if(text[i+1] === '"'){ field += '"'; i++; }
+          else { inQuotes = false; }
+        } else {
+          field += c;
+        }
+      } else {
+        if(c === '"'){ inQuotes = true; }
+        else if(c === ','){ row.push(field); field = ''; }
+        else if(c === '\r'){ /* skip, \n follows */ }
+        else if(c === '\n'){ row.push(field); rows.push(row); row = []; field = ''; }
+        else { field += c; }
       }
     }
-    var text = String(cellValue(cell) || "").trim();
+    if(field.length || row.length){ row.push(field); rows.push(row); }
+    return rows;
+  }
+
+  function parseDateText(text){
+    text = String(text || "").trim();
     var m = /^(\d{1,2})[.\/](\d{1,2})[.\/](\d{2,4})$/.exec(text);
     if(m){
       var year = m[3].length === 2 ? ('20' + m[3]) : m[3];
@@ -531,13 +535,13 @@
     return null;
   }
 
-  function dateTileHtml(rawCell){
-    var parsed = parseDateCell(rawCell);
+  function dateTileHtml(rawText){
+    var parsed = parseDateText(rawText);
     if(parsed){
       var label = MONTHS[parsed.month - 1] || "";
       return '<span class="day">' + parsed.day + '</span><span class="month">' + label + '</span>';
     }
-    var trimmed = String(cellValue(rawCell) || "").trim();
+    var trimmed = String(rawText || "").trim();
     if(!trimmed){
       return '<span class="raw">–</span>';
     }
@@ -562,13 +566,13 @@
   }
 
   function buildRowHtml(c){
-    var datumRaw = cellValue(c[0]);
-    var uhrzeit = escapeHtml(cellValue(c[1]));
-    var titel = escapeHtml(cellValue(c[2]));
-    var untertitel = escapeHtml(cellValue(c[3]));
-    var ort = escapeHtml(cellValue(c[4]));
-    var ticketlink = cellValue(c[5]);
-    var veranstalterlink = cellValue(c[6]);
+    var datumRaw = (c[0] || "").trim();
+    var uhrzeit = escapeHtml((c[1] || "").trim());
+    var titel = escapeHtml((c[2] || "").trim());
+    var untertitel = escapeHtml((c[3] || "").trim());
+    var ort = escapeHtml((c[4] || "").trim());
+    var ticketlink = (c[5] || "").trim();
+    var veranstalterlink = (c[6] || "").trim();
 
     if(!datumRaw && !titel) return "";
 
@@ -577,7 +581,7 @@
     if(uhrzeit) metaParts.push(uhrzeit + ' Uhr');
 
     var html = '<article class="date-row">';
-    html += '<div class="date-tile">' + dateTileHtml(c[0]) + '</div>';
+    html += '<div class="date-tile">' + dateTileHtml(datumRaw) + '</div>';
     html += '<div class="row-main">';
     html += '<h3 class="titel">' + titel + '</h3>';
     if(untertitel) html += '<p class="untertitel">' + untertitel + '</p>';
@@ -592,46 +596,42 @@
     return html;
   }
 
-  window[CALLBACK_NAME] = function(response){
-    try{
-      var rows = (response && response.table && response.table.rows) || [];
+  function showFallbackNote(){
+    var note = document.getElementById("load-note");
+    if(note) note.textContent = "Aktuelle Termine siehe direkt im Kalender.";
+  }
+
+  var settled = false;
+  var timeoutId = setTimeout(function(){
+    if(!settled){ settled = true; showFallbackNote(); }
+  }, TIMEOUT_MS);
+
+  fetch(CSV_URL)
+    .then(function(res){
+      if(!res.ok) throw new Error('bad status');
+      return res.text();
+    })
+    .then(function(text){
+      clearTimeout(timeoutId);
+      if(settled) return;
+      settled = true;
+      var rows = parseCSV(text);
       var html = "";
-      for(var i=0;i<rows.length;i++){
-        html += buildRowHtml(rows[i].c || []);
+      for(var i=1;i<rows.length;i++){ // row 0 = header
+        html += buildRowHtml(rows[i]);
       }
       if(html){
         document.getElementById("termine-list").innerHTML = html;
+        var note = document.getElementById("load-note");
+        if(note) note.remove();
+      } else {
+        showFallbackNote();
       }
-      var note = document.getElementById("load-note");
-      if(note) note.remove();
-    }catch(e){
-      var note2 = document.getElementById("load-note");
-      if(note2) note2.textContent = "Aktuelle Termine siehe direkt im Kalender.";
-    }
-  };
-
-  var url = "https://docs.google.com/spreadsheets/d/" + SHEET_ID +
-    "/gviz/tq?tqx=out:json;responseHandler:" + CALLBACK_NAME +
-    "&sheet=" + encodeURIComponent(SHEET_NAME);
-
-  var fallbackTimer = setTimeout(function(){
-    var note = document.getElementById("load-note");
-    if(note) note.textContent = "Aktuelle Termine siehe direkt im Kalender.";
-  }, TIMEOUT_MS);
-
-  var originalHandler = window[CALLBACK_NAME];
-  window[CALLBACK_NAME] = function(response){
-    clearTimeout(fallbackTimer);
-    originalHandler(response);
-  };
-
-  var script = document.createElement("script");
-  script.src = url;
-  script.onerror = function(){
-    var note = document.getElementById("load-note");
-    if(note) note.textContent = "Aktuelle Termine siehe direkt im Kalender.";
-  };
-  document.head.appendChild(script);
+    })
+    .catch(function(){
+      clearTimeout(timeoutId);
+      if(!settled){ settled = true; showFallbackNote(); }
+    });
 })();
 </script>
 
