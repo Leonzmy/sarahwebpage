@@ -483,61 +483,106 @@
 
 <script>
 (function(){
-  var SHEET_ID = "1fKlSevXrU3xcedsUj2UGBNeDw2BEh7OnCQ7lGGTVBcA";
-  var SHEET_NAME = "Tabellenblatt1";
-  var CALLBACK_NAME = "slwNextTerminHandler";
+  // Same official "Publish to web" CSV export as live.html — reliable,
+  // no Google-session dependency. We scan every row and pick the first
+  // one whose date has not yet passed, rather than blindly trusting
+  // row order, so a stale or unsorted sheet can't show a past event.
+  var CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQsvnMvProue68-AXQ8YjW0aRsPoLSjgB9o3j3KDGcqplL4CM6Za56IJQq6Lu7bxMX3pRdfWxmHUKWY/pub?gid=0&single=true&output=csv";
   var MONTHS = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
 
-  function cellValue(cell){
-    if(!cell) return "";
-    if(cell.f !== undefined && cell.f !== null && cell.f !== "") return cell.f;
-    if(cell.v !== undefined && cell.v !== null) return cell.v;
-    return "";
+  function parseCSV(text){
+    var rows = [];
+    var row = [];
+    var field = '';
+    var inQuotes = false;
+    for(var i=0;i<text.length;i++){
+      var c = text[i];
+      if(inQuotes){
+        if(c === '"'){
+          if(text[i+1] === '"'){ field += '"'; i++; }
+          else { inQuotes = false; }
+        } else {
+          field += c;
+        }
+      } else {
+        if(c === '"'){ inQuotes = true; }
+        else if(c === ','){ row.push(field); field = ''; }
+        else if(c === '\r'){ /* skip, \n follows */ }
+        else if(c === '\n'){ row.push(field); rows.push(row); row = []; field = ''; }
+        else { field += c; }
+      }
+    }
+    if(field.length || row.length){ row.push(field); rows.push(row); }
+    return rows;
   }
 
-  function formatDate(raw){
-    var t = String(raw || "").trim();
-    var m = /^(\d{1,2})\.(\d{1,2})\.(\d{2,4})$/.exec(t);
-    if(m){
-      var day = parseInt(m[1],10);
-      var month = parseInt(m[2],10);
-      var year = m[3].length === 2 ? "20" + m[3] : m[3];
-      var label = MONTHS[month-1] || "";
-      return day + ". " + label + " " + year;
+  // Returns a comparable {y,m,d} for the row's date, using the START
+  // date when the cell is a range like "18.9. - 20.9.26".
+  function parseRowDate(text){
+    text = String(text || "").trim();
+    var first = text.split(/[-–]/)[0].trim();
+    var m = /^(\d{1,2})\.(\d{1,2})\.?(\d{0,4})$/.exec(first);
+    if(!m) return null;
+    var day = parseInt(m[1],10);
+    var month = parseInt(m[2],10);
+    var yearPart = m[3];
+    var year;
+    if(yearPart && yearPart.length){
+      year = yearPart.length === 2 ? (2000 + parseInt(yearPart,10)) : parseInt(yearPart,10);
+    } else {
+      // Range's first part often omits the year (e.g. "18.9." in
+      // "18.9. - 20.9.26") — fall back to the current year.
+      year = new Date().getFullYear();
     }
-    return t;
+    return { y: year, m: month, d: day };
   }
 
-  window[CALLBACK_NAME] = function(response){
-    try{
-      var rows = (response && response.table && response.table.rows) || [];
-      if(!rows.length) return;
-      var c = rows[0].c || [];
-      var datum = cellValue(c[0]);
-      var titel = cellValue(c[2]);
-      var ort = cellValue(c[4]);
-      if(!titel) return;
+  function formatDateLabel(text){
+    var parsed = parseRowDate(text);
+    if(!parsed) return text;
+    var label = MONTHS[parsed.m - 1] || "";
+    return parsed.d + ". " + label + " " + parsed.y;
+  }
 
-      var el = document.getElementById("next-termin");
-      if(!el) return;
-      var dateEl = el.querySelector(".nt-date");
-      var titelEl = el.querySelector(".nt-titel");
-      var ortEl = el.querySelector(".nt-ort");
-      if(dateEl) dateEl.textContent = formatDate(datum);
-      if(titelEl) titelEl.textContent = titel;
-      if(ortEl) ortEl.textContent = ort;
-    }catch(e){
-      /* Fallback-Inhalt im HTML bleibt einfach stehen */
-    }
-  };
+  function isTodayOrLater(parsed){
+    if(!parsed) return false;
+    var today = new Date();
+    var todayNum = today.getFullYear() * 10000 + (today.getMonth()+1) * 100 + today.getDate();
+    var rowNum = parsed.y * 10000 + parsed.m * 100 + parsed.d;
+    return rowNum >= todayNum;
+  }
 
-  var url = "https://docs.google.com/spreadsheets/d/" + SHEET_ID +
-    "/gviz/tq?tqx=out:json;responseHandler:" + CALLBACK_NAME +
-    "&sheet=" + encodeURIComponent(SHEET_NAME);
+  fetch(CSV_URL)
+    .then(function(res){
+      if(!res.ok) throw new Error('bad status');
+      return res.text();
+    })
+    .then(function(text){
+      var rows = parseCSV(text);
+      for(var i=1;i<rows.length;i++){ // row 0 = header
+        var c = rows[i];
+        var datum = (c[0] || "").trim();
+        var titel = (c[2] || "").trim();
+        var ort = (c[4] || "").trim();
+        if(!datum || !titel) continue;
+        var parsed = parseRowDate(datum);
+        if(!isTodayOrLater(parsed)) continue;
 
-  var script = document.createElement("script");
-  script.src = url;
-  document.head.appendChild(script);
+        var el = document.getElementById("next-termin");
+        if(!el) return;
+        var dateEl = el.querySelector(".nt-date");
+        var titelEl = el.querySelector(".nt-titel");
+        var ortEl = el.querySelector(".nt-ort");
+        if(dateEl) dateEl.textContent = formatDateLabel(datum);
+        if(titelEl) titelEl.textContent = titel;
+        if(ortEl) ortEl.textContent = ort;
+        return;
+      }
+      // No upcoming row found — fallback content in the HTML stays as-is.
+    })
+    .catch(function(){
+      /* Fallback content in the HTML stays as-is */
+    });
 })();
 </script>
 
