@@ -453,10 +453,13 @@
   <footer>
     <div class="newsletter-col">
       <a class="pill" href="cd.html">CD „Intimacy“</a>
-      <form class="signup" action="https://sarahluisawurmer.us13.list-manage.com/subscribe/post?u=63c5d7f2cdf8fcef014ea164f&amp;id=d9789cae2d" method="post" target="_blank" novalidate>
+      <form class="signup" id="signup-form" action="https://sarahluisawurmer.us13.list-manage.com/subscribe/post?u=63c5d7f2cdf8fcef014ea164f&amp;id=d9789cae2d" method="post" target="_blank" novalidate>
         <input type="email" name="EMAIL" placeholder="Newsletter — deine@email.de" required>
         <div aria-hidden="true" style="position:absolute;left:-5000px;" tabindex="-1">
           <input type="text" name="b_63c5d7f2cdf8fcef014ea164f_d9789cae2d" tabindex="-1" value="">
+        </div>
+        <div aria-hidden="true" style="position:absolute;left:-5000px;" tabindex="-1">
+          <input type="text" name="website" id="signup-honeypot" tabindex="-1" autocomplete="off" value="">
         </div>
         <button type="submit" aria-label="Anmelden">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
@@ -606,6 +609,36 @@
       toggle.classList.remove('open');
       toggle.setAttribute('aria-expanded', 'false');
     });
+  });
+})();
+</script>
+
+<script>
+(function(){
+  // Simple client-side spam guard for the newsletter signup:
+  // 1) a second, custom-named honeypot field alongside Mailchimp's own
+  //    (some bots specifically avoid Mailchimp's known "b_..." field
+  //    but still fill in anything that looks like a normal input)
+  // 2) a minimum-time check — genuine visitors take at least a couple
+  //    of seconds to notice and fill the field; scripted submissions
+  //    that fire immediately on page load are blocked outright.
+  // Both checks happen before the browser ever posts to Mailchimp, so
+  // a caught bot's request never reaches the list at all.
+  var form = document.getElementById('signup-form');
+  if(!form) return;
+  var loadedAt = Date.now();
+  var MIN_MS = 2500;
+
+  form.addEventListener('submit', function(e){
+    var honeypot = document.getElementById('signup-honeypot');
+    if(honeypot && honeypot.value){
+      e.preventDefault();
+      return;
+    }
+    if(Date.now() - loadedAt < MIN_MS){
+      e.preventDefault();
+      return;
+    }
   });
 })();
 </script>
