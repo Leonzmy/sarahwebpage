@@ -27,6 +27,44 @@
     color:var(--ink);
     font-family:'Inter',sans-serif;
     -webkit-font-smoothing:antialiased;
+    position:relative;
+  }
+  body::before{
+    content:"";
+    position:absolute;
+    top:0;left:0;right:0;
+    height:600vh;
+    z-index:0;
+    pointer-events:none;
+    background-image:url("live-hero-2200.jpg");
+    background-repeat:repeat-y;
+    background-size:100% auto;
+    background-position:top center;
+  }
+  body::after{
+    content:"";
+    position:absolute;
+    top:0;left:0;right:0;
+    height:600vh;
+    z-index:1;
+    pointer-events:none;
+    background-image:url("live-hero-2200.jpg");
+    background-repeat:repeat-y;
+    background-size:100% auto;
+    background-position:top center;
+    filter:blur(28px);
+    -webkit-mask-image:linear-gradient(180deg,
+      #000 0%, #000 8%, transparent 24%,
+      transparent 76%, #000 92%, #000 100%);
+    mask-image:linear-gradient(180deg,
+      #000 0%, #000 8%, transparent 24%,
+      transparent 76%, #000 92%, #000 100%);
+    -webkit-mask-repeat:repeat-y;
+    mask-repeat:repeat-y;
+    -webkit-mask-size:100% auto;
+    mask-size:100% auto;
+    -webkit-mask-position:top center;
+    mask-position:top center;
   }
   a{color:inherit;text-decoration:none;}
 
@@ -219,37 +257,10 @@
      background. ---------- */
   .stage{
     position:relative;
+    z-index:2;
     display:grid;
     grid-template-columns:1fr;
     grid-template-rows:auto;
-    background-image:url("live-hero-2200.jpg");
-    background-repeat:repeat-y;
-    background-size:100% auto;
-    background-position:top center;
-  }
-  .stage::before{
-    content:"";
-    position:absolute;
-    inset:0;
-    z-index:1;
-    pointer-events:none;
-    background-image:url("live-hero-2200.jpg");
-    background-repeat:repeat-y;
-    background-size:100% auto;
-    background-position:top center;
-    filter:blur(28px);
-    -webkit-mask-image:linear-gradient(180deg,
-      #000 0%, #000 8%, transparent 24%,
-      transparent 76%, #000 92%, #000 100%);
-    mask-image:linear-gradient(180deg,
-      #000 0%, #000 8%, transparent 24%,
-      transparent 76%, #000 92%, #000 100%);
-    -webkit-mask-repeat:repeat-y;
-    mask-repeat:repeat-y;
-    -webkit-mask-size:100% auto;
-    mask-size:100% auto;
-    -webkit-mask-position:top center;
-    mask-position:top center;
   }
   .stage > *{grid-column:1;grid-row:1;}
   .image-sticky{
