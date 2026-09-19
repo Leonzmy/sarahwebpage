@@ -222,10 +222,16 @@
     display:grid;
     grid-template-columns:1fr;
     grid-template-rows:auto;
-    background-image:url("live-hero-2200.jpg");
-    background-repeat:repeat-y;
-    background-size:100% auto;
-    background-position:top center;
+    background-image:
+      linear-gradient(180deg,
+        rgba(15,14,11,0.62) 0%,
+        rgba(15,14,11,0) 18%,
+        rgba(15,14,11,0) 82%,
+        rgba(15,14,11,0.62) 100%),
+      url("live-hero-2200.jpg");
+    background-repeat:repeat-y, repeat-y;
+    background-size:100% auto, 100% auto;
+    background-position:top center, top center;
   }
   .stage > *{grid-column:1;grid-row:1;}
   .image-sticky{
