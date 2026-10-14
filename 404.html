@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seite nicht gefunden — Sarah Luisa Wurmer</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
+<style>
+  body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
+       background:#EDE7DD;color:#171512;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;padding:2rem;}
+  .box{max-width:460px;}
+  h1{font-size:1.9rem;margin:0 0 .6rem;font-weight:600;}
+  p{line-height:1.6;color:rgba(23,21,18,.75);margin:0 0 1.4rem;}
+  ul{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:.6rem;}
+  a{display:inline-block;padding:.5rem 1rem;border-radius:999px;background:#B85A3E;color:#fff;
+    text-decoration:none;font-size:.9rem;}
+  a:hover{background:#2A3560;}
+</style>
+</head>
+<body>
+<div class="box">
+  <h1 id="t">Seite nicht gefunden</h1>
+  <p id="m">Diese Adresse gibt es nicht (mehr). Hier geht es zu den aktuellen Seiten:</p>
+  <ul id="links"></ul>
+</div>
+<script>
+(function(){
+  var path = location.pathname.toLowerCase();
+  var en = path.indexOf('/en/') === 0 || path === '/en';
+  var pre = en ? '/en/' : '/';
+
+  // Alte WordPress-Adressen automatisch zur passenden neuen Seite schicken
+  var rules = [
+    [/termin|live/, 'live.html'],
+    [/projekt|project/, 'projekte.html'],
+    [/about|vita/, 'about.html'],
+    [/kontakt|contact/, 'kontakt.html'],
+    [/impressum|imprint|legal/, 'impressum.html'],
+    [/datenschutz|privacy/, 'datenschutz.html'],
+    [/medien|media/, 'medien.html'],
+    [/\bcd\b|intimacy/, 'cd.html']
+  ];
+  for (var i = 0; i < rules.length; i++) {
+    if (rules[i][0].test(path)) { location.replace(pre + rules[i][1]); return; }
+  }
+
+  var L = en
+    ? {t:'Page not found', m:'This address no longer exists. Here are the current pages:',
+       n:[['Home','index.html'],['Live','live.html'],['About','about.html'],['Projects','projekte.html'],['Media','medien.html'],['Contact','kontakt.html']]}
+    : {t:'Seite nicht gefunden', m:'Diese Adresse gibt es nicht (mehr). Hier geht es zu den aktuellen Seiten:',
+       n:[['Start','index.html'],['Live','live.html'],['About','about.html'],['Projekte','projekte.html'],['Medien','medien.html'],['Kontakt','kontakt.html']]};
+  document.documentElement.lang = en ? 'en' : 'de';
+  document.title = L.t + ' — Sarah Luisa Wurmer';
+  document.getElementById('t').textContent = L.t;
+  document.getElementById('m').textContent = L.m;
+  var ul = document.getElementById('links');
+  L.n.forEach(function(x){
+    var li = document.createElement('li');
+    li.innerHTML = '<a href="' + pre + x[1] + '">' + x[0] + '</a>';
+    ul.appendChild(li);
+  });
+})();
+</script>
+</body>
+</html>
